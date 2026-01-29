@@ -1,14 +1,14 @@
-# UMAtlas – Project Proposal
+# CRAM – Project Proposal
 
 A collaborative wiki-style knowledge base for University of Manitoba courses.
 
 ## Project Vision & Summary
 
-UMAtlas is a collaboratively edited platform for the University of Manitoba. It allows students to build and maintain course-specific knowledge, with each course having dedicated pages for shared notes and definitions. While this is available across many resources, it is often fragmented and verbose. UMAtlas provides the tools and structure to consolidate this information into a shared knowledge base, allowing students to focus on what matters most rather than searching for it.
+CRAM is a collaboratively edited platform for the University of Manitoba. It allows students to build and maintain course-specific knowledge, with each course having dedicated pages for shared notes and definitions. While this is available across many resources, it is often fragmented and verbose. CRAM provides the tools and structure to consolidate this information into a shared knowledge base, allowing students to focus on what matters most rather than searching for it.
 
 ## Core Functional Features
 
-UMAtlas has five core functional features to drive its success. This includes the ability to authenticate an account through a University of Manitoba email, prepopulate the website with each course within the academic year to provide a baseline, modularize each course to establish an intuitive architecture, and run global searches on courses, notes and discussions.
+CRAM has five core functional features to drive its success. This includes the ability to authenticate an account through a University of Manitoba email, prepopulate the website with each course within the academic year to provide a baseline, modularize each course to establish an intuitive architecture, and run global searches on courses, notes and discussions.
 
 ### 1. Account Creation
 
@@ -48,7 +48,7 @@ Users can edit the course page and dictionary:
 - **Authentication:** JWT, Bcrypt
 - **Routing:** React Router
 - **HTTP:** Axios / Fetch API
-- **CI/CD:** GitHub Actions
+- **CI/CD:** GitHub Actions, Docker
 
 ## User Stories
 
