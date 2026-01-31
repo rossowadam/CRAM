@@ -27,4 +27,6 @@ revert: revert a previous commit
 ## Examples
 
 feat: add user login endpoint  
-fix: prevent crash when file list is empty  
+fix: prevent crash when file list is empty
+
+Reference: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
