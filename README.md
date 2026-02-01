@@ -1,5 +1,7 @@
 # CRAM – Project Proposal
 
+**C**ollaborative **R**esource for **A**cademic **M**aterials
+
 A collaborative wiki-style knowledge base for University of Manitoba courses.
 
 ## Project Vision & Summary
