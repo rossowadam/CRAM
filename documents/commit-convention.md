@@ -31,4 +31,10 @@ Not all of these will be used, but these capture the major types of commits.
 feat: add user login endpoint  
 fix: prevent crash when file list is empty
 
-Reference: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+Reference for Keywords: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+
+---
+
+## Merges
+
+`Merge Commits` will be used for pull requests to any branch besides main. `Squash-and-Merge` is to be used when merging to the main branch. This is to keep the merge history detailed in development, but keep the main branch simplified. That said, uploading meeting minutes can be done straight into the main branch, as it does not affect any functional code.
