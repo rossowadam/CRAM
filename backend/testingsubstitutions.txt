@@ -1,0 +1,35 @@
+
+
+-- SHOULD BE ABLE TO IGNORE NOW THAT DB WHITELISTS ALL IP --
+
+
+-- SUB BETWEEN THE TWO BELOW FOR MONGO_URI IN ENV --
+
+REAL DB:
+mongodb+srv://iezzis_db_user:J7yYlL7eg8mHDA8C@m0.z9otjfk.mongodb.net/cram?retryWrites=true&w=majority&appName=M0
+
+
+LOCAL DUMMY:
+mongodb://127.0.0.1:27017/cram_test
+
+
+
+
+-- COMMENT OUT LINE 11 IN SERVER JS FILE, THE PUT THIS IN ON LINE 10    (LINE NUMBERS SUBJECT TO CHANGE, BASICALLY YOU NEED TO REPLACE CONNECTDB FUNC)
+
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+async function startLocalDB() {
+    const mongo = await MongoMemoryServer.create();
+    process.env.MONGO_URI = mongo.getUri(); // This forces your app to use the fake DB
+    console.log("✅ Internal DB started! No whitelist needed.");
+
+    // Now connect as usual
+    connectDB(); 
+}
+
+if (process.env.NODE_ENV === 'development') {
+    startLocalDB();
+} else {
+    connectDB();
+}
