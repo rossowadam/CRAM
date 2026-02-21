@@ -9,7 +9,6 @@ function Navbar() {
           C.R.A.M.
         </Link>
 
-        {/* Desktop Links */}
         <div className="flex gap-6 font-instrument text-foreground text-base sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
             <Link to="/" className="hover:text-secondary transition-colors">Login</Link>
         </div>
