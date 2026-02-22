@@ -22,7 +22,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 async function startLocalDB() {
     const mongo = await MongoMemoryServer.create();
     process.env.MONGO_URI = mongo.getUri(); // This forces your app to use the fake DB
-    console.log("✅ Internal DB started! No whitelist needed.");
+    console.log("Internal DB started! No whitelist needed.");
 
     // Now connect as usual
     connectDB(); 

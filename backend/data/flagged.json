@@ -1,0 +1,444 @@
+[
+  {
+    "title": "Work Term 1",
+    "courseCode": "BIOL 3980",
+    "description": "Work assignment in business, industry, or government for students registered in the Biological Sciences Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 2",
+    "courseCode": "BIOL 3990",
+    "description": "Work assignment in business, industry, or government for students registered in the Biological Sciences Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 3",
+    "courseCode": "BIOL 4980",
+    "description": "Work assignment in business, industry, or government for students registered in the Biological Sciences Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 4",
+    "courseCode": "BIOL 4990",
+    "description": "Work assignment in business, industry, or government for students registered in the Biological Sciences Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 1",
+    "courseCode": "BTEC 3980",
+    "description": "Work assignments in business, industry or government for students registered in the Biotechnology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 2",
+    "courseCode": "BTEC 3990",
+    "description": "Work assignments in business, industry or government for students registered in the Biotechnology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 3",
+    "courseCode": "BTEC 4980",
+    "description": "Work assignments in business, industry or government for students registered in the Biotechnology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 4",
+    "courseCode": "BTEC 4990",
+    "description": "Work assignments in business, industry or government for students registered in the Biotechnology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 1",
+    "courseCode": "CHEM 3980",
+    "description": "Work assignments in business, industry or government for students registered in the Chemistry Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 2",
+    "courseCode": "CHEM 3990",
+    "description": "Work assignments in business, industry or government for students registered in the Chemistry Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 3",
+    "courseCode": "CHEM 4980",
+    "description": "Work assignments in business, industry or government for students registered in the Chemistry Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 4",
+    "courseCode": "CHEM 4990",
+    "description": "Work assignments in business, industry or government for students registered in the Chemistry Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Workterm 1",
+    "courseCode": "COMP 2980",
+    "description": "Work assignment in business, industry, or government for students registered in the Computer Science Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail)",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Workterm 2",
+    "courseCode": "COMP 3980",
+    "description": "Work assignment in business, industry, or government for students registered in the Computer Science Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Workterm 3",
+    "courseCode": "COMP 4980",
+    "description": "Work assignment in business, industry, or government for students registered in the Computer Science Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Workterm 4",
+    "courseCode": "COMP 4990",
+    "description": "Work assignment in business, industry, or government for students registered in the Computer Science Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment (Pass/Fail).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "IDDP ORIENTATN",
+    "courseCode": "DENT 2440",
+    "description": "",
+    "credits": 6,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Multi-Language Development in Early Years",
+    "courseCode": "EDUB 3018",
+    "description": "",
+    "credits": 3,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Coop Work Term 1",
+    "courseCode": "ENVR 3980",
+    "description": "Work assignments in business, industry, research or government for students registered in the Honours or Major Cooperative program. This course is graded pass/fail.",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Coop Work Term 2",
+    "courseCode": "ENVR 3990",
+    "description": "Work assignments in business, industry, research or government for students registered in the Honours or Major Cooperative program. This course is graded pass/fail. Prerequisite or Concurrent Requirement: ENVR 3900.",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Work Term 3",
+    "courseCode": "ENVR 4980",
+    "description": "Work assignments in business, industry, research or government for students registered in the Honours or Major Cooperative program. This course is graded pass/fail.",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "First Year Field Trip",
+    "courseCode": "FA 1990",
+    "description": "A field trip conducted by members of faculty. When the field trips are destined for the United States, students requiring a visa should make arrangements to obtain the visa at least 90 days before field trip departure date. A field trip exemption is not grantable except under extreme/extraordinary/visa issues circumstances. The field trip is required for a BFA General Degree and the Diploma program. Students unable to obtain a visa should contact their student advisor.",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Preparation for the Study of Law in Canada",
+    "courseCode": "LAW 1002",
+    "description": "This course will prepare internationally trained lawyers for the study of law in Canada. It will introduce students to the Canadian legal system and legal terminology, expose students to Indigenous history, culture and legal traditions, and examine what it means to provide culturally competent legal services in the Canadian context. In addition, students will be introduced to resources that support their research, academic and professional needs. Depending on the instructor, this course may include a field trip component. The course is restricted to students taking the Micro-Diploma in Canadian Public Law or the Micro-Diploma in Canadian Private Law. The course is evaluated on a pass/fail basis.",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Mechanical Engineering Industry Internship (IIP)",
+    "courseCode": "MECH 4930",
+    "description": "Supervised work experience normally of 12-16 months duration, concluded by a work report. (Pass/Fail grade only.)",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Work Term 1",
+    "courseCode": "MBIO 3980",
+    "description": "Work assignments in business, industry or government for students registered in the Microbiology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 2",
+    "courseCode": "MBIO 3990",
+    "description": "Work assignments in business, industry or government for students registered in the Microbiology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 3",
+    "courseCode": "MBIO 4980",
+    "description": "Work assignments in business, industry or government for students registered in the Microbiology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term 4",
+    "courseCode": "MBIO 4990",
+    "description": "Work assignments in business, industry or government for students registered in the Microbiology Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "BSC DENT 1",
+    "courseCode": "ORLB 1500",
+    "description": "",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "BSC DENT 2",
+    "courseCode": "ORLB 2500",
+    "description": "",
+    "credits": 0,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "4-Month General Science Internship",
+    "courseCode": "SCI 2980",
+    "description": "Supervised internship with an approved employer for a minimum of 12 weeks full-time. Restricted to students admitted to the General Science Internship Program Option in the Faculty of Science. Completion of internship pre-employment workshops required. Final internship report required. May not be held with SCI 2990. (Pass/Fail grade only.)",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "8-Month General Science Internship",
+    "courseCode": "SCI 2990",
+    "description": "Supervised internship with an approved employer for a minimum of 24 weeks full-time. Restricted to students admitted to the General Science Internship Program Option in the Faculty of Science. Completion of internship pre-employment workshops required. Final internship report required. May not be held with SCI 2980. (Pass/Fail grade only.)",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Co-operative Education Work Term 1",
+    "courseCode": "SCI 3980",
+    "description": "Supervised work experience with an approved employer for a minimum of 12 weeks full-time. Restricted to students admitted to the Honours or Major Co-operative Education Option in the Faculty of Science. Completion of co-op pre-employment workshops required. Final work term report required. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Co-operative Education Work Term 2",
+    "courseCode": "SCI 3990",
+    "description": "Supervised work experience with an approved employer for a minimum of 12 weeks full-time. Restricted to students admitted to the Honours or Major Co-operative Education Option in the Faculty of Science. Final work term report required. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Co-operative Education Work Term 3",
+    "courseCode": "SCI 4980",
+    "description": "Supervised work experience with an approved employer for a minimum of 12 weeks full-time. Restricted to students admitted to the Honours or Major Co-operative Education Option in the Faculty of Science. Final work term report required. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Co-operative Education Work Term 4",
+    "courseCode": "SCI 4990",
+    "description": "Supervised work experience with an approved employer for a minimum of 12 weeks full-time. Restricted to students admitted to the Honours or Major Co-operative Education Option in the Faculty of Science. Final work term report required. (Pass/Fail grade only.) Slavic Studies (Pol,Rusn,Ukrn) (SLAV)",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Contemporary Sociological Theory",
+    "courseCode": "SOC 2004",
+    "description": "",
+    "credits": 3,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "The Sociology of Disability",
+    "courseCode": "SOC 2304",
+    "description": "",
+    "credits": 3,
+    "hasPrerequisites": false,
+    "attributes": [],
+    "lab": false
+  },
+  {
+    "title": "Work Term I",
+    "courseCode": "STAT 3980",
+    "description": "Work assignment in business, industry, or government for students registered in the Statistics Honours or Major Cooperative Option. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail grade only).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Mathematics Requirement",
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term II",
+    "courseCode": "STAT 3990",
+    "description": "Work assignments in business, industry or government for students registered in the Statistics Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Mathematics Requirement",
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term III",
+    "courseCode": "STAT 4980",
+    "description": "Work assignments in business, industry or government for students registered in the Statistics Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail).",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Mathematics Requirement",
+      "Science"
+    ],
+    "lab": false
+  },
+  {
+    "title": "Work Term IV",
+    "courseCode": "STAT 4990",
+    "description": "Work assignments in business, industry or government for students registered in the Statistics Honours or Major Cooperative program. Requires submission of a written report covering the work completed during the four-month professional assignment. (Pass/Fail). Strategy and Global Management (SGMT)",
+    "credits": 0,
+    "hasPrerequisites": true,
+    "attributes": [
+      "Mathematics Requirement",
+      "Science"
+    ],
+    "lab": false
+  }
+]
