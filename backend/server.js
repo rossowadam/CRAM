@@ -4,14 +4,11 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 
-/**
- * Route imports
- * We use singular names to match our decentralized file structure
- */
-const userRoutes = require('./routes/userRoutes');
-const courseRoutes = require('./routes/courseRoutes');
+//Define routes
+const userRoutes = require('./routes/usersRoutes');
+const courseRoutes = require('./routes/coursesRoutes');
 
-// Initialize environment variables from .env file
+// Load env vars
 dotenv.config();
 
 // Establishes connection to MongoDB Atlas
@@ -33,14 +30,11 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-/**
- * API Route Mappings
- * Maps URL paths to their respective route handlers
- */
-app.use('/api/v1/courses', courseRoutes);
-app.use('/api/v1/users', userRoutes);
 
-// Base route for API status check
+//Send requests to routes, if the request is for /api/v1/courses, it will go to courseRoutes, if the request is for /api/v1/users, it will go to userRoutes
+app.use('/api/v1/courses', courseRoutes);
+app.use('api/v1/users', userRoutes);
+
 app.get('/', (req, res) => {
     res.send('CRAM API is running...');
 });
