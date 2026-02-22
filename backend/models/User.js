@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema({
         type: String, required: true
     },
     id: {
-        type: String, required: true
+        type: String, required: true, index: true, unique: true
     },
     userName: {
-        type: String, required: true
+        type: String, required: true, unique: true
     }, 
     passwordHash: {
         type: String, required: true
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         type: String, required: true
     },
     email: {
-        type: String, required: true
+        type: String, required: true, unique: true
     }
 }
 );

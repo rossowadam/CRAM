@@ -37,3 +37,7 @@ exports.deleteCourse = async (id) => {
 exports.getSampleCourses = async (count = 10) => {
     return await Course.aggregate([{ $sample: { size: count } }]) ;
 }
+
+exports.findCourseByCourseCode = async (course_code) => {
+    return await Course.findOne({ course_code: course_code });
+}
