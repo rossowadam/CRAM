@@ -29,7 +29,7 @@ export default function AuthDialog({ open, mode, setOpen, setMode }: AuthDialogP
                             </DialogTitle>
                         </DialogHeader>
 
-                        <LoginForm />
+                        <LoginForm setOpen={setOpen} />
                         <button
                             onClick={() => setMode("signup")}
                             className="text-sm text-foreground italic hover:text-secondary hover:cursor-pointer"
@@ -37,7 +37,7 @@ export default function AuthDialog({ open, mode, setOpen, setMode }: AuthDialogP
                             Create an account
                         </button>
                     </>
-                ) : (
+                ):(
                     <>
                         <DialogHeader>
                             <DialogTitle className="text-secondary text-2xl">
@@ -48,7 +48,7 @@ export default function AuthDialog({ open, mode, setOpen, setMode }: AuthDialogP
 
                             </DialogTitle>
                         </DialogHeader>
-                        <SignupForm />
+                        <SignupForm setOpen={setOpen} />
 
                         <button
                             onClick={() => setMode("login")}

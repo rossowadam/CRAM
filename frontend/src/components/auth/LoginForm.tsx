@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-export default function LoginForm() {
+interface LoginFormProps {
+    setOpen: (open: boolean) => void;
+}
+
+export default function LoginForm({ setOpen }: LoginFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const onLogin = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log("Login Submitted", {email, password});
+        setOpen(false);
     }
 
     return (

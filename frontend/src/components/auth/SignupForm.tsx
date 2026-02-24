@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-export default function SignupForm() {
+interface SignupFormProps {
+    setOpen: (open: boolean) => void;
+} 
+
+export default function SignupForm({ setOpen }: SignupFormProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -10,6 +14,7 @@ export default function SignupForm() {
     const onSignup = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log("Signup Submitted", {name, email, password, confirmPassword});
+        setOpen(false);
     }
     
     return (
