@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AuthDialog from "../auth/AuthDialog";
 import { Link } from "react-router-dom"
+import { Button } from "../ui/button";
 
 function Navbar() {
   const [authOpen, setAuthOpen] = useState(false);
@@ -21,16 +22,15 @@ function Navbar() {
             </Link>
 
             <div className="flex gap-6 font-instrument text-foreground text-base sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
-                <Link 
-                    to="/" 
-                    className="hover:text-secondary transition-colors"
+                <Button 
+                    className="hover:text-secondary hover:cursor-pointer"
                     onClick={() => {
                         setAuthMode('login');
                         setAuthOpen(true);
                     }}
                 >
                     Login
-                </Link>
+                </Button>
             </div>
         </div>
         </nav>
