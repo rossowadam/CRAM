@@ -1,13 +1,13 @@
 const userService = require('../services/userServices');
 
-//not implemented yet, will return all users in the database
+// Not implemented yet, will return all users in the database.
 exports.getAllUsers = async (req, res) => {}
 
-//not implemented yet, will return users that match the search query in the request body
-//not sure of use cases, but it be useful for any features revolving around searching for users
+// Not implemented yet, will return users that match the search query in the request body.
+// Not sure of use cases, but it be useful for any features revolving around searching for users.
 exports.searchUsers = async (req, res) => {}
 
-//gets a user, sends the data to the browser, if the user is not found, sends a 404 error, if there is an error with the database, sends a 500 error
+// Gets a user, sends the data to the browser, if the user is not found, sends a 404 error, if there is an error with the database, sends a 500 error.
 exports.findUserById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -21,8 +21,8 @@ exports.findUserById = async (req, res) => {
     }
 }
 
-//should begin process of updating a user's data, should only be accessible to the user themselves, or to admins
-//request should be an object with the fields to update, for example: { name: 'New Name', email: 'newemail@example.com' }
+// Should begin process of updating a user's data, should only be accessible to the user themselves, or to admins.
+// Request should be an object with the fields to update, for example: { name: 'New Name', email: 'newemail@example.com' }
 exports.updateUserById = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
@@ -38,7 +38,7 @@ exports.updateUserById = async (req, res) => {
 }
 
 
-//should delete a user, should only be accessible to the user themselves, should clear out all saved data related to the user
+// Should delete a user, should only be accessible to the user themselves, should clear out all saved data related to the user.
 exports.deleteUserById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -52,7 +52,7 @@ exports.deleteUserById = async (req, res) => {
     }
 }
 // Creates a new user, expects the request body contain: FirstName, LastName, Email, PasswordHash, studentNUmber/ID, role, and userName.
-//currently returns the created user, but may want to return a success message or homepage URL.
+// Currently returns the created user, but may want to return a success message or homepage URL.
 exports.createUser = async (req, res) => {
     try {
         const userData = req.body;
