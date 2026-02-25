@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 
 //Send requests to routes, if the request is for /api/v1/courses, it will go to courseRoutes, if the request is for /api/v1/users, it will go to userRoutes
 app.use('/api/v1/courses', courseRoutes);
-app.use('api/v1/users', userRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('CRAM API is running...');
