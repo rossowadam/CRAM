@@ -11,7 +11,7 @@ const courseSchema = new mongoose.Schema({
         type: String, required: true
     },
     course_code: {
-        type: String, required: true
+        type: String, required: true, index: true, unique: true
     },
     description: {
         type: String, required: true

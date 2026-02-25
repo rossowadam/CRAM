@@ -1,3 +1,75 @@
-const courseService = require('../services/courseService');
+const courseService = require('../services/courseServices');
 
-exports.getAllCourses = async (req, res) => {}
+exports.getAllCourses = async (req, res) => {
+    try {
+        const courses = await courseService.getAllCourses();
+        res.status(200).json(courses);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.findCourseById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const course = await courseService.findCourseById(id);
+        if (!course) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+        res.json(course);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.createCourse = async (req, res) => {
+    try {
+        const courseData = req.body;
+        const newCourse = await courseService.createCourse(courseData);
+        res.status(201).json(newCourse);
+    }   catch (error) { 
+        if(error.message.includes('already exists')) {
+            res.status(409).json({ error: error.message });
+        }
+        else if(error.message.includes('incomplete')) {
+            res.status(422).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
+    }
+}   
+
+exports.updateCourse = async (req, res) => {
+    const { id } = req.params;
+    const courseData = req.body;    
+    try {
+        const updatedCourse = await courseService.updateCourse(id, courseData);
+        if (!updatedCourse) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+        res.json(updatedCourse);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+//tries to delete a course, returns an error if the course is not found.
+exports.deleteCourse = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedCourse = await courseService.deleteCourse(id);
+        if (!deletedCourse) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+        res.json({ message: 'Course deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.getSampleCourses = async (req, res) => {
+    try {
+        const sampleCourses = await courseService.getSampleCourses();
+        res.json(sampleCourses);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
