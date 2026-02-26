@@ -19,6 +19,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
     
     return (
         <form className="flex flex-col gap-4" onSubmit={onSignup}>
+            <div className="flex flex-col gap-0">
             <input 
                 type="text" 
                 placeholder="Name" 
@@ -27,6 +28,11 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
                 className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                 required
             />
+                <p className="font-instrument text-xs pl-1 text-secondary italic">
+                    Name must not be empty
+                </p>
+            </div>
+
             <div className="flex flex-col gap-0">
                 <input 
                     type="email" 
