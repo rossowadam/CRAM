@@ -8,10 +8,10 @@ exports.getAllUsers = async (req, res) => {}
 exports.searchUsers = async (req, res) => {}
 
 // Gets a user, sends the data to the browser, if the user is not found, sends a 404 error, if there is an error with the database, sends a 500 error.
-exports.findUserById = async (req, res) => {
+exports.getUserById = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await userService.findUserById(id);
+        const user = await userService.getUserById(id);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
