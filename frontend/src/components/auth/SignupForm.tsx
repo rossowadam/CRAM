@@ -31,10 +31,11 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         setErrors(validationResults);
 
         // if errors wasn't empty, signup was invalid
-        if (Object.keys(errors).length > 0) {
-            console.error(errors);
+        if (Object.keys(validationResults).length > 0) {
+            console.error(validationResults);
         }
         else {
+            console.log(validationResults);
             console.log("Valid!");
             setOpen(false); // close tab
         }
