@@ -12,6 +12,9 @@ against the decided-upon requirements.
 Returns an errors object which may contain error messages
 corresponding to the failed check(s).
 */
+
+// TODO: TESTING
+
 export function validateSignup(input: SignupInput) {
     const { name, email, password, confirmPassword } = input;
     let errors: {
