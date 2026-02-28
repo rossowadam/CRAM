@@ -13,7 +13,7 @@ exports.createCourse = async (courseData) => {
 }
 //gets all courses, returns an array of course documents
 exports.getAllCourses = async () => {
-    return await Course.find({});
+    return await Course.find({}).lean();
 }
 
 //gets a course by id, returns the course document if found, or null if no course with the given id was found
