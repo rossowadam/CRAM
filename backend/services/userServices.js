@@ -1,4 +1,5 @@
 const userRepository = require('../repositories/userRepository');
+const passwordServices = require('./passwordServices');
 
 exports.findUserById = async (id) => {
     user  = await userRepository.findUserById(id);
@@ -18,6 +19,8 @@ exports.createUser = async (userData) => {
     if (!userIsComplete) {
         throw new Error('User data is incomplete');
     }
+
+    userData.passwordHash = await passwordServices.hashPassword(userData.passwordHash);
 
     const allowedDomains = ['@umanitoba.ca', '@myumanitoba.ca'];
     const {email} = userData;
