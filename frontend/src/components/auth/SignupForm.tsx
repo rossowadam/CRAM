@@ -11,6 +11,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -20,7 +21,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             confirmPassword?: string;
         }>({});
 
-    const onSignup = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
@@ -29,14 +30,38 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         const validationResults = validateSignup({ name, email, password, confirmPassword });
         setErrors(validationResults);
 
-        // if errors wasn't empty, signup was invalid
+        // return if invalid when errors isn't empty
         if (Object.keys(validationResults).length > 0) {
             console.error(validationResults);
+            return;
         }
-        else {
-            console.log(validationResults);
-            console.log("Valid!");
-            setOpen(false); // close tab
+        
+        // valid signup, package details and send to backend
+        console.log("Valid!");
+
+        try {
+        setLoading(true); // show loading state while running request
+
+        const response = await fetch("/api/v1/user/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Signup failed");
+        }
+        
+        setOpen(false); // close tab
+
+        } catch (err) {
+            // display backend error
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -106,7 +131,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
                 variant="outline"
                 className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer"
             >
-                Create Account
+                {loading ? "Creating Account..." : "Create Account"}
             </Button>
         </form>
     );
