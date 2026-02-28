@@ -608,7 +608,6 @@ function SidebarMenuSkeleton({
   showIcon?: boolean
 }) {
   // No need for a random width, we can let CSS handle layout or just use a fixed percentage
-  // if you prefer uniformity.
 
   return (
     <div
