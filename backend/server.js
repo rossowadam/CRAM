@@ -5,8 +5,8 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 
 //Define routes
-const userRoutes = require('./routes/usersRoutes');
-const courseRoutes = require('./routes/coursesRoutes');
+const userRoutes = require('./routes/userRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 
 // Load env vars
 dotenv.config();
@@ -31,9 +31,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
-//Send requests to routes, if the request is for /api/v1/courses, it will go to courseRoutes, if the request is for /api/v1/users, it will go to userRoutes
+//Send requests to routes, if the request is for /api/v1/courses, it will go to courseRoutes, if the request is for /api/v1/user, it will go to userRoutes
 app.use('/api/v1/courses', courseRoutes);
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/user', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('CRAM API is running...');
