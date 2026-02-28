@@ -1,21 +1,21 @@
-import {Routes, Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import Navbar from './components/layout/Navbar';
 import Course from './pages/Course';
-import { SidebarProvider, SidebarTrigger } from './components/ui/sidebar';
+import { SidebarProvider } from './components/ui/sidebar';
 import { TooltipProvider } from './components/ui/tooltip';
 import CourseSidebar from './components/layout/CourseSidebar';
 
-function App(){
+function App() {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
 
         <Route path='/course/:courseId' element={
           <TooltipProvider>
-            <SidebarProvider 
+            <SidebarProvider
               defaultOpen={true}
               style={
                 {
@@ -26,11 +26,11 @@ function App(){
             >
               <CourseSidebar />
               <Course />
-              
+
             </SidebarProvider>
           </TooltipProvider>
-        }/>
-      </Routes>     
+        } />
+      </Routes>
     </>
   );
 }
