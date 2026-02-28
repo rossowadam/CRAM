@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-import { validateSignup } from "@/utils/Validators";
+import { validateSignup } from "@/utils/validators";
 interface SignupFormProps {
     setOpen: (open: boolean) => void;
 }
