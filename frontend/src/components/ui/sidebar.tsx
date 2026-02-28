@@ -607,11 +607,8 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean
 }) {
-  // Random width between 50 to 90%.
-  // eslint-disable-next-line
-  const width = React.useRef(
-    `${Math.floor(Math.random() * 40) + 50}%`
-  ).current
+  // No need for a random width, we can let CSS handle layout or just use a fixed percentage
+  // if you prefer uniformity.
 
   return (
     <div
@@ -627,13 +624,8 @@ function SidebarMenuSkeleton({
         />
       )}
       <Skeleton
-        className="h-4 max-w-(--skeleton-width) flex-1"
+        className="h-4 w-32 flex-1"
         data-sidebar="menu-skeleton-text"
-        style={
-          {
-            "--skeleton-width": width,
-          } as React.CSSProperties
-        }
       />
     </div>
   )
