@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateSignup } from "./tempValidators";
+import { validateSignup } from "./validators";
 
 describe("validateSignup", () => {
 
