@@ -2,7 +2,7 @@ const userRepository = require('../repositories/userRepository');
 const passwordServices = require('./passwordServices');
 
 exports.findUserById = async (id) => {
-    user  = await userRepository.findUserById(id);
+    const user = await userRepository.findUserById(id);
     return user;
 }
 exports.updateUserById = async (id, userData) => {
@@ -21,26 +21,35 @@ exports.createUser = async (userData) => {
         throw new Error('User data is incomplete');
     }
 
-    userData.passwordHash = await passwordServices.hashPassword(userData.passwordHash);
-
+    // check domain
     const allowedDomains = ['@umanitoba.ca', '@myumanitoba.ca'];
 
     const allowed = allowedDomains.some(domain => email.endsWith(domain));
-
     if (!allowed) throw new Error('Email domain is not allowed');
     
     // check if user already exists
-    let doesExist = await userRepository.findUserByEmail(email);
-
+    const doesExist = await userRepository.findUserByEmail(email);
     if (doesExist) throw new Error('User with this email already exists');
+
+    // hash password
+    const passwordHash = await passwordServices.hashPassword(password);
     
     // assign role
+    let role;
     if(email.endsWith('@myumanitoba.ca')) {
-        userData.role = 'student';
+        role = 'student';
     }
     else if(email.endsWith('@umanitoba.ca')) {
-        userData.role = 'professor';
+        role = 'professor';
     }
+
+    // create new user object to create
+    const newUser = {
+        name,
+        email,
+        passwordHash,
+        role
+    };
     
-    //return await userRepository.createUser(userData);
+    return await userRepository.createUser(newUser);
 }
