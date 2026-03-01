@@ -42,7 +42,8 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         try {
         setLoading(true); // show loading state while running request
 
-        const response = await fetch("/api/v1/user/signup", {
+        // build the request
+        const response = await fetch("/api/v1/user/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
