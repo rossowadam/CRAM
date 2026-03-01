@@ -53,14 +53,25 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             })
         });
 
+        // get data within the response
+        const data = await response.json();
+
+        // robustly catch known errors to display
         if (!response.ok) {
-            throw new Error("Signup failed");
+            switch (response.status) {
+                case 409:
+                case 403:
+                case 422:
+                    throw new Error(data.error);
+                default:
+                    throw new Error("Something went wrong. Please try again.");
+            }
         }
         
         setOpen(false); // close tab
 
         } catch (err) {
-            // display backend error
+            console.log(err);
         } finally {
             setLoading(false);
         }
