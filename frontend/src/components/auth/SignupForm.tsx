@@ -12,6 +12,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -22,6 +23,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         }>({});
 
     const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+        setServerError(null); // remove old errors
         event.preventDefault();
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
@@ -70,8 +72,8 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         
         setOpen(false); // close tab
 
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            setServerError(err.message);
         } finally {
             setLoading(false);
         }
@@ -145,6 +147,12 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             >
                 {loading ? "Creating Account..." : "Create Account"}
             </Button>
+
+            {serverError && (
+                <p className="text-red-500 text-sm text-center mt-2">
+                    {serverError}
+                </p>
+            )}
         </form>
     );
 }
