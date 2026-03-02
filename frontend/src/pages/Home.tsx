@@ -26,7 +26,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { SearchIcon, ChevronDown, ChevronUp } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 /* TYPES */
