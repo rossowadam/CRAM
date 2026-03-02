@@ -33,7 +33,7 @@ describe("createUser", () => {
             ok: false,
             status: 409,
         json: async () => ({ error: "User already exists" })
-        } as any);
+        } as unknown as Response);
 
         await expect(createUser(validPayload))
         .rejects.toThrow("User already exists");
