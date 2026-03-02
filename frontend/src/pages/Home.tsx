@@ -139,7 +139,11 @@ export default function Home() {
   const deferredQuery = useDeferredValue(debouncedQuery);
 
   // Needed list handle.
-  const listRef = useRef<any>(null);
+  type ListHandle = {
+    resetAfterIndex?: (index: number, shouldForceUpdate?: boolean) => void;
+  };
+
+  const listRef = useRef<ListHandle | null>(null);
   const heightMapRef = useRef<Record<string, number>>({});
 
   const BOTTOM_SPACER = 24;
