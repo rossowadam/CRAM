@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createUser } from "./userApi";
+import { createUser, loginUser } from "./userApi";
 
 // mock the backend and test valid input and the possible errors received
 describe("createUser", () => {
@@ -35,8 +35,7 @@ describe("createUser", () => {
         json: async () => ({ error: "User already exists" })
         } as unknown as Response);
 
-        await expect(createUser(validPayload))
-        .rejects.toThrow("User already exists");
+        await expect(createUser(validPayload)).rejects.toThrow("User already exists");
     });
 
     // incorrect domain error
@@ -47,8 +46,7 @@ describe("createUser", () => {
         json: async () => ({ error: "Email domain is not allowed" })
         } as unknown as Response);
 
-        await expect(createUser(validPayload))
-        .rejects.toThrow("Email domain is not allowed");
+        await expect(createUser(validPayload)).rejects.toThrow("Email domain is not allowed");
     });
 
     // incomplete data error
@@ -59,8 +57,7 @@ describe("createUser", () => {
         json: async () => ({ error: "User data is incomplete" })
         } as unknown as Response);
 
-        await expect(createUser(validPayload))
-        .rejects.toThrow("User data is incomplete");
+        await expect(createUser(validPayload)).rejects.toThrow("User data is incomplete");
     });
 
     // other 400-level error
@@ -71,8 +68,7 @@ describe("createUser", () => {
         json: async () => ({ error: "Not Found" })
         } as unknown as Response);
 
-        await expect(createUser(validPayload))
-        .rejects.toThrow("Something went wrong. Please try again.");
+        await expect(createUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
     
     // server error
@@ -83,7 +79,65 @@ describe("createUser", () => {
         json: async () => ({ error: "Internal server error" })
         } as unknown as Response);
 
-        await expect(createUser(validPayload))
-        .rejects.toThrow("Something went wrong. Please try again.");
+        await expect(createUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test valid input and the possible errors received
+describe("loginUser", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validPayload = {
+        email: "john@umanitoba.ca",
+        password: "password123"
+    };
+
+    // valid
+    it("returns body when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Login successful" })
+        } as unknown as Response);
+
+        const result = await loginUser(validPayload);
+
+        expect(result).toEqual({ message: "Login successful" });
+    });
+
+    // invalid credentials (403)
+    it("throws 403 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: "Invalid email or password" })
+        } as unknown as Response);
+
+        await expect(loginUser(validPayload)).rejects.toThrow("Invalid email or password");
+    });
+
+    // other 400-level error
+    it("throws generic error for unexpected status (404)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 404,
+            json: async () => ({ error: "Not Found" })
+        } as unknown as Response);
+
+        await expect(loginUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(loginUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
 });
