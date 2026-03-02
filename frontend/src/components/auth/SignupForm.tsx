@@ -41,7 +41,7 @@ export default function SignupForm() {
         // valid signup, package details and send to backend
         console.log("Valid!");
 
-        // try to create the error and display possible errors
+        // try to create the user and display possible errors
         try {
             setLoading(true);
 
