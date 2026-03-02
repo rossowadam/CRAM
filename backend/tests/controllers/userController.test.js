@@ -332,3 +332,102 @@ test('UserController - deleteUserById - server error', async (t) => {
     assert.strictEqual(res.statusCode, 500);
     assert.deepStrictEqual(res.body, { error: 'Database error' });
 });
+
+test('UserController - loginUser - success', async (t) => {
+
+    // Mock successful login
+    t.mock.method(userService, 'loginUser', async () => {
+        return true;
+    });
+
+    const req = {
+        body: {
+            email: 'test@umanitoba.ca',
+            password: 'password123'
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        }
+    };
+
+    await userController.loginUser(req, res);
+
+    assert.strictEqual(res.statusCode, 200);
+    assert.deepStrictEqual(res.body, { message: "Login successful" });
+});
+
+test('UserController - loginUser - invalid credentials', async (t) => {
+
+    // Mock invalid login
+    t.mock.method(userService, 'loginUser', async () => {
+        throw new Error('Invalid email or password');
+    });
+
+    const req = {
+        body: {
+            email: 'wrong@umanitoba.ca',
+            password: 'wrongpass'
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        }
+    };
+
+    await userController.loginUser(req, res);
+
+    assert.strictEqual(res.statusCode, 403);
+    assert.deepStrictEqual(res.body, { error: 'Invalid email or password' });
+});
+
+test('UserController - loginUser - unexpected error', async (t) => {
+
+    // Mock internal error
+    t.mock.method(userService, 'loginUser', async () => {
+        throw new Error('Database failure');
+    });
+
+    const req = {
+        body: {
+            email: 'test@umanitoba.ca',
+            password: 'password123'
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        }
+    };
+
+    await userController.loginUser(req, res);
+
+    assert.strictEqual(res.statusCode, 500);
+    assert.deepStrictEqual(res.body, { error: 'Database failure' });
+});
