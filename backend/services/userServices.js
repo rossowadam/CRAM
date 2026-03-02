@@ -45,9 +45,9 @@ exports.createUser = async (userData) => {
 
     // create new user object
     const newUser = {
-        name,
+        user_name: name,
         email,
-        passwordHash,
+        password_hash: passwordHash,
         role
     };
 
