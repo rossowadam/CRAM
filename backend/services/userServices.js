@@ -43,13 +43,13 @@ exports.createUser = async (userData) => {
         role = 'professor';
     }
 
-    // create new user object to create
+    // create new user object
     const newUser = {
         name,
         email,
         passwordHash,
         role
     };
-    
+
     return await userRepository.createUser(newUser);
 }
