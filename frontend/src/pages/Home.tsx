@@ -140,7 +140,12 @@ export default function Home() {
 
   // Needed list handle.
   type ListHandle = {
-    resetAfterIndex?: (index: number, shouldForceUpdate?: boolean) => void;
+    readonly element: HTMLDivElement | null;
+    scrollToRow: (config: {
+      index: number;
+      align?: "auto" | "start" | "center" | "end" | "smart";
+      behavior?: "auto" | "instant" | "smooth";
+    }) => void;
   };
 
   const listRef = useRef<ListHandle | null>(null);
