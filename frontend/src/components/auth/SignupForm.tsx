@@ -121,7 +121,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
                 />
 
                 <p className={`font-instrument text-xs pl-1 italic ${errors.password ? "text-red-500" : "text-secondary"}`}>
-                    Password must be at least 8 characters long
+                    Password must be at least 8 characters
                 </p>
             </div>
 
