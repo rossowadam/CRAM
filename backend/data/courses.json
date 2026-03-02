@@ -30718,15 +30718,6 @@
           "lab": false
         },
         {
-          "title": "(D) or MSCI 2150 (D) (or MSCI 2151) or the former OPM",
-          "courseCode": "ABIZ 2520",
-          "description": "(D) (or OPM 2601) or consent of the instructor.",
-          "credits": 2600,
-          "hasPrerequisites": false,
-          "attributes": [],
-          "lab": false
-        },
-        {
           "title": "Project Management in Supply Chain",
           "courseCode": "SCM 3280",
           "description": "Topics covered in this course will include project initiating, planning, executing, monitoring and controlling, and closing. Following the PMI methodology, all ten knowledge areas will be covered, including: integration, scope, schedule, cost, HR, quality, risk, communication, procurement and stakeholder management. Students will learn how to analyze case studies and effectively use team work to develop strong planning and an analytical approach pertinent to project management. May not be held with SCM 2220 when titled \"Project Management in Supply Chain.”",
