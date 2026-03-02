@@ -49,8 +49,10 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             await createUser({ name, email, password });
             
             setOpen(false); // close tab if ran successfully
-        } catch (err: any) {
-            setServerError(err.message);
+        } catch (err) {
+            setServerError(
+                err instanceof Error ? err.message : "Something went wrong."
+            );
         } finally {
             setLoading(false);
         }

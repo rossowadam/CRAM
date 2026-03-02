@@ -20,7 +20,7 @@ describe("createUser", () => {
             ok: true,
             status: 201,
             json: async () => ({ id: "123", name: "John" })
-        } as any);
+        } as unknown as Response);
 
         const result = await createUser(validPayload);
 
@@ -45,7 +45,7 @@ describe("createUser", () => {
             ok: false,
             status: 403,
         json: async () => ({ error: "Email domain is not allowed" })
-        } as any);
+        } as unknown as Response);
 
         await expect(createUser(validPayload))
         .rejects.toThrow("Email domain is not allowed");
@@ -57,7 +57,7 @@ describe("createUser", () => {
             ok: false,
             status: 422,
         json: async () => ({ error: "User data is incomplete" })
-        } as any);
+        } as unknown as Response);
 
         await expect(createUser(validPayload))
         .rejects.toThrow("User data is incomplete");
@@ -69,7 +69,7 @@ describe("createUser", () => {
             ok: false,
             status: 404,
         json: async () => ({ error: "Not Found" })
-        } as any);
+        } as unknown as Response);
 
         await expect(createUser(validPayload))
         .rejects.toThrow("Something went wrong. Please try again.");
@@ -81,7 +81,7 @@ describe("createUser", () => {
             ok: false,
             status: 500,
         json: async () => ({ error: "Internal server error" })
-        } as any);
+        } as unknown as Response);
 
         await expect(createUser(validPayload))
         .rejects.toThrow("Something went wrong. Please try again.");

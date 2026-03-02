@@ -15,7 +15,7 @@ corresponding to the failed check(s).
 
 export function validateSignup(input: SignupInput) {
     const { name, email, password, confirmPassword } = input;
-    let errors: {
+    const errors: {
         name?: string;
         email?: string;
         password?: string;
