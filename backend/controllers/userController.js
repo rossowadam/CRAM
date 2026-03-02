@@ -51,7 +51,7 @@ exports.deleteUserById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-// Creates a new user, expects the request body contain: FirstName, LastName, Email, PasswordHash, studentNUmber/ID, role, and userName.
+// Creates a new user, expects the request body contain: Username, Email and Password.
 // Currently returns the created user, but may want to return a success message or homepage URL.
 exports.createUser = async (req, res) => {
     try {
@@ -72,3 +72,18 @@ exports.createUser = async (req, res) => {
         else res.status(500).json({ error: error.message });
     }
 } 
+
+// login a user, expects the request body contain: Username, Email and Password.
+exports.loginUser = async (req, res) => {
+    try {
+        const userData = req.body;
+        await userService.loginUser(userData);
+        return res.status(200).json({ message: "Login successful" });;
+    }
+    catch (error) {
+        if (error.message.includes('invalid username or password')) {
+            res.status(403).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
+    }
+}
