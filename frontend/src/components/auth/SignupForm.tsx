@@ -3,11 +3,8 @@ import { Button } from "../ui/button";
 
 import { validateSignup } from "@/utils/validators";
 import { createUser } from "@/api/userApi";
-interface SignupFormProps {
-    setOpen: (open: boolean) => void;
-}
 
-export default function SignupForm({ setOpen }: SignupFormProps) {
+export default function SignupForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
