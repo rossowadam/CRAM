@@ -30,3 +30,28 @@ export async function createUser(data: {
 
     return body;
 }
+
+export async function loginUser(data: {
+    email: string;
+    password: string;
+}) {
+
+    // build the request
+    const response = await fetch("/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+
+    // robustly throw errors
+    if (!response.ok) {
+        if (response.status === 403) {
+            throw new Error(body.error);
+        }
+        throw new Error("Something went wrong. Please try again.");
+    }
+
+    return body;
+}
