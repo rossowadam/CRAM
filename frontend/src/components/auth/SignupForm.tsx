@@ -14,6 +14,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -25,6 +26,7 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
 
     const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setSuccessMessage(null);
         setServerError(null); // remove old errors
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
@@ -47,8 +49,8 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             setLoading(true);
 
             await createUser({ name, email, password });
-            
-            setOpen(false); // close tab if ran successfully
+
+            setSuccessMessage("Account successfully created!");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -131,6 +133,12 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             {serverError && (
                 <p className="text-red-500 text-sm text-center mt-2">
                     {serverError}
+                </p>
+            )}
+
+            {successMessage && (
+                <p className="text-green-600 text-sm text-center mt-2">
+                    {successMessage}
                 </p>
             )}
         </form>
