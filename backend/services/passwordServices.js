@@ -16,8 +16,7 @@ exports.hashPassword = async (password) => {
     }
 }
 
-// take in a password and a hash, verify it is the same as hash
+// verify a given password and hash
 exports.verifyPassword = async (password, hashedPassword) => {
-    const hashed = await this.hashPassword(password);
-    return hashed === hashedPassword;
-}
+    return await argon2.verify(hashedPassword, password);
+};
