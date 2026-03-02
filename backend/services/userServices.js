@@ -29,7 +29,7 @@ exports.createUser = async (userData) => {
     
     // check if user already exists
     const doesExist = await userRepository.findUserByEmail(email);
-    if (doesExist) throw new Error('User with this email already exists');
+    if (doesExist) throw new Error('An account with this email already exists');
 
     // hash password
     const passwordHash = await passwordServices.hashPassword(password);
