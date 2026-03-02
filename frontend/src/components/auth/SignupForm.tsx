@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 
 import { validateSignup } from "@/utils/validators";
+import { createUser } from "@/api/userApi";
 interface SignupFormProps {
     setOpen: (open: boolean) => void;
 }
@@ -23,8 +24,8 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         }>({});
 
     const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-        setServerError(null); // remove old errors
         event.preventDefault();
+        setServerError(null); // remove old errors
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
         
@@ -41,37 +42,13 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         // valid signup, package details and send to backend
         console.log("Valid!");
 
+        // try to create the error and display possible errors
         try {
-        setLoading(true); // show loading state while running request
+            setLoading(true);
 
-        // build the request
-        const response = await fetch("/api/v1/user/create", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name,
-                email,
-                password
-            })
-        });
-
-        // get data within the response
-        const data = await response.json();
-
-        // robustly catch known errors to display
-        if (!response.ok) {
-            switch (response.status) {
-                case 409:
-                case 403:
-                case 422:
-                    throw new Error(data.error);
-                default:
-                    throw new Error("Something went wrong. Please try again.");
-            }
-        }
-        
-        setOpen(false); // close tab
-
+            await createUser({ name, email, password });
+            
+            setOpen(false); // close tab if ran successfully
         } catch (err: any) {
             setServerError(err.message);
         } finally {
