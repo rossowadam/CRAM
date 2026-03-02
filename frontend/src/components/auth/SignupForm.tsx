@@ -48,7 +48,11 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         try {
             setLoading(true);
 
-            await createUser({ name, email, password });
+            await createUser({ 
+                name: name.trim(),
+                email: email.trim().toLowerCase(), 
+                password 
+            });
 
             setSuccessMessage("Account successfully created!");
         } catch (err) {
