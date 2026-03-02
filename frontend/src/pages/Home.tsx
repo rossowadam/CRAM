@@ -8,7 +8,10 @@ import React, {
   useLayoutEffect,
 } from "react";
 
-import { List, type RowComponentProps } from "react-window";
+import { 
+  List, 
+  type RowComponentProps,
+} from "react-window";
 
 // UI Components
 import {
@@ -89,7 +92,7 @@ function inferHasLab(attrs: string[], raw: string) {
   return /\blab\b|\blaboratory\b/.test(text);
 }
 
-/** Measures its own height and reports it (proper cleanup). */
+// Measures its own height and reports it (proper cleanup).
 function MeasuredRow(props: {
   id: string;
   onMeasure: (id: string, height: number) => void;
@@ -138,8 +141,19 @@ export default function Home() {
   const debouncedQuery = useDebouncedValue(query, 300);
   const deferredQuery = useDeferredValue(debouncedQuery);
 
-  // Needed list handle.
-  const listRef = useRef<any>(null);
+  type ListHandle = {
+    readonly element: HTMLDivElement | null;
+    scrollToRow: (config: {
+      index: number;
+      align?: "center" | "auto" | "end" | "smart" | "start";
+      behavior?: "auto" | "instant" | "smooth";
+    }) => void;
+  };
+
+  // Inferred type from list.
+  const listRef = useRef<ListHandle | null>(null);
+
+  // Height cache.
   const heightMapRef = useRef<Record<string, number>>({});
 
   const BOTTOM_SPACER = 24;
@@ -207,7 +221,6 @@ export default function Home() {
   // Reset cache when results change (prevents stale heights causing gaps).
   useEffect(() => {
     heightMapRef.current = {};
-    listRef.current?.resetAfterIndex?.(0, true);
     setSizeVersion((v) => v + 1);
 
     // If expanded course disappears due to filtering, collapse it.
@@ -215,7 +228,7 @@ export default function Home() {
       if (!cur) return cur;
       return filteredCourses.some((c) => c.id === cur) ? cur : null;
     });
-  }, [deferredQuery, filteredCourses]);
+  }, [filteredCourses]);
 
   const getRowHeight = useCallback(
     (index: number) => {
@@ -225,18 +238,16 @@ export default function Home() {
       const course = filteredCourses[index];
       return heightMapRef.current[course?.id] ?? 110;
     },
-    [filteredCourses, sizeVersion]
+    [filteredCourses, sizeVersion] // Needs sizeVersion to force recalculation.
   );
 
   // Measure + reset from the changed row (prevents overlap and huge blank gaps).
-  const setRowHeight = useCallback((id: string, index: number, height: number) => {
+  const setRowHeight = useCallback((id: string, _index: number, height: number) => {
     const safe = Math.max(120, Math.ceil(height));
     const prev = heightMapRef.current[id];
     if (prev && Math.abs(prev - safe) < 4) return;
 
     heightMapRef.current = { ...heightMapRef.current, [id]: safe };
-
-    listRef.current?.resetAfterIndex?.(index, true);
     setSizeVersion((v) => v + 1);
   }, []);
 
@@ -256,8 +267,7 @@ export default function Home() {
       setExpandedId((cur) => (cur === id ? null : id));
 
       requestAnimationFrame(() => {
-        listRef.current?.resetAfterIndex?.(idx, true);
-        setSizeVersion((v) => v + 1);
+        listRef.current?.scrollToRow?.({ index: idx, align: "smart", behavior: "instant" });
       });
     },
     [filteredCourses]
