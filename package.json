@@ -8,6 +8,11 @@
         "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\""
     },
     "devDependencies": {
-        "concurrently": "^9.2.1"
+        "concurrently": "^9.1.2"
+    },
+    "dependencies": {
+        "argon2": "^0.44.0",
+        "react-virtualized-auto-sizer": "^2.0.3",
+        "react-window": "^2.2.7"
     }
 }
