@@ -15,3 +15,9 @@ exports.hashPassword = async (password) => {
         throw new Error(err);        
     }
 }
+
+// take in a password and a hash, verify it is the same as hash
+exports.verifyPassword = async (password, hashedPassword) => {
+    const hashed = await this.hashPassword(password);
+    return hashed === hashedPassword;
+}
