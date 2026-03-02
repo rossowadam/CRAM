@@ -28,7 +28,7 @@ export default function SignupForm() {
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
         
-        // validate fields and update errors oject
+        // validate fields and update errors object
         const validationResults = validateSignup({ name, email, password, confirmPassword });
         setErrors(validationResults);
 
