@@ -14,7 +14,7 @@ exports.deleteUserById = async (id) => {
 //verifies that the user can create an account, and that no duplicate accounts exist with the same email, then creates a new user document in the database
 exports.createUser = async (userData) => {
 
-    const userIsComplete = userData.id && userData.firstName && userData.lastName && userData.email && userData.passwordHash && userData.userName;
+    const userIsComplete = userData.email && userData.passwordHash && userData.userName;
     if (!userIsComplete) {
         throw new Error('User data is incomplete');
     }
