@@ -454,3 +454,156 @@ test('UserController - loginUser - unexpected error', async (t) => {
     // Ensure session not set
     assert.strictEqual(req.session.user, undefined);
 });
+
+test('UserController - checkSession - success', async () => {
+
+    const mockUser = {
+        id: '123',
+        email: 'test@umanitoba.ca',
+        username: 'testuser',
+        role: 'student'
+    };
+
+    const req = {
+        session: {
+            user: mockUser
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        }
+    };
+
+    await userController.checkSession(req, res);
+
+    assert.strictEqual(res.statusCode, 0); // no status() call means default 200
+    assert.deepStrictEqual(res.body, mockUser);
+});
+
+test('UserController - checkSession - no user in session', async () => {
+
+    const req = {
+        session: {}
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        }
+    };
+
+    await userController.checkSession(req, res);
+
+    assert.strictEqual(res.statusCode, 401);
+    assert.deepStrictEqual(res.body, { error: "Unauthorized" });
+});
+
+test('UserController - logoutUser - success', async () => {
+
+    let destroyCalled = false;
+    let clearCookieCalled = false;
+
+    const req = {
+        session: {
+            destroy(callback) {
+                destroyCalled = true;
+                callback(null); // simulate success
+            }
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        },
+        clearCookie(name) {
+            if (name === "connect.sid") {
+                clearCookieCalled = true;
+            }
+        }
+    };
+
+    userController.logoutUser(req, res);
+
+    assert.strictEqual(destroyCalled, true);
+    assert.strictEqual(clearCookieCalled, true);
+    assert.strictEqual(res.statusCode, 200);
+    assert.deepStrictEqual(res.body, { message: "Logged out successfully" });
+});
+
+test('UserController - logoutUser - no session', async () => {
+
+    const req = {};
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        },
+        clearCookie() {}
+    };
+
+    userController.logoutUser(req, res);
+
+    assert.strictEqual(res.statusCode, 400);
+    assert.deepStrictEqual(res.body, { error: "No active session" });
+});
+
+test('UserController - logoutUser - destroy failure', async () => {
+
+    const req = {
+        session: {
+            destroy(callback) {
+                callback(new Error("Mongo failure"));
+            }
+        }
+    };
+
+    const res = {
+        statusCode: 0,
+        body: null,
+        status(code) {
+            this.statusCode = code;
+            return this;
+        },
+        json(data) {
+            this.body = data;
+            return this;
+        },
+        clearCookie() {}
+    };
+
+    userController.logoutUser(req, res);
+
+    assert.strictEqual(res.statusCode, 500);
+    assert.deepStrictEqual(res.body, { error: "Failed to logout" });
+});
