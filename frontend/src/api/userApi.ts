@@ -9,6 +9,7 @@ export async function createUser(data: {
     // build the request
     const response = await fetch("/api/v1/user/create", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
     });
@@ -39,6 +40,7 @@ export async function loginUser(data: {
     // build the request
     const response = await fetch("/api/v1/user/login", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
     });
