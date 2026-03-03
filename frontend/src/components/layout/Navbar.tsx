@@ -12,10 +12,10 @@ function Navbar() {
     const maxChars = 25;
 
     // truncate display email to maxChars
-    const displayEmail = 
-        user?.email && user.email.length > maxChars
-        ? user.email.slice(0, maxChars) + "..."
-        : user?.email;
+    const displayUsername = 
+        user?.name && user.name.length > maxChars
+        ? user.name.slice(0, maxChars) + "..."
+        : user?.name;
 
     return (
         <>
@@ -40,7 +40,7 @@ function Navbar() {
                             setUser(null);
                         }}
                     >
-                        Logout {displayEmail}
+                        Logout {displayUsername}
                     </Button>
                 ): (
                     <Button 
