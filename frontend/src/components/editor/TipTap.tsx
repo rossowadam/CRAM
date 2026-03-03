@@ -1,7 +1,7 @@
 "use client"
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { ToolBar } from "./ToolBar";
+import { ToolBar } from "./Toolbar";
 import Heading from "@tiptap/extension-heading"
 
 export default function TipTap({

@@ -31,34 +31,37 @@ export function ToolBar({editor}: Props){
             >
                 <Heading2 className="h-4 w-4" />
             </Toggle>
+
             <Toggle 
-            size="sm"
-            pressed={editor.isActive("bold")}
-            onPressedChange={() => editor.chain().focus().toggleBold().run()}
+                size="sm"
+                pressed={editor.isActive("bold")}
+                onPressedChange={() => editor.chain().focus().toggleBold().run()}
             >
                 <Bold className="h-4 w-4" />
             </Toggle>
+
             <Toggle 
-            size ="sm"
-            pressed={editor.isActive("italic")}
-            onPressedChange={() => editor.chain().focus().toggleItalic().run()}
+                size ="sm"
+                pressed={editor.isActive("italic")}
+                onPressedChange={() => editor.chain().focus().toggleItalic().run()}
             >
                 <Italic className="h-4 w-4" />
             </Toggle>
+
             <Toggle
-            size="sm"
-            pressed={editor.isActive("bulletList")}
-            onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
+                size="sm"
+                pressed={editor.isActive("bulletList")}
+                onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
             >
                 <List className="h-4 w-4" />
             </Toggle>
             <Toggle 
-            size="sm"
-            pressed={editor.isActive("orderedList")}
-            onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
+                size="sm"
+                pressed={editor.isActive("orderedList")}
+                onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
             >
                 <ListOrdered className="h-4 w-4" />
             </Toggle>
         </div>
-        )
-    }
+    )
+}
