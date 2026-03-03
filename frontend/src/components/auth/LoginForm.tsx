@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { validateSignin } from "@/utils/validators";
 import { loginUser } from "@/api/userApi";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LoginFormProps {
     setOpen: (open: boolean) => void;

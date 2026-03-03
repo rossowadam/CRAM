@@ -2,7 +2,7 @@ import { useState } from "react";
 import AuthDialog from "../auth/AuthDialog";
 import { Link } from "react-router-dom"
 import { Button } from "../ui/button";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { logoutUser } from "@/api/userApi";
 
 function Navbar() {

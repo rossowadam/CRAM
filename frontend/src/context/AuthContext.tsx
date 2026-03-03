@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { getCurrentUser } from "@/api/userApi";
 
 // what session cookie has
@@ -15,7 +15,7 @@ interface AuthContextType {
     setUser: (user: User | null) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -36,8 +36,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
-export function useAuth() {
-    const context = useContext(AuthContext);
-    if (!context) throw new Error("useAuth must be used within AuthProvider");
-    return context;
-}
