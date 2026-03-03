@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { getCurrentUser } from "@/api/userApi";
 
 // what session cookie has
 interface User {
@@ -22,14 +23,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // check session on first load
     useEffect(() => {
-        fetch("http://localhost:5000/api/me", {
-        credentials: "include",
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("unauthenticated");
-            return res.json();
-        })
-        .then(data => setUser(data))
+    getCurrentUser()
+        .then(user => setUser(user))
         .catch(() => setUser(null));
     }, []);
 
