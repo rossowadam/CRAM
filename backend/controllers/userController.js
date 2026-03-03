@@ -95,3 +95,11 @@ exports.loginUser = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
+
+// check if session has a valid user field
+exports.checkSession = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    res.json(req.session.user);
+}

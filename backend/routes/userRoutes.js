@@ -23,8 +23,14 @@ router.put('/update/:id', userController.updateUserById);
 // Delete a user, should be accessible to the user themselves, should clear out all saved data related to the user.
 router.delete('/delete/:id', userController.deleteUserById);
 
+// Create a user
 router.post('/create', userController.createUser);
 
+// Login a user
 router.post('/login', userController.loginUser);
+
+// Check if session exists
+router.get('/me', userController.checkSession);
+
 
 module.exports = router;
