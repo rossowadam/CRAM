@@ -28,6 +28,9 @@ router.post('/login', userController.loginUser);
 // Check if session exists
 router.get('/me', userController.checkSession);
 
+// Logout a user
+router.get('/logout', userController.logoutUser);
+
 // Gets a user by id, currently returns the user document if found, or null if no user with the given id was found.
 // May be useful for fetching user data to display on the frontend, for example profile page, or for admin features in the future.
 router.get('/:id', userController.getUserById); // put at end since it's a dynamic route

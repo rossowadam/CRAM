@@ -104,3 +104,21 @@ exports.checkSession = async (req, res) => {
     }
     res.json(req.session.user);
 }
+
+// logout through sessions
+exports.logoutUser = (req, res) => {
+    // if session doesn't exist, return 400
+    if (!req.session) {
+        return res.status(400).json({ error: "No active session" });
+    }
+
+    // session exists so try and destroy it
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Failed to logout" });
+        }
+
+        res.clearCookie("connect.sid");
+        return res.status(200).json({ message: "Logged out successfully" });
+    });
+};
