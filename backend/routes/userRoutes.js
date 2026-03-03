@@ -13,16 +13,26 @@ router.get('/', userController.getAllUsers);
 // But may be useful for admin features in the future, or for testing purposes.
 router.get('/search', userController.searchUsers);
 
-// Gets a user by id, currently returns the user document if found, or null if no user with the given id was found.
-// May be useful for fetching user data to display on the frontend, for example profile page, or for admin features in the future.
-router.get('/:id', userController.getUserById);
-
 // Update a user's data. Should only be accessible to the user themselves, or to admins.
 router.put('/update/:id', userController.updateUserById);
 
 // Delete a user, should be accessible to the user themselves, should clear out all saved data related to the user.
 router.delete('/delete/:id', userController.deleteUserById);
 
+// Create a user
 router.post('/create', userController.createUser);
+
+// Login a user
+router.post('/login', userController.loginUser);
+
+// Check if session exists
+router.get('/me', userController.checkSession);
+
+// Logout a user
+router.post('/logout', userController.logoutUser);
+
+// Gets a user by id, currently returns the user document if found, or null if no user with the given id was found.
+// May be useful for fetching user data to display on the frontend, for example profile page, or for admin features in the future.
+router.get('/:id', userController.getUserById); // put at end since it's a dynamic route
 
 module.exports = router;

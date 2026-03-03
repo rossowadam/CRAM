@@ -25,6 +25,8 @@ This is the backend server for the CRAM project, built with Node.js, Express, an
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
+   PORT=5000
+   SESSION_SECRET=long_random_string
    NODE_ENV=development
 
 

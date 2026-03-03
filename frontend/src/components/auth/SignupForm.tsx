@@ -3,17 +3,15 @@ import { Button } from "../ui/button";
 
 import { validateSignup } from "@/utils/validators";
 import { createUser } from "@/api/userApi";
-interface SignupFormProps {
-    setOpen: (open: boolean) => void;
-}
 
-export default function SignupForm({ setOpen }: SignupFormProps) {
+export default function SignupForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -25,11 +23,12 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
 
     const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setSuccessMessage(null);
         setServerError(null); // remove old errors
 
         console.log("Inputted Values", { name, email, password, confirmPassword });
         
-        // validate fields and update errors oject
+        // validate fields and update errors object
         const validationResults = validateSignup({ name, email, password, confirmPassword });
         setErrors(validationResults);
 
@@ -42,13 +41,17 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
         // valid signup, package details and send to backend
         console.log("Valid!");
 
-        // try to create the error and display possible errors
+        // try to create the user and display possible errors
         try {
             setLoading(true);
 
-            await createUser({ name, email, password });
-            
-            setOpen(false); // close tab if ran successfully
+            await createUser({ 
+                name: name.trim(),
+                email: email.trim().toLowerCase(), 
+                password 
+            });
+
+            setSuccessMessage("Account successfully created!");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -125,12 +128,18 @@ export default function SignupForm({ setOpen }: SignupFormProps) {
             disabled={loading}
             className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer disabled:opacity-50"
             >
-            {loading ? "Creating Account..." : "Create Account"}
+                {loading ? "Creating Account..." : "Create Account"}
             </Button>
 
             {serverError && (
                 <p className="text-red-500 text-sm text-center mt-2">
                     {serverError}
+                </p>
+            )}
+
+            {successMessage && (
+                <p className="text-green-600 text-sm text-center mt-2">
+                    {successMessage}
                 </p>
             )}
         </form>

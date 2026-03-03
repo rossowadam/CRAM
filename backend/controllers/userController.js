@@ -51,7 +51,7 @@ exports.deleteUserById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-// Creates a new user, expects the request body contain: FirstName, LastName, Email, PasswordHash, studentNUmber/ID, role, and userName.
+// Creates a new user, expects the request body contain: Username, Email and Password.
 // Currently returns the created user, but may want to return a success message or homepage URL.
 exports.createUser = async (req, res) => {
     try {
@@ -72,3 +72,53 @@ exports.createUser = async (req, res) => {
         else res.status(500).json({ error: error.message });
     }
 } 
+
+// login a user, expects the request body contain: Username, Email and Password.
+exports.loginUser = async (req, res) => {
+    try {
+        const userData = req.body;
+        const user = await userService.loginUser(userData);
+
+        // store session info
+        req.session.user = {
+            id: user._id,
+            email: user.email,
+            username: user.user_name,
+            role: user.role
+        }
+
+        return res.status(200).json(req.session.user);
+    }
+    catch (error) {
+        if (error.message.includes('Invalid email or password')) {
+            return res.status(403).json({ error: error.message });
+        }
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+// check if session has a valid user field
+exports.checkSession = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    res.json(req.session.user);
+}
+
+// logout through sessions
+exports.logoutUser = (req, res) => {
+    // if session doesn't exist, return 400
+    if (!req.session) {
+        return res.status(400).json({ error: "No active session" });
+    }
+
+    // session exists so try and destroy it
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Failed to logout" });
+        }
+
+        res.clearCookie("connect.sid");
+        return res.status(200).json({ message: "Logged out successfully" });
+    });
+};

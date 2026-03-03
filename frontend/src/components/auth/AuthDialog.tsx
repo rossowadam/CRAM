@@ -48,7 +48,7 @@ export default function AuthDialog({ open, mode, setOpen, setMode }: AuthDialogP
 
                             </DialogTitle>
                         </DialogHeader>
-                        <SignupForm setOpen={setOpen} />
+                        <SignupForm />
 
                         <button
                             onClick={() => setMode("login")}

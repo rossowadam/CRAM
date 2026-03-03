@@ -15,3 +15,8 @@ exports.hashPassword = async (password) => {
         throw new Error(err);        
     }
 }
+
+// verify a given password and hash
+exports.verifyPassword = async (password, hashedPassword) => {
+    return await argon2.verify(hashedPassword, password);
+};

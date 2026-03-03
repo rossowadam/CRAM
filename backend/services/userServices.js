@@ -53,3 +53,25 @@ exports.createUser = async (userData) => {
 
     return await userRepository.createUser(newUser);
 }
+
+//verifies that the user exists, and that the password matches the stored hash
+exports.loginUser = async (userData) => {
+    const { email, password } = userData; // extract data
+    const normalizedEmail = email.toLowerCase();
+
+    // check if user exists
+    const user = await userRepository.findUserByEmail(normalizedEmail);
+
+    if (!user) {
+        throw new Error("Invalid email or password");
+    }
+
+    // checks if passwords match
+    const valid = await passwordServices.verifyPassword(password, user.password_hash);
+
+    if (!valid) {
+        throw new Error("Invalid email or password");
+    }
+
+    return user;
+}
