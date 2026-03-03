@@ -73,5 +73,5 @@ exports.loginUser = async (userData) => {
         throw new Error("Invalid email or password");
     }
 
-    return valid;
+    return user;
 }
