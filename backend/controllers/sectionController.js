@@ -1,4 +1,4 @@
-const sectionService = require('../services/sectionService');
+const sectionService = require('../services/sectionServices');
 
 exports.createSection = async (req, res) => {
     try {
