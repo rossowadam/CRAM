@@ -29,7 +29,7 @@ router.post('/login', userController.loginUser);
 router.get('/me', userController.checkSession);
 
 // Logout a user
-router.POST('/logout', userController.logoutUser);
+router.post('/logout', userController.logoutUser);
 
 // Gets a user by id, currently returns the user document if found, or null if no user with the given id was found.
 // May be useful for fetching user data to display on the frontend, for example profile page, or for admin features in the future.
