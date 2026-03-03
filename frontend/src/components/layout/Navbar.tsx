@@ -3,12 +3,12 @@ import AuthDialog from "../auth/AuthDialog";
 import { Link } from "react-router-dom"
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { logoutUser } from "@/api/userApi";
 
 function Navbar() {
     const [authOpen, setAuthOpen] = useState(false);
     const [authMode, setAuthMode] = useState<"login" | "signup">("login");
     const { user, isAuthenticated, setUser } = useAuth();
-
 
     return (
         <>
@@ -26,10 +26,12 @@ function Navbar() {
 
                 <div className="flex gap-6 font-instrument text-foreground text-base sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
                 {isAuthenticated ? (
+                    // logout button displayed with username when logged in
                     <Button
                         className="hover:text-secondary hover:cursor-pointer"
-                        onClick={() => {
+                        onClick={async () => {
                             console.log("Logout desired!");
+                            await logoutUser();
                             setUser(null);
                         }}
                     >
@@ -39,6 +41,7 @@ function Navbar() {
                         </span>
                     </Button>
                 ): (
+                    // login button displayed when not logged in
                     <Button 
                         className="hover:text-secondary hover:cursor-pointer"
                         onClick={() => {
