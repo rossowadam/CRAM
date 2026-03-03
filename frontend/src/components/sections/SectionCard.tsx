@@ -42,8 +42,8 @@ import {
     AvatarGroupCount, 
     AvatarImage 
 } from "../ui/avatar";
-import Rte from "../editor/Rte";
 import { useState } from "react";
+import SectionDialog from "./SectionDialog";
 
 export default function SectionCard() {
     const [openEdit,setOpenEdit] = useState(false);
@@ -62,35 +62,29 @@ export default function SectionCard() {
             
                 <CardAction >
                     <HoverCard>
-                        {/* Needs to pass sections data to rte */}
-                        <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-                            <DialogTrigger>
-                                <HoverCardTrigger>             
-                                    <Button 
-                                    className="hover:text-secondary hover:cursor-pointer" 
-                                    aria-label="Edit section"
-                                    >
-                                        <PencilLine />
-                                    </Button>
-                                </HoverCardTrigger>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Edit Section</DialogTitle>
-                                    <DialogDescription className="capitalize">Update the section title, subtitle, or content!</DialogDescription>
-                                </DialogHeader>
-                                <Rte onSuccess={() => setOpenEdit(false)}/>
-                            </DialogContent>
-                        </Dialog>
-                        
-
+                        <HoverCardTrigger>             
+                            <Button 
+                            className="hover:text-secondary hover:cursor-pointer" 
+                            aria-label="Edit section"
+                            onClick={() => setOpenEdit(true)}
+                            >
+                                <PencilLine />
+                            </Button>
+                        </HoverCardTrigger>
                         <HoverCardContent side="top" className="bg-background">
                             <div className="font-instrument text-xs text-center text-foreground ">
                                 Edit the section title, description, and body to better reflect the content and discussions within this section.
                             </div>
                         </HoverCardContent>
                     </HoverCard>
-                
+
+                    {/* Display section dialog */}
+                    <SectionDialog
+                        open = {openEdit}
+                        onOpenChange={setOpenEdit}
+                        mode="edit"
+                    />
+
                     <HoverCard>
                         <Dialog>
                             <DialogTrigger>

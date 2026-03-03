@@ -7,11 +7,11 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { CirclePlus } from "lucide-react";
 import '@/components/tiptap-node/paragraph-node/paragraph-node.scss'
-import Rte from "@/components/editor/Rte";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import SectionCard from "@/components/sections/SectionCard";
 import DefinitionTable from "@/components/definitions/DefinitionTable";
+import DefinitionDialog from "@/components/definitions/DefinitionDialog";
+import SectionDialog from "@/components/sections/SectionDialog";
 
 
 export default function Course() {
@@ -19,6 +19,7 @@ export default function Course() {
 
   // When multiple sections are present, will need to check section id to toggle isOpen for different actions 
   const [openCreate,setOpenCreate] = useState(false);
+  const [definitionOpen, setDefinitionOpen] = useState(false);
   
   return (
     <div className="h-full w-full min-h-0 overflow-y-auto">
@@ -62,32 +63,27 @@ export default function Course() {
             Sections
           </h2>
           <HoverCard>
-
-            <Dialog open={openCreate} onOpenChange={setOpenCreate}>
-              <DialogTrigger>
-                <HoverCardTrigger>             
-                    <CirclePlus 
-                      className="w-4/5 hover:text-secondary hover:cursor-pointer"
-                      aria-label="Add new section"
-                    />
-                </HoverCardTrigger>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create a new section</DialogTitle>
-                  <DialogDescription className="capitalize">When done, this section will be added to {courseId}!</DialogDescription>
-                </DialogHeader>
-                <Rte onSuccess={() => setOpenCreate(false)}/>
-              </DialogContent>
-            </Dialog>
-
-            <HoverCardContent side="top" className="bg-background">
-              <div className="font-instrument text-xs text-center text-foreground ">
-                Add a new section to your course page to organize your content and discussions.
-              </div>
-            </HoverCardContent>
+              <HoverCardTrigger>             
+                  <CirclePlus 
+                    className="w-4/5 hover:text-secondary hover:cursor-pointer"
+                    aria-label="Add new section"
+                    onClick={() => setOpenCreate(true)}
+                  />
+              </HoverCardTrigger>
+              <HoverCardContent side="top" className="bg-background">
+                <div className="font-instrument text-xs text-center text-foreground ">
+                  Add a new section to your course page to organize your content and discussions.
+                </div>
+              </HoverCardContent>
           </HoverCard>
         </div>
+
+        {/* Display section dialog */}
+        <SectionDialog
+          open={ openCreate }
+          onOpenChange={ setOpenCreate }
+          mode="create"
+        />
 
         <Separator orientation="horizontal" className="bg-foreground"/>
 
@@ -105,6 +101,7 @@ export default function Course() {
                 <CirclePlus 
                   className="w-4/5 hover:text-secondary hover:cursor-pointer"
                   aria-label="Add new definition"
+                  onClick = {() => setDefinitionOpen(true)}
                 />
             </HoverCardTrigger>
 
@@ -115,6 +112,12 @@ export default function Course() {
             </HoverCardContent>
           </HoverCard>
         </div>
+
+        <DefinitionDialog
+          open={definitionOpen}
+          onOpenChange={setDefinitionOpen}
+          mode="create"
+        />
 
         <Separator orientation="horizontal" />
         
