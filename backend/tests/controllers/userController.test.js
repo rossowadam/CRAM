@@ -335,16 +335,24 @@ test('UserController - deleteUserById - server error', async (t) => {
 
 test('UserController - loginUser - success', async (t) => {
 
+    const mockUser = {
+        _id: '123',
+        email: 'test@umanitoba.ca',
+        user_name: 'testuser',
+        role: 'student'
+    };
+
     // Mock successful login
     t.mock.method(userService, 'loginUser', async () => {
-        return true;
+        return mockUser;
     });
 
     const req = {
         body: {
             email: 'test@umanitoba.ca',
             password: 'password123'
-        }
+        },
+        session: {} // mock session object
     };
 
     const res = {
@@ -362,13 +370,21 @@ test('UserController - loginUser - success', async (t) => {
 
     await userController.loginUser(req, res);
 
+    // Session was set correctly
+    assert.deepStrictEqual(req.session.user, {
+        id: '123',
+        email: 'test@umanitoba.ca',
+        username: 'testuser',
+        role: 'student'
+    });
+
+    // Response matches session
     assert.strictEqual(res.statusCode, 200);
-    assert.deepStrictEqual(res.body, { message: "Login successful" });
+    assert.deepStrictEqual(res.body, req.session.user);
 });
 
 test('UserController - loginUser - invalid credentials', async (t) => {
 
-    // Mock invalid login
     t.mock.method(userService, 'loginUser', async () => {
         throw new Error('Invalid email or password');
     });
@@ -377,7 +393,8 @@ test('UserController - loginUser - invalid credentials', async (t) => {
         body: {
             email: 'wrong@umanitoba.ca',
             password: 'wrongpass'
-        }
+        },
+        session: {}
     };
 
     const res = {
@@ -397,11 +414,13 @@ test('UserController - loginUser - invalid credentials', async (t) => {
 
     assert.strictEqual(res.statusCode, 403);
     assert.deepStrictEqual(res.body, { error: 'Invalid email or password' });
+
+    // Ensure session not set
+    assert.strictEqual(req.session.user, undefined);
 });
 
 test('UserController - loginUser - unexpected error', async (t) => {
 
-    // Mock internal error
     t.mock.method(userService, 'loginUser', async () => {
         throw new Error('Database failure');
     });
@@ -410,7 +429,8 @@ test('UserController - loginUser - unexpected error', async (t) => {
         body: {
             email: 'test@umanitoba.ca',
             password: 'password123'
-        }
+        },
+        session: {}
     };
 
     const res = {
@@ -430,4 +450,7 @@ test('UserController - loginUser - unexpected error', async (t) => {
 
     assert.strictEqual(res.statusCode, 500);
     assert.deepStrictEqual(res.body, { error: 'Database failure' });
+
+    // Ensure session not set
+    assert.strictEqual(req.session.user, undefined);
 });
