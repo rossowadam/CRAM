@@ -317,7 +317,7 @@ export default function Home() {
     const expanded = expandedId === course.id;
 
     return (
-      <div style={style}>
+      <div style={style} className="h-screen">
         <MeasuredRow id={course.id} onMeasure={(id, h) => onMeasure(id, index, h)}>
           <Card className="shadow-md">
           <CardHeader>
