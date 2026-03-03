@@ -44,16 +44,10 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
         try {
             setLoading(true);
 
-            await loginUser({ 
+            const user = await loginUser({ 
                 email: email.trim().toLowerCase(),
                 password
             })
-
-            // check if authenticated via cookies
-            const res = await fetch("/api/v1/user/me", {credentials: "include"});
-
-            // store details for global context
-            const user = await res.json();
 
             setUser(user);
             setOpen(false);
