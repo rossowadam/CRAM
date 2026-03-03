@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ToolBar } from "./Toolbar";
 import Heading from "@tiptap/extension-heading"
+import { useEffect } from "react";
 
 export default function TipTap({
     description,
@@ -30,7 +31,13 @@ export default function TipTap({
             onChange(editor.getHTML())
             console.log(editor.getHTML())
         },
-    })
+    });
+    useEffect(() => {
+    if (editor && description !== editor.getHTML()) 
+        {
+            editor.commands.setContent(description); 
+        }
+    }, [description, editor]);
 
     return (
         <div className="flex flex-col justify-stretch min-h-[250px] border-1 p-2 border-foreground rounded-lg">

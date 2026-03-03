@@ -10,7 +10,21 @@ import {
 import { PencilLine, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-export default function DefinitionTable() {
+export type Definition = {
+  id: string;
+  term: string;
+  definition: string;
+  example: string;
+  user: string;
+  updated: string;
+};
+
+type DefinitionTableProps = {
+  definitions: Definition[];       
+  onEdit: (def: Definition) => void;
+};
+
+export default function DefinitionTable({definitions, onEdit}: DefinitionTableProps) {
     return(
         <div className="w-full overflow-x-auto">
             <Table className="w-full min-w-[700px]">
@@ -26,27 +40,30 @@ export default function DefinitionTable() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className="font-medium">The Machine</TableCell>
-                        <TableCell>A being whom we must obey at all costs</TableCell>
-                        <TableCell>The Machine Hath Spoken</TableCell>
-                        <TableCell>A Witness</TableCell>
-                        <TableCell>2026-02-28</TableCell>
-                        <TableCell className="text-right">
-                            <Button 
-                                className="hover:text-secondary hover:cursor-pointer mr-1" 
-                                aria-label="Edit section"
-                            >
-                                <PencilLine />
-                            </Button>
-                            <Button 
-                                className="hover:text-destructive hover:cursor-pointer hover:underline" 
-                                aria-label="Delete section"
-                            >
-                                <Trash2 />
-                            </Button>
-                        </TableCell> 
-                    </TableRow>
+                    {definitions.map((def) =>(
+                        <TableRow key={def.id}>
+                            <TableCell className="font-medium">{def.term}</TableCell>
+                            <TableCell>{def.definition}</TableCell>
+                            <TableCell>{def.example}</TableCell>
+                            <TableCell>{def.user}</TableCell>
+                            <TableCell>{def.updated}</TableCell>
+                            <TableCell className="text-right">
+                                <Button 
+                                    className="hover:text-secondary hover:cursor-pointer mr-1" 
+                                    aria-label="Edit section"
+                                    onClick={() => onEdit(def)}
+                                >
+                                    <PencilLine />
+                                </Button>
+                                <Button 
+                                    className="hover:text-destructive hover:cursor-pointer hover:underline" 
+                                    aria-label="Delete section"
+                                >
+                                    <Trash2 />
+                                </Button>
+                            </TableCell> 
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>

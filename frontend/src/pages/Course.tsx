@@ -15,11 +15,79 @@ import SectionDialog from "@/components/sections/SectionDialog";
 
 
 export default function Course() {
+
+  type Definition = {
+  id: string;
+  term: string;
+  definition: string;
+  example: string;
+  user: string;
+  updated: string;
+};
+type Section = {
+  id: string;
+  title: string;
+  description?: string;
+  content?: string;
+  updated?: string;
+  contributors?: { name: string; avatar?: string }[];
+};
+
+  const [definitions, setDefinitions] = useState<Definition[]>([
+    {
+      id: "1",
+      term: "The Machine",
+      definition: "A being whom we must obey at all costs",
+      example: "The Machine Hath Spoken",
+      user: "A Witness",
+      updated: "2026-02-28",
+    },
+    {
+    id: "2",
+    term: "Machine",
+    definition: "Something nice",
+    example: "The machine is nice",
+    user: "John Pork",
+    updated: "2026-02-28",
+  },
+  ]);
+
+const [sections, setSections] = useState<Section[]>([
+    {
+      id: "1",
+      title: "Introduction",
+      description: "Short section description preparing you for what to expect.",
+      content: "Here is the body of the section, where you can add content, discussions, and resources.",
+      updated: "2026-03-01",
+      contributors: [
+        { name: "CN", avatar: "https://github.com/shadcn.png" },
+        { name: "LR", avatar: "https://github.com/maxleiter.png" },
+      ],
+    },
+    {
+      id: "2",
+      title: "Unit 3",
+      description: "Short section description preparing you for what to expect.",
+      content: "Unit 3 covers unit3 content lol",
+      updated: "2026-03-01",
+      contributors: [
+        { name: "CN", avatar: "https://github.com/shadcn.png" },
+        { name: "LR", avatar: "https://github.com/maxleiter.png" },
+      ],
+    },
+  ]);
+
   const { courseId } = useParams();
 
-  // When multiple sections are present, will need to check section id to toggle isOpen for different actions 
+  // Section dialog state
   const [openCreate,setOpenCreate] = useState(false);
+  const [editSection, setEditSection] = useState<Section | null>(null);
+
+  // Definition dialog state
   const [definitionOpen, setDefinitionOpen] = useState(false);
+  const [editDefinition, setEditDefinition] = useState<Definition | null>(null)
+
+
   
   return (
     <div className="h-full w-full min-h-0 overflow-y-auto">
@@ -67,7 +135,9 @@ export default function Course() {
                   <CirclePlus 
                     className="w-4/5 hover:text-secondary hover:cursor-pointer"
                     aria-label="Add new section"
-                    onClick={() => setOpenCreate(true)}
+                    onClick={() => {
+                      setEditSection(null);
+                      setOpenCreate(true)}}
                   />
               </HoverCardTrigger>
               <HoverCardContent side="top" className="bg-background">
@@ -80,16 +150,25 @@ export default function Course() {
 
         {/* Display section dialog */}
         <SectionDialog
-          open={ openCreate }
-          onOpenChange={ setOpenCreate }
-          mode="create"
+          open={openCreate}
+          onOpenChange={(open) => { if(!open) setEditSection(null); setOpenCreate(open); }}
+          mode={editSection ? "edit" : "create"}
+          initialValues={editSection ?? undefined}
         />
 
         <Separator orientation="horizontal" className="bg-foreground"/>
 
         {/* Display sections */}
-        <SectionCard/>
         
+        {sections.map((section) => (
+          <SectionCard
+            key={section.id}
+            section={section}
+            onEdit={(s) => { setEditSection(s); setOpenCreate(true); }}
+            onDelete={(s) => setSections((prev) => prev.filter(sec => sec.id !== s.id))}
+          />
+        ))}
+
         {/* Definition table heading */}
         <div className="flex flex-row gap-2 w-full justify-between items-center p-2">
           <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
@@ -101,7 +180,10 @@ export default function Course() {
                 <CirclePlus 
                   className="w-4/5 hover:text-secondary hover:cursor-pointer"
                   aria-label="Add new definition"
-                  onClick = {() => setDefinitionOpen(true)}
+                  onClick = {() => {
+                  setEditDefinition(null);
+                  setDefinitionOpen(true);
+                }}
                 />
             </HoverCardTrigger>
 
@@ -115,13 +197,23 @@ export default function Course() {
 
         <DefinitionDialog
           open={definitionOpen}
-          onOpenChange={setDefinitionOpen}
-          mode="create"
+          onOpenChange={(open) => {
+            if (!open) setEditDefinition(null);
+            setDefinitionOpen(open);
+          }}
+          mode={editDefinition ? "edit" : "create"}
+          initialValues={editDefinition ?? undefined}
         />
 
         <Separator orientation="horizontal" />
         
-        <DefinitionTable/>
+        <DefinitionTable
+          definitions={definitions}
+          onEdit={(definition) => {
+            setEditDefinition(definition);
+            setDefinitionOpen(true);
+          }}
+        />
       </div>
     </div>
   );

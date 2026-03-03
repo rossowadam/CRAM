@@ -13,12 +13,18 @@ import * as z from "zod"
 import {Input} from "@/components/ui/input"
 import TipTap from "./TipTap"
 import { Button } from "../ui/button"
+import { useEffect } from "react"
 
 type RteProps = {
     onSuccess?: () => void;
+    initialValues?: {
+    title?: string;
+    subtitle?: string;
+    content?: string;
+  };
 };
 
-export default function Rte({onSuccess}: RteProps){
+export default function Rte({onSuccess, initialValues}: RteProps){
 
     const formSchema = z.object({
         title: z.string().min(5,{message: "Title is not long enough"}),
@@ -32,11 +38,19 @@ export default function Rte({onSuccess}: RteProps){
         resolver: zodResolver(formSchema),
         mode: 'onChange',
         defaultValues:{
-            title: '',
-            subtitle: '',
-            content: '',
+            title: initialValues?.title ?? "",
+            subtitle: initialValues?.subtitle ?? '',
+            content: initialValues?.content ?? '',
         }
     })
+
+    useEffect(() => {
+        form.reset({
+        title: initialValues?.title ?? "",
+        subtitle: initialValues?.subtitle ?? "",
+        content: initialValues?.content ?? "",
+        });
+    }, [initialValues]);
 
     async function onSubmit(values: z.infer<typeof formSchema>){
         try{
@@ -87,7 +101,7 @@ export default function Rte({onSuccess}: RteProps){
                         <FormItem>
                             <FormLabel>Content</FormLabel>
                             <FormControl>
-                                <TipTap description={field.name} onChange={field.onChange}/>
+                                <TipTap description={field.value} onChange={field.onChange}/>
                             </FormControl>
                         </FormItem>
                     )}
