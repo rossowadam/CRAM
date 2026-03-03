@@ -11,7 +11,7 @@ function Navbar() {
 
     const maxChars = 25;
 
-    // truncate display 
+    // truncate display email to maxChars
     const displayEmail = 
         user?.email && user.email.length > maxChars
         ? user.email.slice(0, maxChars) + "..."

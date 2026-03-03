@@ -32,6 +32,8 @@ export async function createUser(data: {
     return body;
 }
 
+// Take in credentials of the user and send it to the endpoint.
+// Robustly throw errors.
 export async function loginUser(data: {
     email: string;
     password: string;
@@ -56,4 +58,15 @@ export async function loginUser(data: {
     }
 
     return body;
+}
+
+// run the /me endpoint to get current logged in user details.
+export async function getCurrentUser() {
+    const response = await fetch("/api/v1/user/me", {
+        credentials: "include",
+    });
+
+    if (!response.ok)  throw new Error("Not authenticated");
+
+    return response.json();
 }
