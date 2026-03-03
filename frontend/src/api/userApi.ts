@@ -70,3 +70,17 @@ export async function getCurrentUser() {
 
     return response.json();
 }
+
+// Logout the user by relying on sessions in the cookie.
+// Failure means session expired so ignore errors and clear local auth state where called.
+export async function logoutUser() {
+    try {
+        await fetch("/api/v1/user/logout", {
+            method: "POST",
+            credentials: "include",
+        });
+    } catch (err) {
+        // ignore errors intentionally
+        console.warn("Logout request failed, clearing client state anyway.", err);
+    }
+}
