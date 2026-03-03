@@ -34,14 +34,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, CirclePlus, PencilLine, Trash2 } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import '@/components/tiptap-node/paragraph-node/paragraph-node.scss'
-import Rte from "@/components/ui/rte";
+import Rte from "@/components/editor/rte";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 
 
 export default function Course() {
   const { courseId } = useParams();
-  
+
   // When multiple sections are present, will need to check section id to toggle isOpen for different actions 
   const [openCreate,setOpenCreate] = useState(false);
   const [openEdit,setOpenEdit] = useState(false);

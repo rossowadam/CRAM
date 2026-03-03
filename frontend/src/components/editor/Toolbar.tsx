@@ -9,13 +9,13 @@ import {
     ListOrdered,
     Heading2,
 } from "lucide-react"
-import {Toggle} from "./toggle"
+import {Toggle} from "../ui/toggle"
 
 type Props = {
     editor: Editor | null
 }
 
-export function Toolbar({editor}: Props){
+export function ToolBar({editor}: Props){
     if(!editor){
         return null
     }

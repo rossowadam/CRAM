@@ -1,10 +1,10 @@
 "use client"
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Toolbar } from "./ToolBar";
+import { ToolBar } from "./ToolBar";
 import Heading from "@tiptap/extension-heading"
 
-export default function Tiptap({
+export default function TipTap({
     description,
     onChange,
 }:{
@@ -34,7 +34,7 @@ export default function Tiptap({
 
     return (
         <div className="flex flex-col justify-stretch min-h-[250px] border-1 p-2 border-foreground rounded-lg">
-            <Toolbar editor={editor} />
+            <ToolBar editor={editor} />
             <EditorContent editor={editor} />
         </div>
     )

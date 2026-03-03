@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
 import {Input} from "@/components/ui/input"
-import Tiptap from "./TipTap"
-import { Button } from "./button"
+import TipTap from "./Tiptap"
+import { Button } from "../ui/button"
 
 type RteProps = {
     onSuccess?: () => void;
@@ -87,7 +87,7 @@ export default function Rte({onSuccess}: RteProps){
                         <FormItem>
                             <FormLabel>Content</FormLabel>
                             <FormControl>
-                                <Tiptap description={field.name} onChange={field.onChange}/>
+                                <TipTap description={field.name} onChange={field.onChange}/>
                             </FormControl>
                         </FormItem>
                     )}
