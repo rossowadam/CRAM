@@ -9,13 +9,6 @@ function Navbar() {
     const [authMode, setAuthMode] = useState<"login" | "signup">("login");
     const { user, isAuthenticated, setUser } = useAuth();
 
-    const maxChars = 25;
-
-    // truncate display email to maxChars
-    const displayUsername = 
-        user?.name && user.name.length > maxChars
-        ? user.name.slice(0, maxChars) + "..."
-        : user?.name;
 
     return (
         <>
@@ -40,7 +33,10 @@ function Navbar() {
                             setUser(null);
                         }}
                     >
-                        Logout {displayUsername}
+                        Logout{" "}
+                        <span className="max-w-40 truncate text-sm text-muted-foreground">
+                            {user?.username}
+                        </span>
                     </Button>
                 ): (
                     <Button 

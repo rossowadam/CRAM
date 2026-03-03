@@ -83,7 +83,7 @@ exports.loginUser = async (req, res) => {
         req.session.user = {
             id: user._id,
             email: user.email,
-            name: user.user_name,
+            username: user.user_name,
             role: user.role
         }
 
