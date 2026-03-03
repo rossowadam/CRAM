@@ -1,3 +1,6 @@
+@import './styles/_variables.scss';
+@import './styles/_keyframe-animations.scss';
+
 @import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -87,8 +90,8 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(36.035% 0.08797 270.521);
+  --background: oklab(18.46% 0.002 -0.02);
+  --foreground: oklab(94.61% 0.000 0.00);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -121,13 +124,7 @@
 }
 
 @layer base {
-  html, body, #root {
-    height: 100%;
-  }
-
-  body {
-    overflow: hidden;
-  }
+  
 
   .no-scrollbar {
     scrollbar-width: none;
@@ -143,5 +140,10 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .editor-wrapper .ProseMirror{
+    all: unset;
+    @apply bg-background text-foreground
   }
 }
