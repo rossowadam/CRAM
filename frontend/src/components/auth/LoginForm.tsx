@@ -75,7 +75,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                     required
                 />
                 {errors.email && (
-                    <p className="font-instrument text-xs pl-1 italic text-red-500">
+                    <p className="font-instrument text-xs pl-1 italic text-destructive">
                         {errors.email}
                     </p>
                 )}
@@ -91,7 +91,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                 required
             />
                 {errors.password && (
-                    <p className="font-instrument text-xs pl-1 italic text-red-500">
+                    <p className="font-instrument text-xs pl-1 italic text-destructive">
                         {errors.password}
                     </p>
                 )}
@@ -107,7 +107,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
             </Button>
 
             {serverError && (
-                <p className="text-red-500 text-sm text-center mt-2">
+                <p className="text-destructive text-sm text-center mt-2">
                     {serverError}
                 </p>
             )}

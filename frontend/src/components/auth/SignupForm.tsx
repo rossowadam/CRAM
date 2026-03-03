@@ -72,7 +72,7 @@ export default function SignupForm() {
                     className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                     required
                 />
-                <p className={`font-instrument text-xs pl-1 italic ${errors.name ? "text-red-500" : "text-secondary"}`}>
+                <p className={`font-instrument text-xs pl-1 italic ${errors.name ? "text-destructive" : "text-secondary"}`}>
                     Name must not be empty
                 </p>
             </div>
@@ -87,7 +87,7 @@ export default function SignupForm() {
                     required
                 />
 
-                <p className={`font-instrument text-xs pl-1 italic ${errors.email ? "text-red-500" : "text-secondary"}`}>
+                <p className={`font-instrument text-xs pl-1 italic ${errors.email ? "text-destructive" : "text-secondary"}`}>
                     Email must end in "@myumanitoba.ca" or "@umanitoba.ca"
                 </p>
             </div>
@@ -102,7 +102,7 @@ export default function SignupForm() {
                     required
                 />
 
-                <p className={`font-instrument text-xs pl-1 italic ${errors.password ? "text-red-500" : "text-secondary"}`}>
+                <p className={`font-instrument text-xs pl-1 italic ${errors.password ? "text-destructive" : "text-secondary"}`}>
                     Password must be at least 8 characters
                 </p>
             </div>
@@ -117,7 +117,7 @@ export default function SignupForm() {
                     required
                 />
 
-                <p className={`font-instrument text-xs pl-1 italic ${errors.confirmPassword ? "text-red-500" : "text-secondary"}`}>
+                <p className={`font-instrument text-xs pl-1 italic ${errors.confirmPassword ? "text-destructive" : "text-secondary"}`}>
                     Passwords must match
                 </p>
             </div>
@@ -132,7 +132,7 @@ export default function SignupForm() {
             </Button>
 
             {serverError && (
-                <p className="text-red-500 text-sm text-center mt-2">
+                <p className="text-destructive text-sm text-center mt-2">
                     {serverError}
                 </p>
             )}

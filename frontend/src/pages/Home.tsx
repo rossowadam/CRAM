@@ -388,7 +388,7 @@ export default function Home() {
         {loading ? (
           <div className="text-center py-10">Loading courses...</div>
         ) : error ? (
-          <div className="text-center py-10 text-red-500">Error: {error}</div>
+          <div className="text-center py-10 text-destructive">Error: {error}</div>
         ) : filteredCourses.length === 0 ? (
           <div className="text-center opacity-60 py-8">No Courses found.</div>
         ) : (
