@@ -77,7 +77,15 @@ exports.createUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const userData = req.body;
-        await userService.loginUser(userData);
+        const user = await userService.loginUser(userData);
+
+        // store session info
+        req.session.user = {
+            id: user._id,
+            email: user.email,
+            role: user.role
+        }
+
         return res.status(200).json({ message: "Login successful" });;
     }
     catch (error) {

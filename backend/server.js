@@ -25,7 +25,11 @@ const app = express();
 app.use(express.json());
 
 // Enables Cross-Origin Resource Sharing (allows frontend to talk to backend)
-app.use(cors());
+// need to explicity set credentials true for session cookies
+app.use(cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true
+}));
 
 // HTTP request logger middleware for development environment
 if (process.env.NODE_ENV === 'development') {
