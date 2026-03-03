@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { validateSignin } from "@/utils/validators";
 import { loginUser } from "@/api/userApi";
+import { useAuth } from "@/context/AuthContext";
 
 interface LoginFormProps {
     setOpen: (open: boolean) => void;
@@ -12,6 +13,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
+    const { setUser } = useAuth();
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -47,6 +49,13 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                 password
             })
 
+            // check if authenticated via cookies
+            const res = await fetch("/api/v1/user/me", {credentials: "include"});
+
+            // store details for global context
+            const user = await res.json();
+
+            setUser(user);
             setOpen(false);
         } catch (err) {
             setServerError(
