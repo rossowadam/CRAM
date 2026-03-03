@@ -128,7 +128,7 @@
         {
           "title": "Introduction to Management Sciences",
           "courseCode": "ABIZ 2520",
-          "description": "(Lab required) An introduction to management science techniques and models relevant to the agricultural and agri-food sectors. Topics include linear programming, distribution problems, decision theory and queuing models. May not be held with MSCI 2150 or MSCI 2151.",
+          "description": "An introduction to management science techniques and models relevant to the agricultural and agri-food sectors. Topics include linear programming, distribution problems, decision theory and queuing models. May not be held with MSCI 2150 or MSCI 2151.",
           "credits": 3,
           "hasPrerequisites": true,
           "attributes": [],
@@ -5594,17 +5594,6 @@
           "lab": false
         },
         {
-          "title": "(B), or MATH 1211 (B)] and [one of MATH 1230, MATH",
-          "courseCode": "MATH 1210",
-          "description": "(B), MATH 1501 (B), MATH 1510 (B), the former MATH 1520 (B), MATH 1524 (B), or MATH 1525 (B)].",
-          "credits": 1500,
-          "hasPrerequisites": false,
-          "attributes": [
-            "Science"
-          ],
-          "lab": false
-        },
-        {
           "title": "Application Security",
           "courseCode": "COMP 3580",
           "description": "The application of cryptography, access control, and security-first coding techniques to design and implement secure software.",
@@ -5743,17 +5732,6 @@
           "credits": 3,
           "hasPrerequisites": true,
           "attributes": [],
-          "lab": false
-        },
-        {
-          "title": "(B)) and (one of MATH 1230, MATH 1500 (B), MATH",
-          "courseCode": "MATH 1211",
-          "description": "(B), MATH 1510 (B), the former MATH 1520 (B), MATH 1524 (B), or MATH 1525 (B))] or [STAT 2400 and MATH 2740 and DATA 2010].",
-          "credits": 1501,
-          "hasPrerequisites": false,
-          "attributes": [
-            "Science"
-          ],
           "lab": false
         },
         {
@@ -7609,15 +7587,6 @@
           "lab": false
         },
         {
-          "title": "and [(ECE 3580 (or the former ECE 2130), ECE 3720, ECE",
-          "courseCode": "ECE 3780",
-          "description": "and ECE 3610) or (ECE 3700, ECE 3760 and ECE 3740)].",
-          "credits": 3670,
-          "hasPrerequisites": false,
-          "attributes": [],
-          "lab": false
-        },
-        {
           "title": "Biomedical Instrumentation and Signal Processing",
           "courseCode": "ECE 4610",
           "description": "(Lab required) Introduction to biological systems and the application of engineering principles to medical problems. Students design systems to acquire and analyze biological signals in the laboratory. Content includes introduction to relevant physiology and anatomy of cells, skeletal muscles, heart and cardiovascular systems, human balance and biomechanics, recording and analyzing biological signals (ECG, EMG,respiratory sounds), design of instrumentation amplifiers for signal conditioning, medical instrumentation safety and health hazards.",
@@ -8316,17 +8285,6 @@
           "lab": false
         },
         {
-          "title": "and LABR 4510. Students may not hold credit for ECON",
-          "courseCode": "GPE 4510",
-          "description": "and either GPE 4510 or LABR 4510. Intended for students in the Economics Single Advanced Major (Economics and Society Stream) or Honours (Economics and Society Stream).",
-          "credits": 4610,
-          "hasPrerequisites": true,
-          "attributes": [
-            "Social Science"
-          ],
-          "lab": false
-        },
-        {
           "title": "Economics and Society Field Placement",
           "courseCode": "ECON 4620",
           "description": "An educationally directed field experience in which the student will undertake specific tasks and assignments in some aspects of Community Economic Development and/or economic policy. Field placement options include community-based organizations, government departments and agencies, policy and research organizations, unions, and other employers. This course is also offered as GPE 4520 and LABR 4520. Students may not hold credit for ECON 4620 and either GPE 4520 or LABR 4520. Intended for students in the Economics Single Advanced Major (Economics and Society Stream) or Honours (Economics and Society Stream).",
@@ -8344,17 +8302,6 @@
           "credits": 6,
           "hasPrerequisites": true,
           "attributes": [],
-          "lab": false
-        },
-        {
-          "title": "or the former ECON 2700] and [ECON 3010 (or ECON",
-          "courseCode": "ECON 2450",
-          "description": "or the former ECON 2460 or the former ECON 3700)] and [ECON 2020 (or ECON 2471 or the former ECON 2470 or the former ECON 2800)] and [ECON 3020 (or ECON 2481 or the former ECON 2480 or the former ECON 3800)].",
-          "credits": 2461,
-          "hasPrerequisites": false,
-          "attributes": [
-            "Social Science"
-          ],
           "lab": false
         },
         {
@@ -19133,18 +19080,6 @@
           "credits": 3,
           "hasPrerequisites": false,
           "attributes": [],
-          "lab": false
-        },
-        {
-          "title": "and GPE 4510. Students may not hold credit for LABR",
-          "courseCode": "ECON 4610",
-          "description": "and either ECON 4610 or GPE 4510. Intended for students in the Labour Studies Advanced Major.",
-          "credits": 4510,
-          "hasPrerequisites": true,
-          "attributes": [
-            "Social Science",
-            "Written English Requirement"
-          ],
           "lab": false
         },
         {
