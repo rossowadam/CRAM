@@ -19,10 +19,11 @@ import { createSection } from "@/api/sectionsApi"
 type RteProps = {
     onSuccess?: () => void;
     initialValues?: {
-    title?: string;
-    subtitle?: string;
-    content?: string;
-  };
+        title?: string;
+        subtitle?: string;
+        content?: string;
+    };
+    courseCode: string;
 };
 
 export default function Rte({onSuccess, initialValues}: RteProps) {

@@ -21,6 +21,7 @@ type SectionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mode: "create" | "edit";
+  courseCode: string;
   initialValues?: Section; 
 };
 
@@ -28,6 +29,7 @@ export default function SectionDialog({
   open,
   onOpenChange,
   mode,
+  courseCode,
   initialValues,
 }: SectionDialogProps) {
   return (
@@ -46,10 +48,12 @@ export default function SectionDialog({
 
         <Rte onSuccess={() => onOpenChange(false)}
             initialValues={{
-            title: initialValues?.title,
-            subtitle: initialValues?.description,
-            content: initialValues?.content,
-        }} />
+              title: initialValues?.title,
+              subtitle: initialValues?.description,
+              content: initialValues?.content,
+            }}
+            courseCode={courseCode}
+            />
       </DialogContent>
     </Dialog>
   );

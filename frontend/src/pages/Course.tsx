@@ -162,6 +162,7 @@ const [sections, setSections] = useState<Section[]>([
           open={openCreate}
           onOpenChange={(open) => { if(!open) setEditSection(null); setOpenCreate(open); }}
           mode={editSection ? "edit" : "create"}
+          courseCode={courseCode}
           initialValues={editSection ?? undefined}
         />
 
