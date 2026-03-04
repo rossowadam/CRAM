@@ -3,7 +3,6 @@
 import {type Editor} from "@tiptap/react" 
 import {
     Bold,
-    Strikethrough,
     Italic,
     List,
     ListOrdered,

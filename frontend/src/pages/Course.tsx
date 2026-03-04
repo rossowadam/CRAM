@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/hover-card"
 import { Separator } from "@/components/ui/separator"
 import { CirclePlus } from "lucide-react";
-import '@/components/tiptap-node/paragraph-node/paragraph-node.scss'
 import { useState } from "react";
 import SectionCard from "@/components/sections/SectionCard";
 import DefinitionTable from "@/components/definitions/DefinitionTable";
