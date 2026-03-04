@@ -9,9 +9,8 @@ import CourseSidebar from "./components/layout/CourseSidebar";
 
 function App() {
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-dvh flex flex-col bg-background text-foreground">
       <Navbar />
-
       {/* Viewport for pages */}
       <main className="flex-1 min-h-0 overflow-hidden">
         <Routes>

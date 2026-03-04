@@ -158,6 +158,33 @@ export default function Home() {
 
   const BOTTOM_SPACER = 24;
 
+  // Capture wheel anywhere in the page container and forward it to the List scroller.
+  const pageRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = pageRef.current;
+    if (!root) return;
+
+    const handler = (e: WheelEvent) => {
+      const scroller = listRef.current?.element; // The react-window List exposes its scroll element here.
+      if (!scroller) return;
+
+      // If the wheel happened inside the list already, let the list handle it normally.
+      if (scroller.contains(e.target as Node)) return;
+
+      // Prevent default page scroll and forward the delta to the list.
+      e.preventDefault();
+      scroller.scrollTop += e.deltaY;
+    };
+
+    // False so we can call preventDefault().
+    root.addEventListener("wheel", handler, { passive: false });
+
+    return () => {
+      root.removeEventListener("wheel", handler as EventListener);
+    };
+  }, []);
+
   /* FETCH COURSES */
   useEffect(() => {
     const fetchCourses = async () => {
@@ -290,7 +317,7 @@ export default function Home() {
     const expanded = expandedId === course.id;
 
     return (
-      <div style={style}>
+      <div style={style} className="h-screen">
         <MeasuredRow id={course.id} onMeasure={(id, h) => onMeasure(id, index, h)}>
           <Card className="shadow-md">
           <CardHeader>
@@ -356,7 +383,10 @@ export default function Home() {
   };
 
   return (
-    <div className="h-full min-h-0 flex flex-col overflow-hidden">
+    <div
+      ref={pageRef} // Attach pageRef so wheel events can be captured.
+      className="h-full min-h-0 flex flex-col overflow-hidden"
+    >
       {/* Header / Search */}
       <div className="shrink-0 px-6 py-6 w-full max-w-5xl mx-auto">
         <h1 className="text-4xl font-semibold text-center">Find Your Course</h1>
