@@ -50,7 +50,7 @@ export default function Rte({onSuccess, initialValues}: RteProps){
         subtitle: initialValues?.subtitle ?? "",
         content: initialValues?.content ?? "",
         });
-    }, [initialValues]);
+    }, [initialValues, form]);
 
     async function onSubmit(values: z.infer<typeof formSchema>){
         try{
