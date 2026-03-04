@@ -12,6 +12,12 @@ import DefinitionTable from "@/components/definitions/DefinitionTable";
 import DefinitionDialog from "@/components/definitions/DefinitionDialog";
 import SectionDialog from "@/components/sections/SectionDialog";
 
+// given slug-form of courseId, return the course code as backend requires
+// abiz-0440 --> ABIZ 0440
+function getCourseCode(courseId: string): string {
+  const [subject, number] = courseId.split("-");
+  return `${subject.toUpperCase()} ${number}`;
+}
 
 export default function Course() {
 
@@ -77,6 +83,10 @@ const [sections, setSections] = useState<Section[]>([
   ]);
 
   const { courseId } = useParams();
+
+  if (!courseId) throw new Error("Missing course id");
+
+  const courseCode = getCourseCode(courseId);
 
   // Section dialog state
   const [openCreate,setOpenCreate] = useState(false);
