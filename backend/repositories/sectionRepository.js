@@ -3,7 +3,8 @@ const Section = require('../models/Section');
 
 exports.createSection = async (sectionData) => {
     const newSection = new Section(sectionData);
-    return await newSection.save();
+    await newSection.save();
+    return newSection.toJSON();
 }
 
 

@@ -10,6 +10,7 @@ const MongoStore = require("connect-mongo").default;
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const sectionRoutes = require('./routes/sectionRoutes');
+const definitionRoutes = require('/routes/definitionRoutes');
 
 // Load env vars
 dotenv.config();
@@ -58,6 +59,7 @@ app.use(session({
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/sections', sectionRoutes);
+app.use('/api/v1/defintions', definitionRoutes);
 
 app.get('/', (req, res) => {
     res.send('CRAM API is running...');

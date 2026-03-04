@@ -27,5 +27,6 @@ exports.deleteUserById = async (id) => {
 //calls the database to create a new user document using the provided userData object, returns the created user document converted to a plain JSON object
 exports.createUser = async (userData) => {
     const user = new User(userData);
-    return await user.save();
+    await user.save();
+    return user.toJSON();
 }

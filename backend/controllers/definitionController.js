@@ -1,0 +1,58 @@
+const definitionService = require('../services/definitionServices');
+
+exports.getDefinitionsByCourseCode = async (req, res) => {
+    const { course_code } = req.params;
+    try {
+        const definitions = await definitionService.getDefinitionsByCourseCode(course_code);
+        res.status(200).json(definitions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.createDefinition = async (req, res) => {
+    try {
+        const definitionData = req.body;
+        const newDefinition = await definitionService.createDefinition(definitionData);
+        res.status(201).json(newDefinition);
+    }
+    catch (error) {
+        if(error.message.includes('incomplete')) {
+            res.status(422).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
+    }
+}
+
+exports.deleteDefinition = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await definitionService.deleteDefinition(id);
+        res.status(204).send();
+    }
+    catch (error) {
+        if(error.message.includes('not found')) {
+            res.status(404).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
+    }   
+}
+exports.updateDefinition = async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body;
+    try {
+        const updatedDefinition = await definitionService.updateDefinition(id, updateData);
+        if (!updatedDefinition) {
+            return res.status(404).json({ error: 'Definition not found' });
+        }
+        res.status(200).json(updatedDefinition);
+    } catch (error) {   
+        if(error.message.includes('not found')) {
+            res.status(404).json({ error: error.message });
+        }
+        else if(error.message.includes('incomplete')) {
+            res.status(422).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
+    }
+}

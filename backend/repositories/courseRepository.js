@@ -9,7 +9,8 @@ const Course = require('../models/Course');
 //courseData should be an object with the following fields: title, subject, number, course_code, description, credits, prerequisites, attributes                                                                                                                                
 exports.createCourse = async (courseData) => {
     const course = new Course(courseData);
-        return await course.save();
+    await course.save();
+    return course.toJSON();
 }
 //gets all courses, returns an array of course documents
 exports.getAllCourses = async () => {
@@ -18,12 +19,12 @@ exports.getAllCourses = async () => {
 
 //gets a course by id, returns the course document if found, or null if no course with the given id was found
 exports.getCourseById = async (id) => {
-    return await Course.findById(id);
+    return await Course.findById(id).lean();
 }
 
 //update a course by id, returns the updated course document if successful, or null if no course with the given id was found
 exports.updateCourse = async (id, courseData) => {
-    return await Course.findByIdAndUpdate(id, courseData, { new: true });
+    return await Course.findByIdAndUpdate(id, courseData, { new: true }).lean();
 }
 
 //delete a course by id, returns the deleted course document if successful, or null if no course with the given id was found
@@ -35,9 +36,9 @@ exports.deleteCourse = async (id) => {
 //returns array of JSON objects representing courses, can be used to populate the homepage with random courses each time it loads
 //Does not return mongoose document objects, so they will not have mongoose methods like .save() or .update(), but they will have all the course data fields.
 exports.getSampleCourses = async (count = 10) => {
-    return await Course.aggregate([{ $sample: { size: count } }]) ;
+    return await Course.aggregate([{ $sample: { size: count } }]).lean();
 }
 
 exports.findCourseByCourseCode = async (course_code) => {
-    return await Course.findOne({ course_code: course_code });
+    return await Course.findOne({ course_code: course_code }).lean();
 }
