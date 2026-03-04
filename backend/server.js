@@ -59,7 +59,7 @@ app.use(session({
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/sections', sectionRoutes);
-app.use('/api/v1/defintions', definitionRoutes);
+app.use('/api/v1/definitions', definitionRoutes);
 
 app.get('/', (req, res) => {
     res.send('CRAM API is running...');
