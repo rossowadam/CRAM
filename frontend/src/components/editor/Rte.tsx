@@ -13,7 +13,8 @@ import * as z from "zod"
 import {Input} from "@/components/ui/input"
 import TipTap from "./TipTap"
 import { Button } from "../ui/button"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { createSection } from "@/api/sectionsApi"
 
 type RteProps = {
     onSuccess?: () => void;
@@ -24,7 +25,9 @@ type RteProps = {
   };
 };
 
-export default function Rte({onSuccess, initialValues}: RteProps){
+export default function Rte({onSuccess, initialValues}: RteProps) {
+    const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
 
     const formSchema = z.object({
         title: z.string().min(5,{message: "Title is not long enough"}),
@@ -106,7 +109,15 @@ export default function Rte({onSuccess, initialValues}: RteProps){
                         </FormItem>
                     )}
                 />
-            <Button type="submit" className="m-2 hover:cursor-pointer hover:text-secondary"> Submit</Button>
+                <Button type="submit" disabled={loading} className="m-2 hover:cursor-pointer hover:text-secondary"> 
+                    {loading ? "Creating section..." : "Submit"}
+                </Button>
+
+                {serverError && (
+                    <p className="text-destructive text-sm text-center mt-2">
+                        {serverError}
+                    </p>
+                )}
             </form>
         </Form>
       </div>  
