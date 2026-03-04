@@ -10,7 +10,7 @@ const MongoStore = require("connect-mongo").default;
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const sectionRoutes = require('./routes/sectionRoutes');
-const definitionRoutes = require('/routes/definitionRoutes');
+const definitionRoutes = require('./routes/definitionRoutes');
 
 // Load env vars
 dotenv.config();
