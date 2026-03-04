@@ -55,60 +55,68 @@ export default function Rte({onSuccess, initialValues}: RteProps) {
         });
     }, [initialValues, form]);
 
-    async function onSubmit(values: z.infer<typeof formSchema>){
-        try{
-            console.log(values)
-            // Update database here
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+        const { title, subtitle, content } = values;
+        try {
+            setLoading(true);
 
+            // send backend request to create section
+            await createSection({ title, subtitle, content });
             onSuccess?.();
             form.reset();
-        }catch (error){
-            console.error("Submission failed", error)
+        } catch (error) {
+            console.error("Submission failed", error);
+            setServerError(
+                error instanceof Error ? error.message : "Something went wrong."
+            );
+        } finally {
+            setLoading(false);
         }
     }
 
     return(
-      <div>
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
-                <FormField
-                    control={form.control}
-                    name="title"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Title</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Main title" {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="subtitle"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Subtitle</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Subtitle" {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="content"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Content</FormLabel>
-                            <FormControl>
-                                <TipTap description={field.value} onChange={field.onChange}/>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
+        <div>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Main title" {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="subtitle"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Subtitle</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Subtitle" {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="content"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Content</FormLabel>
+                                <FormControl>
+                                    <TipTap description={field.value} onChange={field.onChange}/>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
                 <Button type="submit" disabled={loading} className="m-2 hover:cursor-pointer hover:text-secondary"> 
                     {loading ? "Creating section..." : "Submit"}
                 </Button>
