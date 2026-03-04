@@ -33,7 +33,7 @@ type Section = {
   contributors?: { name: string; avatar?: string }[];
 };
 
-  const [definitions, setDefinitions] = useState<Definition[]>([
+  const [definitions] = useState<Definition[]>([
     {
       id: "1",
       term: "The Machine",
