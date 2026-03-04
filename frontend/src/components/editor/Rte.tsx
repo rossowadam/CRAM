@@ -18,15 +18,15 @@ import { createSection } from "@/api/sectionsApi"
 
 type RteProps = {
     onSuccess?: () => void;
+    courseCode: string;
     initialValues?: {
         title?: string;
         subtitle?: string;
         content?: string;
     };
-    courseCode: string;
 };
 
-export default function Rte({onSuccess, initialValues}: RteProps) {
+export default function Rte({onSuccess, courseCode, initialValues}: RteProps) {
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
 
@@ -63,7 +63,7 @@ export default function Rte({onSuccess, initialValues}: RteProps) {
             setLoading(true);
 
             // send backend request to create section
-            await createSection({ title, subtitle, content });
+            await createSection({ courseCode, title, subtitle, content });
             onSuccess?.();
             form.reset();
         } catch (error) {

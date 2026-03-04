@@ -1,6 +1,7 @@
 // Take in data of the section and send it to the endpoint.
 // Robustly throw errors based on backend response.
 export async function createSection(data: {
+    courseCode: string;
     title: string;
     subtitle: string;
     content: string;
