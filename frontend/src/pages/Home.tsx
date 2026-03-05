@@ -344,7 +344,7 @@ export default function Home() {
                 <div className="mt-4 text-xs sm:text-sm opacity-80 flex flex-wrap gap-x-4 gap-y-2 items-center">
                   <span>Credits: {course.credits}</span>
 
-                  <span>{course.hasPrereqs ? "Has Pre-Requisite(s)" : "No Pre-Requisite"}</span>
+                  <span>{course.hasPrereqs ? "Has Prerequisite(s)" : "No Prerequisites"}</span>
 
                   <span className="inline-flex flex-wrap gap-1">
                       {course.attributesList.map((a) => (
