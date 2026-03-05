@@ -44,14 +44,7 @@ import {
 } from "../ui/avatar";
 
 
-export type Section = {
-  id: string;
-  title: string;
-  description?: string;
-  content?: string;
-  updated?: string;
-  contributors?: { name: string; avatar?: string }[];
-};
+import type { Section } from "@/api/sectionsApi";
 
 type SectionCardProps = {
   section: Section;
@@ -150,7 +143,7 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
                     <Separator orientation="horizontal" className="bg-secondary mb-2"/>
                     
                     <CollapsibleContent className="flex flex-col items-start gap-2 p-2.5 pt-0 text-xs font-instrument font-thin sm:text-sm">
-                        {section.content}
+                        <div dangerouslySetInnerHTML={{__html: section.body}}/>
                     </CollapsibleContent>
                 </Collapsible>     
           </CardContent>
@@ -159,22 +152,23 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
                 <div className="flex flex-row gap-3 items-center">
                     <p>Contributors:</p>
                     <AvatarGroup className="grayscale">
-                        {section.contributors?.map((c, i) => (
+                        {/* {section.contributors?.map((c, i) => (
                             <Avatar key={i} size="sm">
                                 {c.avatar ? 
                                     <AvatarImage src={c.avatar} alt={c.name} /> 
                                     : <AvatarFallback>{c.name.slice(0,2).toUpperCase()}</AvatarFallback>
                                 }
                             </Avatar>
-                        ))}
+                        ))} */}
 
-                        {section.contributors && section.contributors.length > 3 && (
+
+                        {/* {section.contributors && section.contributors.length > 3 && (
                             <AvatarGroupCount>+{section.contributors.length - 3}</AvatarGroupCount>
-                        )}
+                        )} */}
                     </AvatarGroup>
                 </div>
                 
-                <p className="text-xs">Last Edited: {section.updated}</p>
+                {/* <p className="text-xs">Last Edited: {section.updated}</p> */}
             </CardFooter>
         </Card>
     );

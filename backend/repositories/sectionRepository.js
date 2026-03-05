@@ -14,7 +14,7 @@ exports.getSectionsByCourseCode = async (courseCode) => {
 
 // return array of sections with the same code and title
 exports.findSectionByTitle = async ({courseCode, title}) => {
-    return await Section.find({ course_code: courseCode, title }).lean();
+    return await Section.find({ course_code: courseCode, title: title }).lean();
 }
 
 exports.deleteSection = async (id) => {

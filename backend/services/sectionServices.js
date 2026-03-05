@@ -1,6 +1,7 @@
 const sectionRepository = require('../repositories/sectionRepository');
 
 exports.createSection = async (sectionData) => {
+    
     const { courseCode, title, subtitle, content } = sectionData; // extract data
 
     if (!courseCode || !title || !subtitle || !content) {
@@ -27,6 +28,7 @@ exports.createSection = async (sectionData) => {
 }
 
 exports.getSectionsByCourseCode = async (courseCode) => {
+    console.log('hit the service layer')
     return await sectionRepository.getSectionsByCourseCode(courseCode);
 }
 

@@ -14,14 +14,20 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 
-export default function AppSidebar() {
+export default function CourseSidebar() {
+    const { open } = useSidebar()
   
   return (
-    <>
-    <SidebarTrigger/>
+    <div >
+    {!open && 
+        <div className=" fixed "> 
+            <SidebarTrigger/>
+        </div>
+    }
     <Sidebar side="left" variant="floating">
         <SidebarTrigger/>
         <SidebarHeader>
@@ -63,6 +69,6 @@ export default function AppSidebar() {
             Footer 
         </SidebarFooter>
     </Sidebar>
-    </>
+    </div>
   )
 }

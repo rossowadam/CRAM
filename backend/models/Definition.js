@@ -6,3 +6,5 @@ const definitionSchema = new mongoose.Schema({
     definition: { type: String, required: true },
     example: { type: String, required: true }
 });
+
+module.exports = mongoose.model('Definition',definitionSchema);

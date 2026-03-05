@@ -7,15 +7,7 @@ import {
 } from "@/components/ui/dialog";
 
 import Rte from "../editor/Rte";
-
-export type Section = {
-  id: string;
-  title: string;
-  description?: string;
-  content?: string;
-  updated?: string;
-  contributors?: { name: string; avatar?: string }[];
-};
+import type { Section } from "@/api/sectionsApi";
 
 type SectionDialogProps = {
   open: boolean;
@@ -50,7 +42,7 @@ export default function SectionDialog({
             initialValues={{
               title: initialValues?.title,
               subtitle: initialValues?.description,
-              content: initialValues?.content,
+              content: initialValues?.body,
             }}
             courseCode={courseCode}
             />

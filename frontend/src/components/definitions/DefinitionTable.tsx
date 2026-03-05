@@ -9,15 +9,7 @@ import {
 } from "../ui/table";
 import { PencilLine, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-
-export type Definition = {
-  id: string;
-  term: string;
-  definition: string;
-  example: string;
-  user: string;
-  updated: string;
-};
+import type { Definition } from "@/api/sectionsApi";
 
 type DefinitionTableProps = {
   definitions: Definition[];       
@@ -41,12 +33,12 @@ export default function DefinitionTable({definitions, onEdit}: DefinitionTablePr
                 </TableHeader>
                 <TableBody>
                     {definitions.map((def) =>(
-                        <TableRow key={def.id}>
+                        <TableRow key={def._id}>
                             <TableCell className="font-medium">{def.term}</TableCell>
                             <TableCell>{def.definition}</TableCell>
                             <TableCell>{def.example}</TableCell>
-                            <TableCell>{def.user}</TableCell>
-                            <TableCell>{def.updated}</TableCell>
+                            {/* <TableCell>{def.user}</TableCell> */}
+                            {/* <TableCell>{def.updated}</TableCell> */}
                             <TableCell className="text-right">
                                 <Button 
                                     className="hover:text-secondary hover:cursor-pointer mr-1" 

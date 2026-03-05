@@ -17,9 +17,13 @@ exports.createSection = async (req, res) => {
 }
 
 exports.getSectionsByCourseCode = async (req, res) => {
-    const { courseId } = req.params;
+    console.log('in the controller\n ===================================================\n')
+    console.log(req.params)
+    const { course_code } = req.params;
+    console.log('======================================\n')
+    console.log(course_code)
     try {
-        const sections = await sectionService.getSectionsByCourseCode(courseId);
+        const sections = await sectionService.getSectionsByCourseCode(course_code);
         res.status(200).json(sections);
     } catch (error) {
         res.status(500).json({ error: error.message });
