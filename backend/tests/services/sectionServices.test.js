@@ -12,6 +12,7 @@ test('sectionService - createsection', async (t) => {
         id: 'section123',
         title: 'Test section',
         courseCode: 'TC101',
+        description: 'derp',
         body: 'This is a test section'
     };
     t.mock.method(sectionRepository, 'findSectionByTitle', async (courseCode, title) => {
@@ -35,7 +36,7 @@ test('sectionService - createsection with incomplete data', async (t) => {
         await sectionService.createSection(sectionData);
         assert.fail('Should have thrown an error for incomplete section data');
     } catch (error) {
-        assert.equal(error.message, 'section data is incomplete');
+        assert.equal(error.message, 'Section data is incomplete');
     }   
 });
 
@@ -45,6 +46,7 @@ test('sectionService - createsection with duplicate section', async (t) => {
         id: 'section123',
         title: 'Test section',
         courseCode: 'TC101',       
+        description: 'derp',
         body: 'This is a test section'
     };
     t.mock.method(sectionRepository, 'findSectionByTitle', async (courseCode, title) => {
@@ -55,6 +57,6 @@ test('sectionService - createsection with duplicate section', async (t) => {
         assert.fail('Should have thrown an error for duplicate course code');
     }
     catch (error) {
-        assert.equal(error.message, 'Course with this course code already exists');
+        assert.equal(error.message, 'Section with this title already exists');
     }
 });
