@@ -1,5 +1,12 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+
+// Mock passwordServices before importing userController
+test.mock.module('../../services/passwordServices', {
+    hashPassword: async () => 'mocked_hash',
+    verifyPassword: async () => true
+});
+
 const userController = require('../../controllers/userController');
 const userService = require('../../services/userServices');
 
