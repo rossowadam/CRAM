@@ -6,11 +6,14 @@ exports.createSection = async (sectionData) => {
     if (!courseCode || !title || !subtitle || !content) {
         throw new Error('Section data is incomplete');
     }
-    // TODO: findSectionByTitle is missing!
-    // const existingSection = await sectionRepository.findSectionByTitle(title);
-    // if (existingSection) {
-    //     throw new Error('Section with this title already exists');
-    // }
+    
+    // see if another section exists in the course with same title
+    const existingSection = await sectionRepository.findSectionByTitle(courseCode, title);
+
+    // titles must be unique within a course
+    if (existingSection.length !== 0) {
+        throw new Error('Section with this title already exists');
+    }
 
      // create new section object to match Section schema
     const newSection = {
