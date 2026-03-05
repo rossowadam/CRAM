@@ -14,26 +14,29 @@ import {Input} from "@/components/ui/input"
 import TipTap from "./TipTap"
 import { Button } from "../ui/button"
 import { useEffect, useState } from "react"
-import { createSection } from "@/api/sectionsApi"
+import type { Section } from "@/api/sectionsApi"
+import { createSection, updateSection } from "@/api/sectionsApi"
 
 type RteProps = {
-    onSuccess?: () => void;
+    onSuccess?: (section: Section) => void;
     courseCode: string;
+    mode: "create" | "edit";
+    sectionId?: string;
     initialValues?: {
         title?: string;
-        subtitle?: string;
-        content?: string;
+        description?: string;
+        body?: string;
     };
 };
 
-export default function Rte({onSuccess, courseCode, initialValues}: RteProps) {
+export default function Rte({onSuccess, courseCode, mode, sectionId, initialValues}: RteProps) {
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
 
     const formSchema = z.object({
         title: z.string().min(5,{message: "Title is not long enough"}),
-        subtitle: z.string().min(5,{message: "Please add a longer description"}),
-        content: z.string().min(10,{message:"Please add some more information"})
+        description: z.string().min(5,{message: "Please add a longer description"}),
+        body: z.string().min(10,{message:"Please add some more information"})
         
 
     })
@@ -43,29 +46,48 @@ export default function Rte({onSuccess, courseCode, initialValues}: RteProps) {
         mode: 'onChange',
         defaultValues:{
             title: initialValues?.title ?? "",
-            subtitle: initialValues?.subtitle ?? '',
-            content: initialValues?.content ?? '',
+            description: initialValues?.description ?? '',
+            body: initialValues?.body ?? '',
         }
     })
 
     useEffect(() => {
         form.reset({
         title: initialValues?.title ?? "",
-        subtitle: initialValues?.subtitle ?? "",
-        content: initialValues?.content ?? "",
+        description: initialValues?.description ?? "",
+        body: initialValues?.body ?? "",
         });
     }, [initialValues, form]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        const { title, subtitle, content } = values;
+         const { title, description, body } = values;
+
         try {
             setLoading(true);
 
-            // send backend request to create section
-            await createSection({ courseCode, title, subtitle, content });
-            onSuccess?.();
+            let result: Section;
+
+            if (mode === "create") {
+                result = await createSection({
+                    courseCode,
+                    title,
+                    description,
+                    body,
+                });
+            } else {
+                if (!sectionId) throw new Error("Missing section id");
+
+                result = await updateSection({
+                    sectionId,
+                    title,
+                    description: description,
+                    body: body,
+                });
+            }
+
+            onSuccess?.(result);
             form.reset();
+
         } catch (error) {
             console.error("Submission failed", error);
             setServerError(
@@ -95,12 +117,12 @@ export default function Rte({onSuccess, courseCode, initialValues}: RteProps) {
                     />
                     <FormField
                         control={form.control}
-                        name="subtitle"
+                        name="description"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Subtitle</FormLabel>
+                                <FormLabel>description</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Subtitle" {...field} />
+                                    <Input placeholder="description" {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -108,10 +130,10 @@ export default function Rte({onSuccess, courseCode, initialValues}: RteProps) {
                     />
                     <FormField
                         control={form.control}
-                        name="content"
+                        name="body"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Content</FormLabel>
+                                <FormLabel>body</FormLabel>
                                 <FormControl>
                                     <TipTap description={field.value} onChange={field.onChange}/>
                                 </FormControl>

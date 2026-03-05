@@ -6,7 +6,7 @@ const connectDB = require('../config/db');
 const Course = require('../models/Course');
 
 // Load environment variables for DB connection string
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, "..", ".env") });
 
 /**
  * Database Seed Function
@@ -40,13 +40,13 @@ const seed = async () => {
         // Push a bulk upsert operation into ops array.
         ops.push({
           updateOne: {
-            filter: { course_code: c.courseCode },
+            filter: { courseCode: c.courseCode },
             update: {
               $set: {
                 title: c.title ?? "",
                 subject: s ?? "",
                 number: n ?? "",
-                course_code: c.courseCode,
+                courseCode: c.courseCode,
                 description: c.description ?? "",
                 credits: c.credits ?? 0,
                 prerequisites: c.hasPrerequisites ? "Yes" : "None",

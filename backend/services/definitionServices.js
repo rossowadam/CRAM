@@ -1,11 +1,11 @@
 const definitionRepositoy = require('../repositories/definitionRepository');
 
-exports.getDefinitionsByCourseCode = async (course_code) => {
-    return await definitionRepositoy.getDefinitionsByCourseCode(course_code);
+exports.getDefinitionsByCourseCode = async (courseCode) => {
+    return await definitionRepositoy.getDefinitionsByCourseCode(courseCode);
 }
 
 exports.createDefinition = async (definitionData) => {
-    const definitionIsComplete = definitionData.course_code && definitionData.term && definitionData.definition && definitionData.example;
+    const definitionIsComplete = definitionData.courseCode && definitionData.term && definitionData.definition && definitionData.example;
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }
@@ -20,7 +20,7 @@ exports.deleteDefinition = async (id) => {
 }
 
 exports.updateDefinition = async (id, updateData) => {
-    const definitionIsComplete = updateData.course_code && updateData.term && updateData.definition && updateData.example;
+    const definitionIsComplete = updateData.courseCode && updateData.term && updateData.definition && updateData.example;
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }

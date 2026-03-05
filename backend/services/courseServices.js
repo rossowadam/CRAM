@@ -12,13 +12,13 @@ exports.findCourseById = async (id) => {
 
 exports.createCourse = async (courseData) => {
     
-    const courseIsComplete = courseData.title && courseData.subject && courseData.number && courseData.course_code && courseData.description && courseData.credits && courseData.prerequisites && courseData.attributes;
+    const courseIsComplete = courseData.title && courseData.subject && courseData.number && courseData.courseCode && courseData.description && courseData.credits && courseData.prerequisites && courseData.attributes;
     if (!courseIsComplete) {
         throw new Error('Course data is incomplete');
     }
 
-    const{course_code} = courseData;
-    const existingCourse = await courseRepository.findCourseByCourseCode(course_code); 
+    const{courseCode} = courseData;
+    const existingCourse = await courseRepository.findCourseByCourseCode(courseCode); 
     if (existingCourse) {
         throw new Error('Course with this course code already exists');
     } 

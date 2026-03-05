@@ -4,7 +4,7 @@ const sectionController = require('../controllers/sectionController');
 const { requireAuth } = require('../middleware/auth');
 
 
-router.get('/:course_code', sectionController.getSectionsByCourseCode);
+router.get('/:courseCode', sectionController.getSectionsByCourseCode);
 
 // Since all CRUD routes require Auth, run once at the top.
 // If it fails, it will return 401.

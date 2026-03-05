@@ -15,11 +15,13 @@ type SectionDialogProps = {
   mode: "create" | "edit";
   courseCode: string;
   initialValues?: Section; 
+  onSave?: (section: Section) => void;
 };
 
 export default function SectionDialog({
   open,
   onOpenChange,
+  onSave,
   mode,
   courseCode,
   initialValues,
@@ -38,14 +40,16 @@ export default function SectionDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Rte onSuccess={() => onOpenChange(false)}
-            initialValues={{
-              title: initialValues?.title,
-              subtitle: initialValues?.description,
-              content: initialValues?.body,
-            }}
-            courseCode={courseCode}
-            />
+        <Rte
+          mode={mode}
+          sectionId={initialValues?._id}
+          onSuccess={(section) => {
+            onSave?.(section);
+            onOpenChange(false);
+          }}
+          initialValues={initialValues}
+          courseCode={courseCode}
+        />
       </DialogContent>
     </Dialog>
   );

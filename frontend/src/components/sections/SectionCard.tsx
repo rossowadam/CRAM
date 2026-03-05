@@ -125,7 +125,7 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
                 </CardAction>
             </CardHeader>
 
-            <CardContent className="text-foreground">
+            <CardContent className="text-foreground break-all overflow-y-auto">
 
                 <Collapsible className="data-[state=open]:bg-primary rounded-md">
                 

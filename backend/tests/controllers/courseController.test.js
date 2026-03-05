@@ -8,7 +8,7 @@ test('CourseController - createCourse', async (t) => {
     const courseData = {   
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -42,7 +42,7 @@ test('CourseController - createCourse with incomplete data', async (t) => {
     const courseData = {
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -76,7 +76,7 @@ test('CourseController - createCourse with duplicate course code', async (t) => 
     const courseData = {
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -110,7 +110,7 @@ test('CourseController - createCourse with service error', async (t) => {
     const courseData = {
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',   
+        courseCode: 'TC101',   
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -192,7 +192,7 @@ test('courseController - findCourseById - course found', async (t) => {
     const courseData = {
         id: 'course123',
         title: 'Test Course',   
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',

@@ -119,8 +119,8 @@ export async function updateSection(data: {
     description?: string;
     body?: string;
 }) {
-    const response = await fetch("/api/v1/sections/update", {
-        method: "PATCH",
+    const response = await fetch(`/api/v1/sections/update/${data.sectionId}`, {
+        method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -150,7 +150,7 @@ export async function updateSection(data: {
 
 // DELETE: a section.
 export async function deleteSection(data: { sectionId: string }) {
-    const response = await fetch("/api/v1/sections/delete", {
+    const response = await fetch(`/api/v1/sections/delete/${data.sectionId}`, {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -219,8 +219,8 @@ export async function updateDefinition(data: {
   definition?: string;
   example?: string;
 }) {
-  const response = await fetch("/api/v1/definitions/update", {
-    method: "PATCH",
+  const response = await fetch(`/api/v1/definitions/update/${data.definitionId}`, {
+    method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -248,7 +248,7 @@ export async function updateDefinition(data: {
 }
 
 export async function deleteDefinition(data: { definitionId: string }) {
-  const response = await fetch("/api/v1/definitions/delete", {
+  const response = await fetch(`/api/v1/definitions/delete/${data.definitionId}`, {
     method: "DELETE",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

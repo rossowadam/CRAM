@@ -38,7 +38,7 @@ type CourseFromAPI = {
   title: string;
   subject: string;
   number: string;
-  course_code: string;
+  courseCode: string;
   description: string;
   credits: number;
   prerequisites: string;
@@ -47,7 +47,7 @@ type CourseFromAPI = {
 
 type CourseUI = CourseFromAPI & {
   id: string;
-  _search: string; // Title + course_code only.
+  _search: string; // Title + courseCode only.
   hasPrereqs: boolean;
   hasLab: boolean;
   attributesList: string[];
@@ -115,7 +115,7 @@ function MeasuredRow(props: {
   }, [id, onMeasure]);
 
   return (
-    <div ref={ref} className="px-2 py-2">
+    <div ref={ref} className="px-2 sm:px-3 py-2">
       {children}
     </div>
   );
@@ -218,7 +218,7 @@ export default function Home() {
     const safe = (s?: string) => String(s ?? "").toLowerCase();
 
     return data.map((course) => {
-      const id = slugifyCourseCode(course.course_code);
+      const id = slugifyCourseCode(course.courseCode);
       const attributesList = normalizeAttributes(course.attributes);
 
       // Mongo will default empty strings to "None".
@@ -233,7 +233,7 @@ export default function Home() {
         attributesList,
         hasPrereqs,
         hasLab,
-        _search: [course.title, course.course_code].map(safe).join(" "),
+        _search: [course.title, course.courseCode].map(safe).join(" "),
       };
     });
   }, [data]);
@@ -317,17 +317,18 @@ export default function Home() {
     const expanded = expandedId === course.id;
 
     return (
-      <div style={style} className="h-screen">
+      <div style={style} className="w-full">
         <MeasuredRow id={course.id} onMeasure={(id, h) => onMeasure(id, index, h)}>
-          <Card className="shadow-md">
-          <CardHeader>
+          <Card className="bg-card/95 border border-border/80 shadow-sm hover:shadow-md hover:-translate-y-[1px] transition-all duration-200 rounded-2xl">
+          <CardHeader className="pb-2">
             <div>
               <Link to={`/course/${course.id}`}>
-                <CardTitle className="hover:text-secondary leading-tight">
+                <CardTitle className="font-[var(--font-funnel)] text-base sm:text-lg md:text-xl hover:text-secondary transition-colors leading-tight">
                   {course.title}
                 </CardTitle>
               </Link>
-              <CardDescription>
+
+              <CardDescription className="text-xs sm:text-sm text-secondary">
                 {course.subject} {course.number}
               </CardDescription>
             </div>
@@ -336,30 +337,25 @@ export default function Home() {
           <CardContent className="pt-0">
             {expanded && (
               <>
-                <p className="text-sm opacity-90 whitespace-pre-wrap">
+                <p className="text-sm sm:text-[15px] opacity-90 whitespace-pre-wrap leading-relaxed font-[var(--font-instrument)]">
                   {course.description}
                 </p>
 
-                <div className="mt-3 text-xs opacity-80 flex flex-wrap gap-x-4 gap-y-1 items-center">
+                <div className="mt-4 text-xs sm:text-sm opacity-80 flex flex-wrap gap-x-4 gap-y-2 items-center">
                   <span>Credits: {course.credits}</span>
+
                   <span>{course.hasPrereqs ? "Has Pre-Requisite(s)" : "No Pre-Requisite"}</span>
 
-                  <span className="inline-flex items-center gap-1">
-                    {course.attributesList.length ? (
-                      <span className="inline-flex flex-wrap gap-1">
-                        {course.attributesList.map((a) => (
-                          <span
-                            key={a}
-                            className="inline-flex items-center rounded-md border px-2 py-0.5"
-                          >
-                            {a}
-                          </span>
-                        ))}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </span>
+                  <span className="inline-flex flex-wrap gap-1">
+                      {course.attributesList.map((a) => (
+                        <span
+                          key={a}
+                          className="inline-flex items-center rounded-lg bg-secondary text-background px-2.5 py-0.5 text-[11px] sm:text-xs"
+                        >
+                          {a}
+                        </span>
+                      ))}
+                    </span>
                 </div>
               </>
             )}
@@ -369,7 +365,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => onToggle(course.id)}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-secondary transition-colors font-medium hover:cursor-pointer"
                 aria-expanded={expanded}
               >
                 {expanded ? "Show less" : "Show more"}
@@ -388,14 +384,14 @@ export default function Home() {
       className="h-full min-h-0 flex flex-col overflow-hidden"
     >
       {/* Header / Search */}
-      <div className="shrink-0 px-6 py-6 w-full max-w-5xl mx-auto">
-        <h1 className="text-4xl font-semibold text-center">Find Your Course</h1>
+      <div className="shrink-0 px-4 sm:px-6 md:px-8 py-6 md:py-8 w-full max-w-5xl mx-auto">
+        <h1 className="font-[var(--font-funnel)] text-2xl sm:text-3xl md:text-4xl  font-semibold text-center tracking-tight">Find Your Course</h1>
 
         <form
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}
-          className="w-4/5 md:w-3/4 self-center mt-3 mx-auto"
+          className="w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mt-4 mx-auto"
         >
-          <InputGroup className="h-12">
+          <InputGroup className="h-11 sm:h-12 rounded-xl shadow-md border border-border bg-search">
             <InputGroupInput
               type="search"
               placeholder="Search by course name or code..."
@@ -403,8 +399,8 @@ export default function Home() {
               onChange={(event) => setQuery(event.target.value)}
             />
             <InputGroupAddon>
-              <InputGroupButton type="submit">
-                <SearchIcon />
+              <InputGroupButton type="submit" className="bg-search hover:bg-secondary/80 transition-colors hover:cursor-pointer">
+                <SearchIcon size={18}/>
               </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
@@ -414,7 +410,7 @@ export default function Home() {
       </div>
 
       {/* List viewport (ONLY scroller) */}
-      <div className="flex-1 min-h-0 overflow-hidden w-full max-w-5xl mx-auto px-6 pb-6">
+      <div className="flex-1 min-h-0 overflow-hidden w-full max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pb-6">
         {loading ? (
           <div className="text-center py-10">Loading courses...</div>
         ) : error ? (

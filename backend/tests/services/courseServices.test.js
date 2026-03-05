@@ -8,7 +8,7 @@ test('CourseService - createCourse', async (t) => {
     const courseData = {    
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -16,7 +16,7 @@ test('CourseService - createCourse', async (t) => {
         subject: 'TEST',
         number: '101'
     };
-    t.mock.method(courseRepository, 'findCourseByCourseCode', async (course_code) => {
+    t.mock.method(courseRepository, 'findCourseByCourseCode', async (courseCode) => {
         return null; // Simulate no existing course with the same course code
     });
     t.mock.method(courseRepository, 'createCourse', async (data) => {
@@ -30,7 +30,7 @@ test('CourseService - createCourse with incomplete data', async (t) => {
     const courseData = {    
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',
+        courseCode: 'TC101',
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -51,7 +51,7 @@ test('CourseService - createCourse with duplicate course code', async (t) => {
     const courseData = {
         id: 'course123',
         title: 'Test Course',
-        course_code: 'TC101',       
+        courseCode: 'TC101',       
         description: 'This is a test course',
         credits: 3,
         prerequisites: 'None',
@@ -59,7 +59,7 @@ test('CourseService - createCourse with duplicate course code', async (t) => {
         subject: 'TEST',
         number: '101'
     };
-    t.mock.method(courseRepository, 'findCourseByCourseCode', async (course_code) => {
+    t.mock.method(courseRepository, 'findCourseByCourseCode', async (courseCode) => {
         return courseData; // Simulate existing course with the same course code
     }); 
     try {

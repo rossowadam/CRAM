@@ -2,9 +2,9 @@ const sectionRepository = require('../repositories/sectionRepository');
 
 exports.createSection = async (sectionData) => {
     
-    const { courseCode, title, subtitle, content } = sectionData; // extract data
+    const { courseCode, title, description, body } = sectionData; // extract data
 
-    if (!courseCode || !title || !subtitle || !content) {
+    if (!courseCode || !title || !description || !body) {
         throw new Error('Section data is incomplete');
     }
     
@@ -18,10 +18,10 @@ exports.createSection = async (sectionData) => {
 
      // create new section object to match Section schema
     const newSection = {
-        course_code: courseCode,
+        courseCode: courseCode,
         title,
-        description: subtitle,
-        body: content
+        description,
+        body
     };
 
     return await sectionRepository.createSection(newSection);

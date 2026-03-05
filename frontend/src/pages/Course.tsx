@@ -23,7 +23,7 @@ function getCourseCode(courseId: string): string {
 
 import type { Definition } from "@/api/sectionsApi";
 import type { Section } from "@/api/sectionsApi";
-import { getCoursePage } from "@/api/sectionsApi";
+import { getCoursePage, updateSection, deleteSection, updateDefinition, deleteDefinition } from "@/api/sectionsApi";
 
 export default function Course() {
   const [loading, setLoading] = useState(true);
@@ -42,6 +42,47 @@ export default function Course() {
   
   if (!courseId) throw new Error("Missing course id");
   const courseCode = getCourseCode(courseId);
+
+  const handleDeleteSection = async (section: Section) => {
+    try {
+      await deleteSection({ sectionId: section._id});
+
+      setSections((prev) => prev.filter((s) => s._id !== section._id));
+    } catch (err) {
+      console.error(err);
+      alert(err instanceof Error ? err.message : "Failed to delete section");  
+    }
+  };
+
+  const handleUpdateSection = async (section: Section) => {
+    setSections((prev) => {
+    const exists = prev.some((s) => s._id === section._id);
+
+    if (exists) {
+      return prev.map((s) => (s._id === section._id ? section : s));
+    }
+
+    return [...prev, section];
+  });
+  };
+
+
+  const handleAddOrUpdateDefinition = (def: Definition) => {
+    setDefinitions((prev) => {
+      const exists = prev.some((d) => d._id === def._id);
+      if (exists) return prev.map((d) => (d._id === def._id ? def : d));
+      return [...prev, def];
+    });
+  };
+
+  const handleDeleteDefinition = async (id: string) => {
+    try {
+      await deleteDefinition({definitionId: id});
+      setDefinitions((prev) => prev.filter((d) => d._id !== id));
+    } catch (err) {
+      console.error("failed to delete definition:", err);
+    }
+  }
   
   
   useEffect(() => {
@@ -75,7 +116,7 @@ export default function Course() {
       }
     >
       
-      <CourseSidebar />
+      <CourseSidebar sections={sections} courseCode={courseCode}/>
       <div className="flex-1 min-h-0 w-full overflow-y-auto">
         <div className="flex flex-col items-center w-full min-w-0 gap-3 sm:max-w-xl lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl mx-auto px-6 py-6">
 
@@ -137,27 +178,33 @@ export default function Course() {
           {/* Display section dialog */}
           <SectionDialog
             open={openCreate}
-            onOpenChange={(open) => { if(!open) setEditSection(null); setOpenCreate(open); }}
+            onOpenChange={(open) => { 
+              if (!open) setEditSection(null); 
+              setOpenCreate(open); 
+            }}
             mode={editSection ? "edit" : "create"}
             courseCode={courseCode}
             initialValues={editSection ?? undefined}
-            />
+            onSave={handleUpdateSection}
+          />
 
           <Separator orientation="horizontal" className="bg-foreground"/>
 
           {/* Display sections */}
           
           {sections?.map((section) => (
-            <SectionCard
+            <div className="w-full" id={`section-${section._id}`}>
+              <SectionCard
               key={section._id}
               section={section}
               onEdit={(s) => { setEditSection(s); setOpenCreate(true); }}
-              onDelete={(s) => setSections((prev) => prev.filter(sec => sec._id !== s._id))}
-            />
+              onDelete={handleDeleteSection}
+              />
+            </div>
           ))}
 
           {/* Definition table heading */}
-          <div className="flex flex-row gap-2 w-full justify-between items-center p-2">
+          <div className="flex flex-row gap-2 w-full justify-between items-center p-2" id="definitions">
             <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
               Definitions
             </h2>
@@ -184,12 +231,11 @@ export default function Course() {
 
           <DefinitionDialog
             open={definitionOpen}
-            onOpenChange={(open) => {
-              if (!open) setEditDefinition(null);
-              setDefinitionOpen(open);
-            }}
+            onOpenChange={setDefinitionOpen}
+            courseCode ={courseCode}
             mode={editDefinition ? "edit" : "create"}
             initialValues={editDefinition ?? undefined}
+            onSuccess={handleAddOrUpdateDefinition}
           />
 
           <Separator orientation="horizontal" />
@@ -200,6 +246,7 @@ export default function Course() {
               setEditDefinition(definition);
               setDefinitionOpen(true);
             }}
+            onDelete={handleDeleteDefinition}
           />
         </div>
       </div>

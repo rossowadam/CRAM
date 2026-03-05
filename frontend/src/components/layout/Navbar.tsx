@@ -14,7 +14,7 @@ function Navbar() {
         <>
             <nav 
                 aria-label="Navigation Bar"
-                className="w-full border-b bg-background shadow-2xl"
+                className="w-full border-b bg-background shadow-2xl "
             >
             <div className="w-full sm:w-full md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 mx-auto flex flex-row items-center justify-between px-4 py-3 ">
                 <Link 

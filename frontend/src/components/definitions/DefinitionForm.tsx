@@ -12,20 +12,18 @@ import { useEffect } from "react";
 import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
-type Definition = {
-  term: string;
-  definition: string;
-  example: string;
-};
+import { createDefinition, updateDefinition } from "@/api/sectionsApi";
+import type { Definition } from "@/api/sectionsApi";
 
 type FormProps = {
   mode: "create" | "edit";
   initialValues?: Definition;
-  onSuccess?: () => void;
+  onSuccess?: (def: Definition) => void;
+  courseCode: string;
 };
 
 const formSchema = z.object({
+  courseCode: z.string().min(1),
   term: z.string().min(1, { message: "Term Invalid" }),
   definition: z.string().min(5, { message: "Please add a longer definition" }),
   example: z.string().min(5, { message: "Please add some more information" }),
@@ -35,11 +33,13 @@ export default function DefinitionForm({
   mode,
   initialValues,
   onSuccess,
+  courseCode
 }: FormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: initialValues ?? {
+      courseCode,
       term: "",
       definition: "",
       example: "",
@@ -54,12 +54,23 @@ export default function DefinitionForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
 
-      onSuccess?.();
+      const  payload = { ...values, courseCode }
+
+      if( mode === "create"){
+        console.log(payload)
+        onSuccess?.(await createDefinition(payload));
+      } else if (mode === "edit" && initialValues?._id){
+        console.log({ definitionId: initialValues._id, ...payload })
+          onSuccess?.(
+          await updateDefinition({ definitionId: initialValues._id, ...payload })
+        );
+      }
+
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Submission failed", error);
+      alert(error.message ?? "Failed to save definition")
     }
   }
 
