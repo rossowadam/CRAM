@@ -7,27 +7,23 @@ import {
 } from "@/components/ui/dialog";
 
 import Rte from "../editor/Rte";
-
-export type Section = {
-  id: string;
-  title: string;
-  description?: string;
-  content?: string;
-  updated?: string;
-  contributors?: { name: string; avatar?: string }[];
-};
+import type { Section } from "@/api/sectionsApi";
 
 type SectionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mode: "create" | "edit";
+  courseCode: string;
   initialValues?: Section; 
+  onSave?: (section: Section) => void;
 };
 
 export default function SectionDialog({
   open,
   onOpenChange,
+  onSave,
   mode,
+  courseCode,
   initialValues,
 }: SectionDialogProps) {
   return (
@@ -44,12 +40,16 @@ export default function SectionDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Rte onSuccess={() => onOpenChange(false)}
-            initialValues={{
-            title: initialValues?.title,
-            subtitle: initialValues?.description,
-            content: initialValues?.content,
-        }} />
+        <Rte
+          mode={mode}
+          sectionId={initialValues?._id}
+          onSuccess={(section) => {
+            onSave?.(section);
+            onOpenChange(false);
+          }}
+          initialValues={initialValues}
+          courseCode={courseCode}
+        />
       </DialogContent>
     </Dialog>
   );

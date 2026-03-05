@@ -6,7 +6,7 @@ const Course = require('../models/Course');
 //if you want a plain JSON object, you can call .toObject() on the returned document.
 
 //creates a new course document in the database using the provided courseData object, returns the saved course document
-//courseData should be an object with the following fields: title, subject, number, course_code, description, credits, prerequisites, attributes                                                                                                                                
+//courseData should be an object with the following fields: title, subject, number, courseCode, description, credits, prerequisites, attributes                                                                                                                                
 exports.createCourse = async (courseData) => {
     const course = new Course(courseData);
     await course.save();
@@ -39,6 +39,6 @@ exports.getSampleCourses = async (count = 10) => {
     return await Course.aggregate([{ $sample: { size: count } }]).lean();
 }
 
-exports.findCourseByCourseCode = async (course_code) => {
-    return await Course.findOne({ course_code: course_code }).lean();
+exports.findCourseByCourseCode = async (courseCode) => {
+    return await Course.findOne({ courseCode: courseCode }).lean();
 }

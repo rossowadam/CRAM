@@ -17,9 +17,9 @@ exports.createSection = async (req, res) => {
 }
 
 exports.getSectionsByCourseCode = async (req, res) => {
-    const { courseId } = req.params;
+    const { courseCode } = req.params;
     try {
-        const sections = await sectionService.getSectionsByCourseCode(courseId);
+        const sections = await sectionService.getSectionsByCourseCode(courseCode);
         res.status(200).json(sections);
     } catch (error) {
         res.status(500).json({ error: error.message });

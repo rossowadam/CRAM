@@ -9,7 +9,12 @@ exports.createSection = async (sectionData) => {
 
 
 exports.getSectionsByCourseCode = async (courseCode) => {
-    return await Section.find({ course_code: courseCode }).lean();
+    return await Section.find({ courseCode: courseCode }).lean();
+}
+
+// return array of sections with the same code and title
+exports.findSectionByTitle = async ({courseCode, title}) => {
+    return await Section.find({ courseCode: courseCode, title: title }).lean();
 }
 
 exports.deleteSection = async (id) => {

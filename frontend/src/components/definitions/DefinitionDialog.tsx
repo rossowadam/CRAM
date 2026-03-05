@@ -7,18 +7,15 @@ import {
 } from "@/components/ui/dialog";
 
 import DefinitionForm from "./DefinitionForm";
-
-type Definition = {
-  term: string;
-  definition: string;
-  example: string;
-};
+import type { Definition } from "@/api/sectionsApi";
 
 type DefinitionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mode: "create" | "edit";
   initialValues?: Definition;
+  courseCode: string;
+  onSuccess: (def: Definition) => void;
 };
 
 export default function DefinitionDialog({
@@ -26,6 +23,8 @@ export default function DefinitionDialog({
   onOpenChange,
   mode,
   initialValues,
+  courseCode,
+  onSuccess
 }: DefinitionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,7 +46,11 @@ export default function DefinitionDialog({
         <DefinitionForm
           mode={mode}
           initialValues={initialValues}
-          onSuccess={() => onOpenChange(false)}
+          courseCode ={courseCode}
+          onSuccess={(def) => {
+            onOpenChange(false);
+            onSuccess?.(def)
+          }}
         />
       </DialogContent>
     </Dialog>

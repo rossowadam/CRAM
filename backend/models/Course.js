@@ -10,7 +10,7 @@ const courseSchema = new mongoose.Schema({
     number: {
         type: String, required: true
     },
-    course_code: {
+    courseCode: {
         type: String, required: true, index: true, unique: true
     },
     description: {

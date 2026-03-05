@@ -1,7 +1,7 @@
 const Defintion = require('../models/Definition');
 
-exports.getDefinitionsByCourseCode = async (course_code) => {
-    return await Defintion.find({ course_code }).lean();
+exports.getDefinitionsByCourseCode = async (courseCode) => {
+    return await Defintion.find({ courseCode }).lean();
 }
 
 exports.createDefinition = async (definitionData) => {

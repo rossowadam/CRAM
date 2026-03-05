@@ -1,9 +1,9 @@
 const definitionService = require('../services/definitionServices');
 
 exports.getDefinitionsByCourseCode = async (req, res) => {
-    const { course_code } = req.params;
+    const { courseCode } = req.params;
     try {
-        const definitions = await definitionService.getDefinitionsByCourseCode(course_code);
+        const definitions = await definitionService.getDefinitionsByCourseCode(courseCode);
         res.status(200).json(definitions);
     } catch (error) {
         res.status(500).json({ error: error.message });

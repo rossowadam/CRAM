@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const sectionSchema = new mongoose.Schema({
-    course_code: {
+    courseCode: {
         type: String, required: true
     },
-    section_title:{
+    title:{
         type: String, required: true
     },
     description: {
