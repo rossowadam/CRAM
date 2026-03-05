@@ -23,11 +23,9 @@ function getCourseCode(courseId: string): string {
 
 import type { Definition } from "@/api/sectionsApi";
 import type { Section } from "@/api/sectionsApi";
-import { getCoursePage, updateSection, deleteSection, updateDefinition, deleteDefinition } from "@/api/sectionsApi";
+import { getCoursePage, deleteSection, deleteDefinition } from "@/api/sectionsApi";
 
 export default function Course() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [definitions, setDefinitions] = useState<Definition[]>([]);
   const [sections, setSections] = useState<Section[]>([]);
   const { courseId } = useParams();
@@ -88,18 +86,13 @@ export default function Course() {
   useEffect(() => {
       const fetchSections = async () => {
         try {
-          setLoading(true);
-          setError(null);
-  
           const sectionData = await getCoursePage(courseCode)
           setSections(sectionData.sections ?? []);
           setDefinitions(sectionData.definitions ?? []);
 
         } catch (err: unknown) {
-          setError(err instanceof Error ? err.message : "Unknown error");
-        } finally {
-          setLoading(false);
-        }
+          console.error(err instanceof Error ? err.message : "Unknown error");
+        } 
       };
   
       fetchSections();

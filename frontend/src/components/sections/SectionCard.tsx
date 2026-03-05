@@ -36,11 +36,7 @@ import {
     Separator 
 } from "../ui/separator";
 import { 
-    Avatar, 
-    AvatarFallback, 
     AvatarGroup, 
-    AvatarGroupCount, 
-    AvatarImage 
 } from "../ui/avatar";
 
 

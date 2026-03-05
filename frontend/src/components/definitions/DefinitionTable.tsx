@@ -9,7 +9,7 @@ import {
 } from "../ui/table";
 import { PencilLine, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { deleteDefinition, type Definition } from "@/api/sectionsApi";
+import type { Definition } from "@/api/sectionsApi";
 
 type DefinitionTableProps = {
   definitions: Definition[];       

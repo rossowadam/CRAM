@@ -68,9 +68,13 @@ export default function DefinitionForm({
       }
 
       form.reset();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Submission failed", error);
-      alert(error.message ?? "Failed to save definition")
+       if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("Failed to save definition");
+      }
     }
   }
 
