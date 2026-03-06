@@ -13,7 +13,7 @@ exports.getSectionsByCourseCode = async (courseCode) => {
 }
 
 // return array of sections with the same code and title
-exports.findSectionByTitle = async ({courseCode, title}) => {
+exports.findSectionByTitle = async ({ courseCode, title }) => {
     return await Section.find({ courseCode: courseCode, title: title }).lean();
 }
 
