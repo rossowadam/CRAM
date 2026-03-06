@@ -108,8 +108,8 @@ export default function Course() {
 
           {/* Course page header, this stays static, do not modify with dynamic content */}
           <div className="w-full flex flex-col sm:gap-3 sm:flex-row items-center ">
-            <h1 className="text-xl font-bold w-4/5 pb-2 capitalize text-center sm:text-4xl">
-              Welcome to the {courseId} course page!
+            <h1 className="text-xl font-bold w-4/5 pb-2 text-center sm:text-4xl">
+              Welcome to the {courseId.toUpperCase()} Course Page!
             </h1>
             <>
               {/* Horizontal on small screens */}
@@ -126,11 +126,11 @@ export default function Course() {
             </>
 
             <div className="flex flex-col items-center gap-2 w-full text-center sm:text-left">
-              <p className=" text-base font-thin font-instrument w-full capitalize">
-                Here you can collaborate with your classmates, find resources, and review definitions about all things {courseId}. 
+              <p className=" text-base font-thin font-instrument w-full">
+                Here, you can collaborate with your classmates, find resources, and review definitions about all things {courseId.toUpperCase()}. 
               </p>
               
-              <p className=" text-base font-thin font-instrument w-full capitalize italic">
+              <p className=" text-base font-thin font-instrument w-full italic">
                 Please remember to be respectful and follow the code of conduct while using this platform. Happy learning!
               </p>
             </div>
