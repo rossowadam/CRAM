@@ -9,9 +9,8 @@ const sectionService = require('../../services/sectionServices');
 test('sectionService - createsection', async (t) => {
     // Mock section data
     const sectionData = {    
-        id: 'section123',
-        title: 'Test section',
         courseCode: 'TC101',
+        title: 'Test section',
         description: 'derp',
         body: 'This is a test section'
     };

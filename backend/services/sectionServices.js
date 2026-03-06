@@ -12,7 +12,7 @@ exports.createSection = async (sectionData) => {
     const existingSection = await sectionRepository.findSectionByTitle(courseCode, title);
 
     // titles must be unique within a course
-    if (existingSection.length !== 0) {
+    if (existingSection) {
         throw new Error('Section with this title already exists');
     }
 
