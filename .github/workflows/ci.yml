@@ -35,7 +35,7 @@ jobs:
       - name: Run Tests
         run: |
           cd backend
-          # npm test (Uncomment this once you have tests defined)
+          npm test
           echo "Backend tests complete"
 
   # Job 2: Frontend CI
