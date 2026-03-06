@@ -14,16 +14,9 @@ import SectionDialog from "@/components/sections/SectionDialog";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import CourseSidebar from "@/components/layout/CourseSidebar";
 
-// given slug-form of courseId, return the course code as backend requires
-// abiz-0440 --> ABIZ 0440
-function getCourseCode(courseId: string): string {
-  const [subject, number] = courseId.split("-");
-  return `${subject.toUpperCase()} ${number}`;
-}
-
-import type { Definition } from "@/api/sectionsApi";
-import type { Section } from "@/api/sectionsApi";
+import type { Definition, Section } from "@/api/sectionsApi";
 import { getCoursePage, deleteSection, deleteDefinition } from "@/api/sectionsApi";
+import { getCourseCode } from "@/utils/courseHelpers";
 
 export default function Course() {
   const [definitions, setDefinitions] = useState<Definition[]>([]);

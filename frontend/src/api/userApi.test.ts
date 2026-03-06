@@ -218,9 +218,8 @@ describe("logoutUser", () => {
 
     // network failure
     it("does not throw if fetch rejects (network error)", async () => {
-        vi.spyOn(globalThis, "fetch").mockRejectedValue(
-            new Error("Network error")
-        );
+        vi.spyOn(console, "warn").mockImplementation(() => {});
+        vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network error"));
 
         await expect(logoutUser()).resolves.not.toThrow();
     });
@@ -231,15 +230,6 @@ describe("logoutUser", () => {
             ok: false,
             status: 400
         } as unknown as Response);
-
-        await expect(logoutUser()).resolves.not.toThrow();
-    });
-
-    // network failure
-    it("does not throw if fetch rejects (network error)", async () => {
-        vi.spyOn(globalThis, "fetch").mockRejectedValue(
-            new Error("Network error")
-        );
 
         await expect(logoutUser()).resolves.not.toThrow();
     });

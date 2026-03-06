@@ -16,7 +16,7 @@ exports.findCourseById = async (req, res) => {
         if (!course) {
             return res.status(404).json({ error: 'Course not found' });
         }
-        res.json(course);
+        res.status(200).json(course);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

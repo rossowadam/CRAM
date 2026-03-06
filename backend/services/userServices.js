@@ -1,7 +1,7 @@
 const userRepository = require('../repositories/userRepository');
 const passwordServices = require('./passwordServices');
 
-exports.findUserById = async (id) => {
+exports.getUserById = async (id) => {
     const user = await userRepository.findUserById(id);
     return user;
 }

@@ -104,9 +104,9 @@ test('UserController - createUser - duplicate email', async (t) => {
     assert.strictEqual(res.statusCode, 409);
     assert.deepStrictEqual(res.body, { error: 'User with this email already exists' });
 });
-test('UserController - findUserById', async (t) => {
+test('UserController - getUserById', async (t) => {
     
-    t.mock.method(userService, 'findUserById', async () => {
+    t.mock.method(userService, 'getUserById', async () => {
         return { id: '123', name: 'Misha', email: 'onion@example.com' };
     });
 
@@ -127,14 +127,14 @@ test('UserController - findUserById', async (t) => {
         return this;
         }
     };
-    await userController.findUserById(req, res);
+    await userController.getUserById(req, res);
     assert.strictEqual(res.statusCode, 200);
     assert.deepStrictEqual(res.body, { id: '123', name: 'Misha', email: 'onion@example.com' });
 });
 
-test('UserController - findUserById - user not found', async (t) => {
+test('UserController - getUserById - user not found', async (t) => {
     
-    t.mock.method(userService, 'findUserById', async () => {
+    t.mock.method(userService, 'getUserById', async () => {
         return null; 
     });
     const req = {
@@ -152,13 +152,13 @@ test('UserController - findUserById - user not found', async (t) => {
         return this;
         }
     };
-    await userController.findUserById(req, res);
+    await userController.getUserById(req, res);
     assert.strictEqual(res.statusCode, 404);
     assert.deepStrictEqual(res.body, { error: 'User not found' });
 }); 
-test('UserController - findUserById - server error', async (t) => {
+test('UserController - getUserById - server error', async (t) => {
     
-    t.mock.method(userService, 'findUserById', async () => {
+    t.mock.method(userService, 'getUserById', async () => {
         throw new Error('Database error');
     });
     const req = {
@@ -177,7 +177,7 @@ test('UserController - findUserById - server error', async (t) => {
         return this;
         }  
     };
-    await userController.findUserById(req, res);
+    await userController.getUserById(req, res);
     assert.strictEqual(res.statusCode, 500);
     assert.deepStrictEqual(res.body, { error: 'Database error' });
 });
