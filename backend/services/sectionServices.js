@@ -8,10 +8,7 @@ exports.createSection = async (sectionData) => {
     }
 
     // see if another section exists in the course with same title
-    const isDuplicateSection = await sectionRepository.isDuplicateSection(
-        courseCode,
-        title,
-    );
+    const isDuplicateSection = await sectionRepository.isDuplicateSection({courseCode, title});
 
     // titles must be unique within a course
     if (isDuplicateSection) {
