@@ -3,10 +3,7 @@ const assert = require('node:assert/strict');
 const sectionRepository = require('../../repositories/sectionRepository');
 const sectionService = require('../../services/sectionServices');
 
-
-
-
-test('sectionService - createsection', async (t) => {
+test('sectionService - createSection', async (t) => {
     // Mock section data
     const sectionData = {    
         courseCode: 'TC101',
@@ -14,16 +11,16 @@ test('sectionService - createsection', async (t) => {
         description: 'derp',
         body: 'This is a test section'
     };
-    t.mock.method(sectionRepository, 'findSectionByTitle', async (courseCode, title) => {
-        return null; // Simulate no existing section with the same course code
+    t.mock.method(sectionRepository, 'isDuplicateSection', async (courseCode, title) => {
+        return false; // Simulate no existing section with the same course code
     });
     t.mock.method(sectionRepository, 'createSection', async (data) => {
         return data; // Simulate successful section creation
     }); 
-    const createdsection = await sectionService.createSection(sectionData);
-    assert.deepStrictEqual(createdsection, sectionData);
+    const createdSection = await sectionService.createSection(sectionData);
+    assert.deepStrictEqual(createdSection, sectionData);
 });
-test('sectionService - createsection with incomplete data', async (t) => {
+test('sectionService - createSection with incomplete data', async (t) => {
     // Mock incomplete section data
     const sectionData = {    
         id: 'section123',
@@ -39,7 +36,7 @@ test('sectionService - createsection with incomplete data', async (t) => {
     }   
 });
 
-test('sectionService - createsection with duplicate section', async (t) => {
+test('sectionService - createSection with duplicate section', async (t) => {
     // Mock section data
     const sectionData = {
         id: 'section123',
@@ -48,8 +45,8 @@ test('sectionService - createsection with duplicate section', async (t) => {
         description: 'derp',
         body: 'This is a test section'
     };
-    t.mock.method(sectionRepository, 'findSectionByTitle', async (courseCode, title) => {
-        return sectionData; // Simulate existing course with the same course code
+    t.mock.method(sectionRepository, 'isDuplicateSection', async (courseCode, title) => {
+        return sectionData.length !== 0; // Simulate existing course with the same course code
     }); 
     try {
         await sectionService.createSection(sectionData);
