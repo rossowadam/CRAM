@@ -31,6 +31,7 @@ import {
 
 import { SearchIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import * as utils from "../utils/homeHelpers"
 
 /* TYPES */
 type CourseFromAPI = {
@@ -53,15 +54,6 @@ type CourseUI = CourseFromAPI & {
   attributesList: string[];
 };
 
-function slugifyCourseCode(code: string) {
-  return (code ?? "")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s/g, "-");
-}
-
 function useDebouncedValue<T>(value: T, delay = 300) {
   const [debounced, setDebounced] = useState(value);
 
@@ -71,25 +63,6 @@ function useDebouncedValue<T>(value: T, delay = 300) {
   }, [value, delay]);
 
   return debounced;
-}
-
-function normalizeAttributes(attributes: unknown): string[] {
-  if (Array.isArray(attributes)) {
-    return attributes.map(String).map((s) => s.trim()).filter(Boolean);
-  }
-  if (typeof attributes === "string") {
-    return attributes
-      .split(/[,;|]/g)
-      .map((s) => s.trim())
-      .filter(Boolean);
-  }
-  return [];
-}
-
-// Lab boolean is not in database.
-function inferHasLab(attrs: string[], raw: string) {
-  const text = `${attrs.join(" ")} ${raw ?? ""}`.toLowerCase();
-  return /\blab\b|\blaboratory\b/.test(text);
 }
 
 // Measures its own height and reports it (proper cleanup).
@@ -218,14 +191,14 @@ export default function Home() {
     const safe = (s?: string) => String(s ?? "").toLowerCase();
 
     return data.map((course) => {
-      const id = slugifyCourseCode(course.courseCode);
-      const attributesList = normalizeAttributes(course.attributes);
+      const id = utils.slugifyCourseCode(course.courseCode);
+      const attributesList = utils.normalizeAttributes(course.attributes);
 
       // Mongo will default empty strings to "None".
       const prereqText = (course.prerequisites ?? "").toLowerCase().trim();
       const hasPrereqs = !!prereqText && !/^none|n\/a|no prerequisite/i.test(prereqText);
 
-      const hasLab = inferHasLab(attributesList, course.attributes);
+      const hasLab = utils.inferHasLab(attributesList, course.attributes);
 
       return {
         ...course,
@@ -344,7 +317,7 @@ export default function Home() {
                 <div className="mt-4 text-xs sm:text-sm opacity-80 flex flex-wrap gap-x-4 gap-y-2 items-center">
                   <span>Credits: {course.credits}</span>
 
-                  <span>{course.hasPrereqs ? "Has Pre-Requisite(s)" : "No Pre-Requisite"}</span>
+                  <span>{course.hasPrereqs ? "Has Prerequisite(s)" : "No Prerequisites"}</span>
 
                   <span className="inline-flex flex-wrap gap-1">
                       {course.attributesList.map((a) => (
