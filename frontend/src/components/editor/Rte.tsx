@@ -120,7 +120,7 @@ export default function Rte({onSuccess, courseCode, mode, sectionId, initialValu
                         name="description"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>description</FormLabel>
+                                <FormLabel>Description</FormLabel>
                                 <FormControl>
                                     <Input placeholder="description" {...field} />
                                 </FormControl>
@@ -133,7 +133,7 @@ export default function Rte({onSuccess, courseCode, mode, sectionId, initialValu
                         name="body"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>body</FormLabel>
+                                <FormLabel>Body</FormLabel>
                                 <FormControl>
                                     <TipTap description={field.value} onChange={field.onChange}/>
                                 </FormControl>
