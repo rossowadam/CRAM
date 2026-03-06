@@ -8,45 +8,45 @@ import Home from "./Home";
 ============================================================ */
 
 const mockCourses = [
-{
-    _id: "1",
-    title: "Introduction to Computer Science",
-    subject: "COMP",
-    number: "1010",
-    courseCode: "COMP 1010",
-    description: "An intro course to CS concepts.",
-    credits: 3,
-    prerequisites: "None",
-    attributes: "Lab",
-},
-{
-    _id: "2",
-    title: "Calculus One",
-    subject: "MATH",
-    number: "1500",
-    courseCode: "MATH 1500",
-    description: "Differential calculus.",
-    credits: 3,
-    prerequisites: "Pre-Calculus 40S",
-    attributes: "Lecture",
-},
-{
-    _id: "3",
-    title: "Technical Writing",
-    subject: "ENGL",
-    number: "1400",
-    courseCode: "ENGL 1400",
-    description: "Writing for technical contexts.",
-    credits: 3,
-    prerequisites: "None",
-    attributes: "",
-},
+    {
+        _id: "1",
+        title: "Introduction to Computer Science",
+        subject: "COMP",
+        number: "1010",
+        courseCode: "COMP 1010",
+        description: "An intro course to CS concepts.",
+        credits: 3,
+        prerequisites: "None",
+        attributes: "Lab",
+    },
+    {
+        _id: "2",
+        title: "Calculus One",
+        subject: "MATH",
+        number: "1500",
+        courseCode: "MATH 1500",
+        description: "Differential calculus.",
+        credits: 3,
+        prerequisites: "Pre-Calculus 40S",
+        attributes: "Lecture",
+    },
+    {
+        _id: "3",
+        title: "Technical Writing",
+        subject: "ENGL",
+        number: "1400",
+        courseCode: "ENGL 1400",
+        description: "Writing for technical contexts.",
+        credits: 3,
+        prerequisites: "None",
+        attributes: "",
+    },
 ];
 
 function renderHome() {
     return render(
         <MemoryRouter>
-        <Home />
+            <Home />
         </MemoryRouter>
     );
 }
@@ -65,7 +65,7 @@ function mockFetchFailure() {
 }
 
 beforeEach(() => {
-vi.restoreAllMocks();
+    vi.restoreAllMocks();
 });
 
 /* ============================================================
