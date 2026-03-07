@@ -1,0 +1,20 @@
+{
+    "name": "cram-root",
+    "version": "1.0.0",
+    "description": "Root package for CRAM project",
+    "scripts": {
+        "install-all": "npm install --prefix backend && npm install --prefix frontend",
+        "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+        "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\"",
+        "test": "concurrently \"npm run test --prefix backend\" \"npm run test --prefix frontend\"",
+        "test:watch": "concurrently \"npm run test --prefix backend -- --watch\" \"npm run test --prefix frontend -- --watch\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    },
+    "dependencies": {
+        "argon2": "^0.44.0",
+        "react-virtualized-auto-sizer": "^2.0.3",
+        "react-window": "^2.2.7"
+    }
+}

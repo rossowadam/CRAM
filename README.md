@@ -4,6 +4,11 @@
 
 A collaborative wiki-style knowledge base for University of Manitoba courses.
 
+## Quick Links
+- [Meeting Minutes](documents/meeting-minutes/)
+- [Conventions and test plans](documents/)
+- [Architecture diagrams](diagrams/)
+
 ## Project Vision & Summary
 
 CRAM is a collaboratively edited platform for the University of Manitoba. It allows students to build and maintain course-specific knowledge, with each course having dedicated pages for shared notes and definitions. While this is available across many resources, it is often fragmented and verbose. CRAM provides the tools and structure to consolidate this information into a shared knowledge base, allowing students to focus on what matters most rather than searching for it.
