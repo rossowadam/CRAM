@@ -2,7 +2,7 @@ const sectionRepository = require("../repositories/sectionRepository");
 
 exports.createSection = async (sectionData, sessionData ) => {
     const { courseCode, title, description, body } = sectionData; // extract data
-    
+
     if (!courseCode || !title || !description || !body) {
         throw new Error("Section data is incomplete");
     }
@@ -23,7 +23,7 @@ exports.createSection = async (sectionData, sessionData ) => {
         description,
         body,
         contributors: [{
-            name: sessionData.username,
+            userId: sessionData.id,
             date: new Date(),
             role: sessionData.role,
         }]
