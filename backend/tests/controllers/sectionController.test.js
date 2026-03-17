@@ -13,7 +13,7 @@ test('SectionController - createSection success', async (t) => {
     });
     const req = { 
         body: sectionData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -41,7 +41,7 @@ test('SectionController - createSection incomplete data', async (t) => {
     });
     const req = { 
         body: sectionData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -70,7 +70,7 @@ test('SectionController - createSection duplicate section', async (t) => {
     });
     const req = { 
         body: sectionData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -98,7 +98,7 @@ test('SectionController - createSection server error', async (t) => {
     });
     const req = { 
         body: sectionData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -196,7 +196,7 @@ test('SectionController - updateSection success', async (t) => {
     const req = { 
         params: { id: 'section123' }, 
         body: updateData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -223,7 +223,7 @@ test('SectionController - updateSection not found', async (t) => {
     const req = { 
         params: { id: 'nonexistent' }, 
         body: updateData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
@@ -250,7 +250,7 @@ test('SectionController - updateSection server error', async (t) => {
     const req = { 
         params: { id: 'section123' }, 
         body: updateData,
-        session: { user: { username: 'testuser', role: 'student' } }
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
     };
     const res = {
         statusCode: 0,
