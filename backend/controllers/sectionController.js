@@ -3,7 +3,8 @@ const sectionService = require('../services/sectionServices');
 exports.createSection = async (req, res) => {
     try {
         const sectionData = req.body;
-        const newSection = await sectionService.createSection(sectionData);
+        const sessionData = req.session.user;
+        const newSection = await sectionService.createSection(sectionData, sessionData);
         res.status(201).json(newSection);
     } catch (error) {
         if (error.message.includes('already exists')) {

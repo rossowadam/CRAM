@@ -1,7 +1,9 @@
 const sectionRepository = require("../repositories/sectionRepository");
 
-exports.createSection = async (sectionData) => {
+exports.createSection = async (sectionData, sessionData ) => {
     const { courseCode, title, description, body } = sectionData; // extract data
+
+    console.log(sessionData);
 
     if (!courseCode || !title || !description || !body) {
         throw new Error("Section data is incomplete");
@@ -16,11 +18,17 @@ exports.createSection = async (sectionData) => {
     }
 
     // create new section object to match Section schema
+    // use sessionData from the cookie to get contributor details
     const newSection = {
         courseCode: courseCode,
         title,
         description,
         body,
+        contributors: [{
+            name: sessionData.username,
+            date: new Date(),
+            role: sessionData.role,
+        }]
     };
 
     return await sectionRepository.createSection(newSection);
