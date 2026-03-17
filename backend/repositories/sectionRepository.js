@@ -29,10 +29,12 @@ exports.deleteSection = async (id) => {
 exports.updateSection = async (id, updateData, sessionData) => {
     // first try to update the date if contributor already exists
     const existing = await Section.findOneAndUpdate(
-        { _id: id, "contributors.name": sessionData.username },
+        { _id: id, "contributors.userId": sessionData.id },
         {
-            ...updateData,
-            $set: { "contributors.$.date": new Date() }
+            $set: { 
+                ...updateData,
+                "contributors.$.date": new Date() 
+            }
         },
         { new: true }
     ).lean();
@@ -45,7 +47,7 @@ exports.updateSection = async (id, updateData, sessionData) => {
                 ...updateData,
                 $push: {
                     contributors: {
-                        name: sessionData.username,
+                        userId: sessionData.id,
                         date: new Date(),
                         role: sessionData.role
                     }
