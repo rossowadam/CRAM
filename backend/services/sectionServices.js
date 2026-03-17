@@ -1,6 +1,6 @@
 const sectionRepository = require("../repositories/sectionRepository");
 
-exports.createSection = async (sectionData) => {
+exports.createSection = async (sectionData, sessionData ) => {
     const { courseCode, title, description, body } = sectionData; // extract data
 
     if (!courseCode || !title || !description || !body) {
@@ -16,11 +16,17 @@ exports.createSection = async (sectionData) => {
     }
 
     // create new section object to match Section schema
+    // use sessionData from the cookie to get contributor details
     const newSection = {
         courseCode: courseCode,
         title,
         description,
         body,
+        contributors: [{
+            userId: sessionData.id,
+            date: new Date(),
+            role: sessionData.role,
+        }]
     };
 
     return await sectionRepository.createSection(newSection);
@@ -35,6 +41,6 @@ exports.deleteSection = async (id) => {
     return await sectionRepository.deleteSection(id);
 };
 
-exports.updateSection = async (id, updateData) => {
-    return await sectionRepository.updateSection(id, updateData);
+exports.updateSection = async (id, updateData, sessionData) => {
+    return await sectionRepository.updateSection(id, updateData, sessionData);
 };

@@ -8,10 +8,13 @@ test('SectionController - createSection success', async (t) => {
         id: 'section123',
         courseCode: "TEST 4200",
     };
-    t.mock.method(sectionService, "createSection", async (data) => {
+    t.mock.method(sectionService, "createSection", async (data, sessionData) => {
         return data;
     });
-    const req = { body: sectionData };
+    const req = { 
+        body: sectionData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -33,10 +36,13 @@ test('SectionController - createSection incomplete data', async (t) => {
     const sectionData = {
         courseCode: "TEST 4200"
     };
-    t.mock.method(sectionService, "createSection", async (data) => {
+    t.mock.method(sectionService, "createSection", async (data, sessionData) => {
         throw new Error('Section data is incomplete');
     });
-    const req = { body: sectionData };
+    const req = { 
+        body: sectionData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -59,10 +65,13 @@ test('SectionController - createSection duplicate section', async (t) => {
         courseCode: "TEST 4200",
         title: "dingaling dingdong"
     };
-    t.mock.method(sectionService, "createSection", async (data) => {
+    t.mock.method(sectionService, "createSection", async (data, sessionData) => {
         throw new Error('Section with this number already exists');
     });
-    const req = { body: sectionData };
+    const req = { 
+        body: sectionData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -84,10 +93,13 @@ test('SectionController - createSection server error', async (t) => {
     const sectionData = {
         courseCode: "TEST 4200"
     };
-    t.mock.method(sectionService, "createSection", async (data) => {
+    t.mock.method(sectionService, "createSection", async (data, sessionData) => {
         throw new Error('Database error');
     });
-    const req = { body: sectionData };
+    const req = { 
+        body: sectionData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -178,10 +190,14 @@ test('SectionController - getSectionsByCourseCode server error', async (t) => {
 test('SectionController - updateSection success', async (t) => {
     const updateData = { title: 'Dr. Pepper' };
     const updatedSection = { id: 'section123', courseCode: 'TEST 4200', title: 'Dr. Pepper' };
-    t.mock.method(sectionService, "updateSection", async (id, data) => {
+    t.mock.method(sectionService, "updateSection", async (id, data, sessionData) => {
         return updatedSection;
     });
-    const req = { params: { id: 'section123' }, body: updateData };
+    const req = { 
+        params: { id: 'section123' }, 
+        body: updateData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -201,10 +217,14 @@ test('SectionController - updateSection success', async (t) => {
 
 test('SectionController - updateSection not found', async (t) => {
     const updateData = { title: 'Onions in Macedonia' };
-    t.mock.method(sectionService, "updateSection", async (id, data) => {
+    t.mock.method(sectionService, "updateSection", async (id, data, sessionData) => {
         return null;
     });
-    const req = { params: { id: 'nonexistent' }, body: updateData };
+    const req = { 
+        params: { id: 'nonexistent' }, 
+        body: updateData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
@@ -224,10 +244,14 @@ test('SectionController - updateSection not found', async (t) => {
 
 test('SectionController - updateSection server error', async (t) => {
     const updateData = { title: 'Onions in Macedonia' };
-    t.mock.method(sectionService, "updateSection", async (id, data) => {
+    t.mock.method(sectionService, "updateSection", async (id, data, sessionData) => {
         throw new Error('Database error');
     });
-    const req = { params: { id: 'section123' }, body: updateData };
+    const req = { 
+        params: { id: 'section123' }, 
+        body: updateData,
+        session: { user: { id: '69b8d725966dd801fe90d76f', role: 'student' } }
+    };
     const res = {
         statusCode: 0,
         body: null,
