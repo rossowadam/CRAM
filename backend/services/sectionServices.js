@@ -43,6 +43,6 @@ exports.deleteSection = async (id) => {
     return await sectionRepository.deleteSection(id);
 };
 
-exports.updateSection = async (id, updateData) => {
-    return await sectionRepository.updateSection(id, updateData);
+exports.updateSection = async (id, updateData, sessionData) => {
+    return await sectionRepository.updateSection(id, updateData, sessionData);
 };

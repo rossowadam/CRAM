@@ -43,8 +43,9 @@ exports.deleteSection = async (req, res) => {
 exports.updateSection = async (req, res) => {   
     const { id } = req.params;
     const updateData = req.body;
+    const sessionData = req.session.user;
     try {
-        const updatedSection = await sectionService.updateSection(id, updateData);
+        const updatedSection = await sectionService.updateSection(id, updateData, sessionData);
         if (!updatedSection) {
             return res.status(404).json({ error: 'Section not found' });
         }
