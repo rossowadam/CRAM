@@ -11,7 +11,7 @@ test('sectionService - createSection', async (t) => {
         description: 'derp',
         body: 'This is a test section'
     };
-    const sessionData = { username: 'testuser', role: 'student' };
+    const sessionData = { id: '69b8d725966dd801fe90d76f', role: 'student' };
     t.mock.method(sectionRepository, 'isDuplicateSection', async (courseCode, title) => {
         return false; // Simulate no existing section with the same course code
     });
@@ -26,7 +26,7 @@ test('sectionService - createSection', async (t) => {
     assert.equal(createdSection.body, sectionData.body);
     // Verify contributor was added from sessionData
     assert.equal(createdSection.contributors.length, 1);
-    assert.equal(createdSection.contributors[0].name, sessionData.username);
+    assert.equal(createdSection.contributors[0].userId, sessionData.id);
     assert.equal(createdSection.contributors[0].role, sessionData.role);
 });
 
@@ -38,7 +38,7 @@ test('sectionService - createSection with incomplete data', async (t) => {
         courseCode: 'TC101',
         body: 'This is a test section'
     };
-    const sessionData = { username: 'testuser', role: 'student' };
+    const sessionData = { id: '69b8d725966dd801fe90d76f', role: 'student' };
     try {
         await sectionService.createSection(sectionData, sessionData);
         assert.fail('Should have thrown an error for incomplete section data');
@@ -56,7 +56,7 @@ test('sectionService - createSection with duplicate section', async (t) => {
         description: 'derp',
         body: 'This is a test section'
     };
-    const sessionData = { username: 'testuser', role: 'student' };
+    const sessionData = { id: '69b8d725966dd801fe90d76f', role: 'student' };
     t.mock.method(sectionRepository, 'isDuplicateSection', async (courseCode, title) => {
         return sectionData.length !== 0; // Simulate existing course with the same course code
     }); 
