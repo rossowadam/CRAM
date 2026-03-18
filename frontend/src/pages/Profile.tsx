@@ -2,12 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Pencil } from "lucide-react";
-import { useParams } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 export default function Profile() {
-    const { userId } = useParams();
     // Chart data, can be any kind of data we can decide on what we want to display
     const chartData = [
         { month: "January", desktop: 186, mobile: 80 },

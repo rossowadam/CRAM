@@ -11,7 +11,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
