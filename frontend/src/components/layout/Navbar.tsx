@@ -40,7 +40,7 @@ function Navbar() {
                 {isAuthenticated ? (
                     <Menubar className="border-none">
                         <MenubarMenu >
-                            <MenubarTrigger>
+                            <MenubarTrigger className="hover:cursor-pointer">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
                                     <AvatarFallback>{user?.username}</AvatarFallback>
@@ -50,7 +50,9 @@ function Navbar() {
                                 <MenubarGroup>
                                     <MenubarItem className="hover:bg-background hover:cursor-pointer">
                                         <User className="text-secondary" />
-                                        Profile Page
+                                        <Link to={`/profile/${user?.id}`}>
+                                            Profile Page
+                                        </Link>
                                     </MenubarItem>
                                 </MenubarGroup>
                                 <MenubarSeparator />
