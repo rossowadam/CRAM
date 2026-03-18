@@ -1,0 +1,132 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Pencil } from "lucide-react";
+import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+
+export default function Profile() {
+    // Chart data, can be any kind of data we can decide on what we want to display
+    const chartData = [
+        { month: "January", desktop: 186, mobile: 80 },
+        { month: "February", desktop: 305, mobile: 200 },
+        { month: "March", desktop: 237, mobile: 120 },
+        { month: "April", desktop: 73, mobile: 190 },
+        { month: "May", desktop: 209, mobile: 130 },
+        { month: "June", desktop: 214, mobile: 140 },
+    ]
+
+    // Configures the chart labels and color
+    const chartConfig = {
+        desktop: {
+            label: "Desktop",
+            color: "#2563eb",
+        },
+        mobile: {
+            label: "Mobile",
+            color: "#60a5fa",
+        },
+    } satisfies ChartConfig
+
+
+    return(
+        <div className="flex flex-row my-5 gap-3 justify-center w-full">
+            {/* Profile management section */}
+            <div className="flex flex-col gap-2 p-4 w-1/4 bg-primary rounded-md self-start">
+                <h1 className="font-instrument text-lg font-bold">Profile Details</h1>
+                <Separator orientation="horizontal" className="my-0.5 bg-secondary" />
+
+                {/* Profile picture */}
+                <div className="flex flex-row items-center justify-between p-2 gap-5">
+                    <p className="font-funnel font-thin text-base text-foreground">
+                        Profile Picture:
+                    </p>
+                    <div className="relative group">
+                        <Avatar size="lg">
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>username</AvatarFallback>
+                        </Avatar>
+
+                        {/* Dark overlay */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-full" />
+
+                        <Pencil className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition text-secondary cursor-pointer" />
+                    </div>
+                </div>
+
+                {/* Role */}
+                <div className="flex flex-row items-center justify-between p-2 gap-5">
+                    <p className="font-funnel font-thin text-base text-foreground">Role:</p>
+                    <p className="font-funnel font-thin text-sm text-foreground">Put Role here</p>
+                </div>
+
+                {/* Username */}
+                <div className="flex flex-row items-center justify-between p-2 gap-5">
+                    <p className="font-funnel font-thin text-base text-foreground">Username:</p>
+
+                    <div className="flex flex-row gap-1.5">
+                        <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
+                        <p className="font-funnel font-thin text-sm text-foreground">Put user name here</p>
+                    </div>
+                </div>
+
+                {/* Email */}
+                <div className="flex flex-row items-center justify-between p-2 gap-5">
+                    <p className="font-funnel font-thin text-base text-foreground">Email:</p>
+                    <div className="flex flex-row gap-1.5">
+                        <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
+                        <p className="font-funnel font-thin text-sm text-foreground">Put email here</p>
+                    </div>
+                </div>
+
+                {/* Password */}
+                <div className="flex flex-row items-center justify-center p-2 gap-5">
+                    <Button variant="outline" className="hover:bg-secondary hover:text-background hover:cursor-pointer">Update password</Button>
+                </div>
+
+            </div>  
+
+            {/* Contributions and recent activity container */}
+            <div className="flex flex-col gap-2 w-2/4 ">
+                {/* Contributions Sections */}
+                <div className="bg-primary p-4 rounded-md">
+                    {/* Header */}
+                    <h1 className="font-instrument text-lg font-bold">Contributions</h1>
+                    <Separator orientation="horizontal" className="my-1 bg-secondary" />
+
+                    {/* Chart */}
+                    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                        <BarChart accessibilityLayer data={chartData}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="month"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={(value) => value.slice(0, 3)}
+                            />
+                            <ChartTooltip content={<ChartTooltipContent/>} />
+                            <ChartLegend content={<ChartLegendContent />} />
+                            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                        </BarChart>
+                    </ChartContainer>
+                </div>
+                {/* Recent Activity Section */}
+                <div className="bg-primary p-4 rounded-md">
+                    {/* Header */}
+                    <h1 className="font-instrument text-lg font-bold">Recent Activity</h1>
+                    <Separator orientation="horizontal" className="my-1 bg-secondary" />
+                    {/* Populate recent activity */}
+                    <div className="flex flew-row justify-between bg-background p-2 rounded-lg">
+                        <p>Course: {}</p>
+                        <p>Date: {}</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    );
+
+}
