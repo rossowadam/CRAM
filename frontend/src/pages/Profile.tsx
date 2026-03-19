@@ -9,11 +9,12 @@ import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
-import { updateUser } from "@/api/userApi";
+import { getUserById, updateUser } from "@/api/userApi";
 
 export default function Profile() {
     const { userId } = useParams();
-    const { user, setUser } = useAuth();
+    const { user, setUser } = useAuth(); // current logged-in user
+    const [profileUser, setProfileUser] = useState(null); // details of the profile user
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
@@ -45,6 +46,25 @@ export default function Profile() {
             color: "#60a5fa",
         },
     } satisfies ChartConfig
+
+    // update the profile user details based on the id of the page
+    useEffect(() => {
+        if (!userId) return;
+
+        const update = async () => {
+            try {
+                setServerError(null);
+                const profileUserDetails = await getUserById(userId);
+                setProfileUser(profileUserDetails);
+            } catch (err) {
+                setServerError(
+                    err instanceof Error ? err.message : "Something went wrong."
+                );
+            }
+        };
+
+        update();
+    }, [userId]);
 
     // run the update user api request upon profile pic change
     useEffect(() => {
