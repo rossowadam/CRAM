@@ -30,7 +30,7 @@ export default function ProfilePicDialog({ open, setOpen, onSelect }: ProfilePic
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-3 overflow-y-auto max-h-[60vh]">
                     {PROFILE_PICS.map((src) => (
                         <img
                             key={src}
