@@ -139,7 +139,15 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
 
                     <Separator orientation="horizontal" className="bg-secondary mb-2"/>
                     
-                    <CollapsibleContent className="flex flex-col items-start gap-2 p-2.5 pt-0 text-xs font-instrument font-thin sm:text-sm">
+                    <CollapsibleContent 
+                        className="
+                            flex flex-col items-start gap-2 p-2.5 pt-0 text-xs font-instrument font-thin sm:text-sm
+                            [&_ul]:list-disc [&_ul]:ml-6
+                            [&_ol]:list-decimal [&_ol]:ml-6
+                            [&_li]:my-1
+                            [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-2
+                        "
+                    >
                         <div dangerouslySetInnerHTML={{__html: section.body}}/>
                     </CollapsibleContent>
                 </Collapsible>     
