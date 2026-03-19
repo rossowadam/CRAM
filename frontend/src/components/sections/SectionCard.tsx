@@ -51,10 +51,11 @@ type SectionCardProps = {
 export default function SectionCard({ section, onEdit, onDelete }: SectionCardProps) {
     return(
 
-        <Card  className="bg-primary w-full">
+        <Card  className="bg-primary m-0  border-none w-full">
+
             <CardHeader>
 
-                <CardTitle className="text-left font-funnel font-base text-xl text-foreground sm:text-2xl">
+                <CardTitle className="text-left font-funnel font-bold text-xl text-secondary sm:text-2xl">
                     {section.title}
                 </CardTitle>
 
@@ -66,7 +67,7 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
                     <HoverCard>
                         <HoverCardTrigger>             
                             <Button
-                                className="hover:text-secondary hover:cursor-pointer"
+                                className=" hover:text-secondary hover:cursor-pointer"
                                 aria-label="Edit section"
                                 onClick={() => onEdit(section)}
                             >
@@ -128,7 +129,7 @@ export default function SectionCard({ section, onEdit, onDelete }: SectionCardPr
                     <CollapsibleTrigger asChild className="mb-2">
                         <Button 
                         variant="ghost" 
-                        className="group w-full bg-primary hover:bg-secondary hover:cursor-pointer" 
+                        className="group w-full bg-primary boder-1 border-foreground hover:bg-secondary hover:cursor-pointer" 
                         aria-label="Expand Section"
                         >
                             View Section
