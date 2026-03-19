@@ -11,19 +11,24 @@ import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
 
+interface ProfileUser {
+    id: string;
+    username: string;
+    email: string;
+    role: string;
+    profilePic?: string;
+}
+
 export default function Profile() {
     const { userId } = useParams();
     const { user, setUser } = useAuth(); // current logged-in user
-    const [profileUser, setProfileUser] = useState(null); // details of the profile user
+    const [profileUser, setProfileUser] = useState<ProfileUser | null>(null); // details of the profile user
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
 
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
-
-    // TODO: show the other user's profile instead of just the shadcn one
-    const avatarKey = isOwnProfile ? user?.profilePic ?? "" : "https://github.com/shadcn.png";
 
     // Chart data, can be any kind of data we can decide on what we want to display
     const chartData = [
@@ -85,6 +90,10 @@ export default function Profile() {
         update();
     }, [selectedPic]);
 
+    // set avatar key to be the user if they're on their own page
+    // otherwise, to the key for that profile
+    const avatarKey = isOwnProfile ? user?.profilePic ?? "" : profileUser?.profilePic ?? "";
+
     return(
         <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
             {/* Profile management section */}
@@ -103,7 +112,7 @@ export default function Profile() {
                     <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
                         <Avatar size="lg">
                             <AvatarImage src={AVATAR_MAP[avatarKey ?? ""] ?? "https://github.com/shadcn.png"} />
-                            <AvatarFallback>username</AvatarFallback> 
+                            <AvatarFallback>{profileUser?.username ?? "-"}</AvatarFallback> 
                         </Avatar>
 
                         {/* Dark overlay */}
@@ -126,7 +135,7 @@ export default function Profile() {
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Role:</p>
-                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Add role here</p>
+                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.role ?? "-"}</p>
                 </div>
 
                 {/* Username */}
@@ -135,7 +144,7 @@ export default function Profile() {
 
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Add username here</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.username ?? "-"}</p>
                     </div>
                 </div>
 
@@ -144,7 +153,7 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">add email here</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.email ?? "-"}</p>
                     </div>
                 </div>
 
