@@ -106,7 +106,7 @@ export default function Profile() {
                 {/* Profile picture */}
                 <div className="flex flex-row items-center justify-between sm:p-2 sm:gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">
-                        Profile Picture:
+                        Avatar:
                     </p>
                     {/* Render the stored avatar or default pic */}
                     <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
