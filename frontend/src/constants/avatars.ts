@@ -7,6 +7,7 @@ import avatar6 from "../assets/avatars/avatar6.webp";
 import avatar7 from "../assets/avatars/avatar7.webp";
 import avatar8 from "../assets/avatars/avatar8.webp";
 import avatar9 from "../assets/avatars/avatar9.webp";
+import avatar10 from "../assets/avatars/avatar10.webp";
 
 export const AVATAR_MAP: Record<string, string> = {
     avatar1,
@@ -18,4 +19,5 @@ export const AVATAR_MAP: Record<string, string> = {
     avatar7,
     avatar8,
     avatar9,
+    avatar10,
 };
