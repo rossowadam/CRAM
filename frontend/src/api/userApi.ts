@@ -136,5 +136,11 @@ export async function getUserById(id: string) {
         } 
     }
 
-    return body;
+    return {
+        id: body._id,
+        username: body.user_name,
+        email: body.email,
+        role: body.role.charAt(0).toUpperCase() + body.role.slice(1), // student --> Student
+        profilePic: body.profile_pic,
+    };
 }
