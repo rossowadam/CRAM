@@ -6,7 +6,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenuButton,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 import type { Section } from "@/api/sectionsApi"
@@ -19,8 +18,6 @@ type CourseSidebarProps = {
 export default function CourseSidebar({
     sections, courseCode
 }: CourseSidebarProps) {
-
-    const { open } = useSidebar()
 
     const scrollTo = (id: string) => {
         const el = document.getElementById(id);
