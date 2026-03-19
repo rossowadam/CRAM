@@ -69,7 +69,7 @@ export default function Profile() {
         };
 
         update();
-    }, [userId]);
+    }, [userId, isOwnProfile]);
 
     // run the update user api request upon profile pic change
     useEffect(() => {
