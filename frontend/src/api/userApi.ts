@@ -118,3 +118,23 @@ export async function updateUser(id: string, data: {
 
     return body;
 }
+
+// Search for a user by the id. Return their full details.
+export async function getUserById(id: string) {
+    const response = await fetch(`/api/v1/user/${id}`, {
+        credentials: "include",
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        switch(response.status) {
+            case 404:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        } 
+    }
+
+    return body;
+}
