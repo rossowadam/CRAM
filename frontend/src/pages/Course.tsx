@@ -103,8 +103,8 @@ export default function Course() {
     >
       
       <CourseSidebar sections={sections} courseCode={courseCode}/>
-      <div className="flex-1 min-h-0 w-full overflow-y-auto">
-        <div className="flex flex-col items-center w-full min-w-0 gap-3 sm:max-w-xl lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl mx-auto px-6 py-6">
+      <div className="flex justify-center min-h-0 w-full overflow-y-auto">
+        <div className="flex flex-col items-center w-full gap-3 px-6 py-6 md:w-4/5 lg:w-6/7 xl:w-6/8 2xl:w-6/10 ">
 
           {/* Course page header, this stays static, do not modify with dynamic content */}
           <div className="w-full flex flex-col sm:gap-3 sm:flex-row items-center ">
@@ -177,17 +177,20 @@ export default function Course() {
           <Separator orientation="horizontal" className="bg-foreground"/>
 
           {/* Display sections */}
-          
-          {sections?.map((section) => (
-            <div className="w-full" id={`section-${section._id}`}>
-              <SectionCard
-              key={section._id}
-              section={section}
-              onEdit={(s) => { setEditSection(s); setOpenCreate(true); }}
-              onDelete={handleDeleteSection}
-              />
-            </div>
-          ))}
+          <div className="bg-primary p-2 rounded-2xl w-full">
+
+            {sections?.map((section) => (
+              <div className="w-full bg-primary" id={`section-${section._id}`}>
+                <SectionCard
+                key={section._id}
+                section={section}
+                onEdit={(s) => { setEditSection(s); setOpenCreate(true); }}
+                onDelete={handleDeleteSection}
+                />
+                {/* <Separator orientation="horizontal" /> */}
+              </div>
+            ))}
+          </div>
 
           {/* Definition table heading */}
           <div className="flex flex-row gap-2 w-full justify-between items-center p-2" id="definitions">
