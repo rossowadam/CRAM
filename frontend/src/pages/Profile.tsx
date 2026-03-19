@@ -14,7 +14,7 @@ export default function Profile() {
     const { user } = useAuth();
 
     // render profile change components if the profile belongs to the user
-    const isOwnProfile = user?.id != userId;
+    const isOwnProfile = user?.id === userId;
 
     // Chart data, can be any kind of data we can decide on what we want to display
     const chartData = [
