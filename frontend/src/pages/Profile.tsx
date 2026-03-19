@@ -15,7 +15,7 @@ export default function Profile() {
     const { userId } = useParams();
     const { user, setUser } = useAuth();
     const [picDialogOpen, setPicDialogOpen] = useState(false);
-    const [selectedPic, setSelectedPic] = useState("https://github.com/shadcn.png");
+    const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
 
     // render profile change components if the profile belongs to the user
@@ -83,7 +83,7 @@ export default function Profile() {
                     <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
                         <Avatar size="lg">
                             <AvatarImage src={AVATAR_MAP[avatarKey ?? ""] ?? "https://github.com/shadcn.png"} />
-                            <AvatarFallback>username</AvatarFallback>
+                            <AvatarFallback>username</AvatarFallback> 
                         </Avatar>
 
                         {/* Dark overlay */}
