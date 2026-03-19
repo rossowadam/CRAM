@@ -97,7 +97,7 @@ exports.loginUser = async (req, res) => {
             email: user.email,
             username: user.user_name,
             role: user.role,
-            profilePic: user.profilePic,
+            profilePic: user.profile_pic,
         }
 
         return res.status(200).json(req.session.user);
