@@ -58,7 +58,7 @@ export default function Profile() {
                     <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
                         <Avatar size="lg">
                             <AvatarImage src={selectedPic} />
-                            <AvatarFallback>{user?.username ?? "-"}</AvatarFallback>
+                            <AvatarFallback>username</AvatarFallback>
                         </Avatar>
 
                         {/* Dark overlay */}
@@ -80,7 +80,7 @@ export default function Profile() {
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Role:</p>
-                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.role ?? "-"}</p>
+                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Add role here</p>
                 </div>
 
                 {/* Username */}
@@ -89,7 +89,7 @@ export default function Profile() {
 
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.username ?? "-"}</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Add username here</p>
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.email ?? "-"}</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">add email here</p>
                     </div>
                 </div>
 
