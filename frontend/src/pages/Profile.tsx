@@ -30,15 +30,17 @@ export default function Profile() {
 
 
     return(
-        <div className="flex flex-row my-5 gap-3 justify-center w-full">
+        <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
             {/* Profile management section */}
-            <div className="flex flex-col gap-2 p-4 w-1/4 bg-primary rounded-md self-start">
-                <h1 className="font-instrument text-lg font-bold">Profile Details</h1>
+            <div className="flex flex-col gap-2 p-3 self-center bg-primary rounded-md sm:p-4 w-3/4 sm:w-2/5 xl:w-1/4 sm:self-start">
+                <h1 className="font-instrument text-base sm:text-lg font-bold">
+                    Profile Details
+                </h1>
                 <Separator orientation="horizontal" className="my-0.5 bg-secondary" />
 
                 {/* Profile picture */}
-                <div className="flex flex-row items-center justify-between p-2 gap-5">
-                    <p className="font-funnel font-thin text-base text-foreground">
+                <div className="flex flex-row items-center justify-between sm:p-2 sm:gap-5">
+                    <p className="font-funnel font-thin text-sm sm:text-base text-foreground">
                         Profile Picture:
                     </p>
                     <div className="relative group">
@@ -55,43 +57,43 @@ export default function Profile() {
                 </div>
 
                 {/* Role */}
-                <div className="flex flex-row items-center justify-between p-2 gap-5">
-                    <p className="font-funnel font-thin text-base text-foreground">Role:</p>
-                    <p className="font-funnel font-thin text-sm text-foreground">Put Role here</p>
+                <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
+                    <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Role:</p>
+                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put Role here</p>
                 </div>
 
                 {/* Username */}
-                <div className="flex flex-row items-center justify-between p-2 gap-5">
-                    <p className="font-funnel font-thin text-base text-foreground">Username:</p>
+                <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
+                    <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Username:</p>
 
-                    <div className="flex flex-row gap-1.5">
+                    <div className="flex flex-row items-center gap-1.5">
                         <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
-                        <p className="font-funnel font-thin text-sm text-foreground">Put user name here</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put user name here</p>
                     </div>
                 </div>
 
                 {/* Email */}
-                <div className="flex flex-row items-center justify-between p-2 gap-5">
-                    <p className="font-funnel font-thin text-base text-foreground">Email:</p>
-                    <div className="flex flex-row gap-1.5">
+                <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
+                    <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
+                    <div className="flex flex-row items-center gap-1.5">
                         <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
-                        <p className="font-funnel font-thin text-sm text-foreground">Put email here</p>
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put email here</p>
                     </div>
                 </div>
 
                 {/* Password */}
                 <div className="flex flex-row items-center justify-center p-2 gap-5">
-                    <Button variant="outline" className="hover:bg-secondary hover:text-background hover:cursor-pointer">Update password</Button>
+                    <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Update password</Button>
                 </div>
 
             </div>  
 
             {/* Contributions and recent activity container */}
-            <div className="flex flex-col gap-2 w-2/4 ">
+            <div className="flex flex-col gap-2 self-center w-3/4 sm:w-2/4 lg:w-2/5 xl:w-2/6 ">
                 {/* Contributions Sections */}
                 <div className="bg-primary p-4 rounded-md">
                     {/* Header */}
-                    <h1 className="font-instrument text-lg font-bold">Contributions</h1>
+                    <h1 className="font-instrument text-base sm:text-lg font-bold">Contributions</h1>
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
 
                     {/* Chart */}
@@ -113,14 +115,14 @@ export default function Profile() {
                     </ChartContainer>
                 </div>
                 {/* Recent Activity Section */}
-                <div className="bg-primary p-4 rounded-md">
+                <div className="bg-primary p-3 sm:p-4 rounded-md">
                     {/* Header */}
-                    <h1 className="font-instrument text-lg font-bold">Recent Activity</h1>
+                    <h1 className="font-instrument text-base sm:text-lg font-bold">Recent Activity</h1>
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
                     {/* Populate recent activity */}
                     <div className="flex flew-row justify-between bg-background p-2 rounded-lg">
-                        <p>Course: {}</p>
-                        <p>Date: {}</p>
+                        <p className="font-instrument font-light text-sm sm:text-base">Course: {}</p>
+                        <p className="font-instrument font-medium text-sm sm:text-base">Date: {}</p>
                     </div>
                 </div>
 
