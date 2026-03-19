@@ -102,7 +102,6 @@ export default function Profile() {
                     />
 
                 </div>
-                {/* {loading ? "Logging in..." : "Login"} */}
 
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
