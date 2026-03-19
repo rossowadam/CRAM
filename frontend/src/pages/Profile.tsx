@@ -4,6 +4,8 @@ import { Separator } from "@/components/ui/separator";
 import { Pencil } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { useState } from "react";
+import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
 
 export default function Profile() {
     // Chart data, can be any kind of data we can decide on what we want to display
@@ -14,7 +16,10 @@ export default function Profile() {
         { month: "April", desktop: 73, mobile: 190 },
         { month: "May", desktop: 209, mobile: 130 },
         { month: "June", desktop: 214, mobile: 140 },
-    ]
+    ];
+
+    const [picDialogOpen, setPicDialogOpen] = useState(false);
+    const [selectedPic, setSelectedPic] = useState("https://github.com/shadcn.png");
 
     // Configures the chart labels and color
     const chartConfig = {
@@ -27,7 +32,6 @@ export default function Profile() {
             color: "#60a5fa",
         },
     } satisfies ChartConfig
-
 
     return(
         <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
@@ -43,10 +47,10 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">
                         Profile Picture:
                     </p>
-                    <div className="relative group">
+                    <div className="relative group" onClick={() => setPicDialogOpen(true)}>
                         <Avatar size="lg">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>username</AvatarFallback>
+                            <AvatarImage src={selectedPic} />
+                            <AvatarFallback>username</AvatarFallback>
                         </Avatar>
 
                         {/* Dark overlay */}
@@ -54,6 +58,12 @@ export default function Profile() {
 
                         <Pencil className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition text-secondary cursor-pointer" />
                     </div>
+
+                    <ProfilePicDialog
+                        open={picDialogOpen}
+                        setOpen={setPicDialogOpen}
+                        onSelect={setSelectedPic}
+                    />
                 </div>
 
                 {/* Role */}
