@@ -83,7 +83,7 @@ export default function Profile() {
 
                 {/* Password */}
                 <div className="flex flex-row items-center justify-center p-2 gap-5">
-                    <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Update password</Button>
+                    <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Change Password</Button>
                 </div>
 
             </div>  
@@ -125,10 +125,7 @@ export default function Profile() {
                         <p className="font-instrument font-medium text-sm sm:text-base">Date: {}</p>
                     </div>
                 </div>
-
             </div>
-
         </div>
     );
-
 }
