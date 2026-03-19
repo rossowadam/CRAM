@@ -16,6 +16,7 @@ export default function Profile() {
     const { user, setUser } = useAuth();
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState("https://github.com/shadcn.png");
+    const [serverError, setServerError] = useState<string | null>(null);
 
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
@@ -47,13 +48,21 @@ export default function Profile() {
 
     // run the update user api request upon profile pic change
     useEffect(() => {
-        if (user && selectedPic) {
-            updateUser(user.id, { profilePic: selectedPic })
-                .then(() => {
-                    // update user to reflect change without refreshing page
-                    setUser({ ...user, profilePic: selectedPic });
-                });
-        }
+        if (!user || !selectedPic) return;
+        
+        const update = async () => {
+            try {
+                setServerError(null);
+                await updateUser(user.id, { profilePic: selectedPic });
+                setUser({ ...user, profilePic: selectedPic }); // immediate refresh
+            } catch (err) {
+                setServerError(
+                    err instanceof Error ? err.message : "Something went wrong."
+                );
+            }
+        };
+
+        update();
     }, [selectedPic]);
 
     return(
@@ -91,7 +100,9 @@ export default function Profile() {
                         setOpen={setPicDialogOpen}
                         onSelect={setSelectedPic}
                     />
+
                 </div>
+                {/* {loading ? "Logging in..." : "Login"} */}
 
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
@@ -123,6 +134,12 @@ export default function Profile() {
                 <div className="flex flex-row items-center justify-center p-2 gap-5">
                     <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Change Password</Button>
                 </div>}
+
+                {serverError && (
+                    <p className="text-destructive text-sm text-center mt-2">
+                        {serverError}
+                    </p>
+                )}
 
             </div>  
 
