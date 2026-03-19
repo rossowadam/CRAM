@@ -4,11 +4,12 @@ import { Separator } from "@/components/ui/separator";
 import { Pencil } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
+import { updateUser } from "@/api/userApi";
 
 export default function Profile() {
     const { userId } = useParams();
@@ -41,6 +42,12 @@ export default function Profile() {
             color: "#60a5fa",
         },
     } satisfies ChartConfig
+
+    useEffect(() => {
+        if (user && selectedPic) {
+            updateUser(user.id, { profilePic: selectedPic });
+        }
+    }, [selectedPic]);
 
     return(
         <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
