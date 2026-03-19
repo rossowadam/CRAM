@@ -13,10 +13,15 @@ import { updateUser } from "@/api/userApi";
 
 export default function Profile() {
     const { userId } = useParams();
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
+    const [picDialogOpen, setPicDialogOpen] = useState(false);
+    const [selectedPic, setSelectedPic] = useState("https://github.com/shadcn.png");
 
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
+
+    // TODO: show the other user's profile instead of just the shadcn one
+    const avatarKey = isOwnProfile ? user?.profilePic ?? "" : "https://github.com/shadcn.png";
 
     // Chart data, can be any kind of data we can decide on what we want to display
     const chartData = [
@@ -27,9 +32,6 @@ export default function Profile() {
         { month: "May", desktop: 209, mobile: 130 },
         { month: "June", desktop: 214, mobile: 140 },
     ];
-
-    const [picDialogOpen, setPicDialogOpen] = useState(false);
-    const [selectedPic, setSelectedPic] = useState("https://github.com/shadcn.png");
 
     // Configures the chart labels and color
     const chartConfig = {
@@ -43,9 +45,14 @@ export default function Profile() {
         },
     } satisfies ChartConfig
 
+    // run the update user api request upon profile pic change
     useEffect(() => {
         if (user && selectedPic) {
-            updateUser(user.id, { profilePic: selectedPic });
+            updateUser(user.id, { profilePic: selectedPic })
+                .then(() => {
+                    // update user to reflect change without refreshing page
+                    setUser({ ...user, profilePic: selectedPic });
+                });
         }
     }, [selectedPic]);
 
@@ -66,7 +73,7 @@ export default function Profile() {
                     {/* Render the stored avatar or default pic */}
                     <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
                         <Avatar size="lg">
-                            <AvatarImage src={AVATAR_MAP[user?.profilePic ?? ""] ?? "https://github.com/shadcn.png"} />
+                            <AvatarImage src={AVATAR_MAP[avatarKey ?? ""] ?? "https://github.com/shadcn.png"} />
                             <AvatarFallback>username</AvatarFallback>
                         </Avatar>
 
