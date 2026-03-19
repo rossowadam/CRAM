@@ -6,7 +6,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenuButton,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import type { Section } from "@/api/sectionsApi"
 
