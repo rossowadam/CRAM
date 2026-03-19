@@ -6,8 +6,16 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLeg
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import { useState } from "react";
 import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
+import { useAuth } from "@/hooks/useAuth";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
+    const { userId } = useParams();
+    const { user } = useAuth();
+
+    // render profile change components if the profile belongs to the user
+    const isOwnProfile = user?.id != userId;
+
     // Chart data, can be any kind of data we can decide on what we want to display
     const chartData = [
         { month: "January", desktop: 186, mobile: 80 },
@@ -47,16 +55,19 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">
                         Profile Picture:
                     </p>
-                    <div className="relative group" onClick={() => setPicDialogOpen(true)}>
+                    <div className="relative group" onClick={isOwnProfile ? () => setPicDialogOpen(true) : undefined}>
                         <Avatar size="lg">
                             <AvatarImage src={selectedPic} />
-                            <AvatarFallback>username</AvatarFallback>
+                            <AvatarFallback>{user?.username ?? "-"}</AvatarFallback>
                         </Avatar>
 
                         {/* Dark overlay */}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-full" />
-
-                        <Pencil className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition text-secondary cursor-pointer" />
+                        {isOwnProfile && 
+                        <>
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-full" />
+                            <Pencil className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition text-secondary cursor-pointer" />
+                        </>
+                        }
                     </div>
 
                     <ProfilePicDialog
@@ -69,7 +80,7 @@ export default function Profile() {
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Role:</p>
-                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put Role here</p>
+                    <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.role ?? "-"}</p>
                 </div>
 
                 {/* Username */}
@@ -77,8 +88,8 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Username:</p>
 
                     <div className="flex flex-row items-center gap-1.5">
-                        <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put user name here</p>
+                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.username ?? "-"}</p>
                     </div>
                 </div>
 
@@ -86,15 +97,16 @@ export default function Profile() {
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
                     <div className="flex flex-row items-center gap-1.5">
-                        <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>
-                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">Put email here</p>
+                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{user?.email ?? "-"}</p>
                     </div>
                 </div>
 
                 {/* Password */}
+                {isOwnProfile && 
                 <div className="flex flex-row items-center justify-center p-2 gap-5">
                     <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Change Password</Button>
-                </div>
+                </div>}
 
             </div>  
 
