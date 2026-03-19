@@ -105,8 +105,12 @@ export async function updateUser(id: string, data: {
     // robustly throw errors
     if (!response.ok) {
         switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 403:
+                throw new Error("A user may only make changes to their account");
             case 404:
-                throw new Error(body.error); // known errors
+                throw new Error(body.error);
             default:
                 throw new Error("Something went wrong. Please try again.");
         }
