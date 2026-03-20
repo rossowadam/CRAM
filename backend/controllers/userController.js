@@ -24,6 +24,7 @@ exports.getUserById = async (req, res) => {
 // Should begin process of updating a user's data, should only be accessible to the user themselves, or to admins.
 // Request should be an object with the fields to update, for example: { name: 'New Name', email: 'newemail@example.com' }
 exports.updateUserById = async (req, res) => {
+
     const { id } = req.params;
     const updateData = req.body;
     try {
@@ -66,6 +67,8 @@ exports.deleteUserById = async (req, res) => {
 // Creates a new user, expects the request body contain: Username, Email and Password.
 // Currently returns the created user, but may want to return a success message or homepage URL.
 exports.createUser = async (req, res) => {
+
+
     try {
         const userData = req.body;
         const newUser = await userService.createUser(userData);

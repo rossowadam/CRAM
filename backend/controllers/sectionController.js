@@ -1,6 +1,8 @@
 const sectionService = require('../services/sectionServices');
 
 exports.createSection = async (req, res) => {
+    
+    
     try {
         const sectionData = req.body;
         const sessionData = req.session.user;
@@ -40,7 +42,9 @@ exports.deleteSection = async (req, res) => {
     }
 }
 
-exports.updateSection = async (req, res) => {   
+exports.updateSection = async (req, res) => {  
+   
+    
     const { id } = req.params;
     const updateData = req.body;
     const sessionData = req.session.user;
