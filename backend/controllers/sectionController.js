@@ -52,14 +52,14 @@ exports.updateSection = async (req, res) => {
     const sessionData = req.session.user;
     try {
         const updatedSection = await sectionService.updateSection(id, updateData, sessionData);
+        if (!updatedSection) {
+            return res.status(404).json({ error: 'Section not found' });
+        }
         await userService.addContribution(sessionData.id, {
             refId: updatedSection._id,
             contributionType: 'section',
             courseCode: updatedSection.courseCode
         });
-        if (!updatedSection) {
-            return res.status(404).json({ error: 'Section not found' });
-        }
         res.status(200).json(updatedSection);
     } catch (error) {
         res.status(500).json({ error: error.message });
