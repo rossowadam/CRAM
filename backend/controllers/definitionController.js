@@ -1,4 +1,5 @@
 const definitionService = require('../services/definitionServices');
+const userService = require('../services/userServices');
 
 exports.getDefinitionsByCourseCode = async (req, res) => {
     const { courseCode } = req.params;
@@ -15,6 +16,11 @@ exports.createDefinition = async (req, res) => {
         const definitionData = req.body;
         const sessionData = req.session.user;
         const newDefinition = await definitionService.createDefinition(definitionData, sessionData);
+        await userService.addContribution(sessionData.id, {
+            refId: newDefinition._id,
+            contributionType: 'definition',
+            courseCode: newDefinition.courseCode
+        });
         res.status(201).json(newDefinition);
     }
     catch (error) {
@@ -47,6 +53,12 @@ exports.updateDefinition = async (req, res) => {
         if (!updatedDefinition) {
             return res.status(404).json({ error: 'Definition not found' });
         }
+        console.log(updatedDefinition);
+        await userService.addContribution(sessionData.id, {
+            refId: updatedDefinition._id,
+            contributionType: 'definition',
+            courseCode: updatedDefinition.courseCode
+        });
         res.status(200).json(updatedDefinition);
     } catch (error) {   
         if(error.message.includes('not found')) {
