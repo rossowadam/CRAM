@@ -1,7 +1,7 @@
-const definitionRepositoy = require('../repositories/definitionRepository');
+const definitionRepository = require('../repositories/definitionRepository');
 
 exports.getDefinitionsByCourseCode = async (courseCode) => {
-    return await definitionRepositoy.getDefinitionsByCourseCode(courseCode);
+    return await definitionRepository.getDefinitionsByCourseCode(courseCode);
 }
 
 exports.createDefinition = async (definitionData) => {
@@ -9,11 +9,11 @@ exports.createDefinition = async (definitionData) => {
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }
-    return await definitionRepositoy.createDefinition(definitionData);
+    return await definitionRepository.createDefinition(definitionData);
 }
 
 exports.deleteDefinition = async (id) => {
-    const deletedDefinition = await definitionRepositoy.deleteDefinition(id);
+    const deletedDefinition = await definitionRepository.deleteDefinition(id);
     if (!deletedDefinition) {
         throw new Error('Definition not found');
     }
@@ -24,7 +24,7 @@ exports.updateDefinition = async (id, updateData) => {
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }
-    const updatedDefinition = await definitionRepositoy.updateDefinition(id, updateData);
+    const updatedDefinition = await definitionRepository.updateDefinition(id, updateData);
     if (!updatedDefinition) {
         throw new Error('Definition not found');
     }
