@@ -13,7 +13,8 @@ exports.getDefinitionsByCourseCode = async (req, res) => {
 exports.createDefinition = async (req, res) => {
     try {
         const definitionData = req.body;
-        const newDefinition = await definitionService.createDefinition(definitionData);
+        const sessionData = req.session.user;
+        const newDefinition = await definitionService.createDefinition(definitionData, sessionData);
         res.status(201).json(newDefinition);
     }
     catch (error) {
@@ -40,8 +41,9 @@ exports.deleteDefinition = async (req, res) => {
 exports.updateDefinition = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
+    const sessionData = req.session.user;
     try {
-        const updatedDefinition = await definitionService.updateDefinition(id, updateData);
+        const updatedDefinition = await definitionService.updateDefinition(id, updateData, sessionData);
         if (!updatedDefinition) {
             return res.status(404).json({ error: 'Definition not found' });
         }

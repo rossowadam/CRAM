@@ -4,12 +4,24 @@ exports.getDefinitionsByCourseCode = async (courseCode) => {
     return await definitionRepository.getDefinitionsByCourseCode(courseCode);
 }
 
-exports.createDefinition = async (definitionData) => {
+exports.createDefinition = async (definitionData, sessionData) => {
     const definitionIsComplete = definitionData.courseCode && definitionData.term && definitionData.definition && definitionData.example;
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }
-    return await definitionRepository.createDefinition(definitionData);
+
+    // create new definition object to match Definition schema
+    // use sessionData from the cookie to get contributor details
+    const newDefinition = {
+        ...definitionData,
+        contributors: [{
+            userId: sessionData.id,
+            date: new Date(),
+            role: sessionData.role
+        }]
+    };
+
+    return await definitionRepository.createDefinition(newDefinition);
 }
 
 exports.deleteDefinition = async (id) => {
@@ -19,12 +31,12 @@ exports.deleteDefinition = async (id) => {
     }
 }
 
-exports.updateDefinition = async (id, updateData) => {
+exports.updateDefinition = async (id, updateData, sessionData) => {
     const definitionIsComplete = updateData.courseCode && updateData.term && updateData.definition && updateData.example;
     if (!definitionIsComplete) {
         throw new Error('Definition data is incomplete');
     }
-    const updatedDefinition = await definitionRepository.updateDefinition(id, updateData);
+    const updatedDefinition = await definitionRepository.updateDefinition(id, updateData, sessionData);
     if (!updatedDefinition) {
         throw new Error('Definition not found');
     }
