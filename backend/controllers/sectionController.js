@@ -1,12 +1,16 @@
 const sectionService = require('../services/sectionServices');
+const userService = require('../services/userServices');
 
 exports.createSection = async (req, res) => {
-    
-    
     try {
         const sectionData = req.body;
         const sessionData = req.session.user;
         const newSection = await sectionService.createSection(sectionData, sessionData);
+        await userService.addContribution(sessionData.id, {
+            refId: newSection._id,
+            contributionType: 'section',
+            courseCode: newSection.courseCode
+        });
         res.status(201).json(newSection);
     } catch (error) {
         if (error.message.includes('already exists')) {
@@ -43,13 +47,16 @@ exports.deleteSection = async (req, res) => {
 }
 
 exports.updateSection = async (req, res) => {  
-   
-    
     const { id } = req.params;
     const updateData = req.body;
     const sessionData = req.session.user;
     try {
         const updatedSection = await sectionService.updateSection(id, updateData, sessionData);
+        await userService.addContribution(sessionData.id, {
+            refId: updatedSection._id,
+            contributionType: 'section',
+            courseCode: updatedSection.courseCode
+        });
         if (!updatedSection) {
             return res.status(404).json({ error: 'Section not found' });
         }
