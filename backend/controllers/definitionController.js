@@ -53,7 +53,6 @@ exports.updateDefinition = async (req, res) => {
         if (!updatedDefinition) {
             return res.status(404).json({ error: 'Definition not found' });
         }
-        console.log(updatedDefinition);
         await userService.addContribution(sessionData.id, {
             refId: updatedDefinition._id,
             contributionType: 'definition',
