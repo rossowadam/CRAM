@@ -61,6 +61,7 @@ export default function Profile() {
         const update = async () => {
             try {
                 setServerError(null);
+                setChangePassword(false);
                 const profileUserDetails = await getUserById(userId);
                 setProfileUser(profileUserDetails);
             } catch (err) {
