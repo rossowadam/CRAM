@@ -153,7 +153,8 @@ export default function Profile() {
 
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && 
-                            <Pencil className="w-4 hover:cursor-pointer hover:text-secondary" 
+                            <Pencil 
+                                className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
                                 onClick={() => {
                                     setChangeUsername(prev => !prev);
                                     setChangeEmail(false);
@@ -176,7 +177,7 @@ export default function Profile() {
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && 
                             <Pencil 
-                                className="w-4 hover:cursor-pointer hover:text-secondary"
+                                className={`w-4 hover:cursor-pointer hover:text-secondary ${changeEmail ? "text-destructive" : ""}`} 
                                 onClick={() => {
                                     setChangeEmail(prev => !prev); 
                                     setChangeUsername(false);
@@ -197,7 +198,7 @@ export default function Profile() {
                 {isOwnProfile && 
                     <div className="flex flex-row items-center justify-center p-2 gap-5">
                         <Button variant="outline" 
-                        className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer" 
+                        className={`font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer ${changePassword ? "text-destructive" : ""}`}
                         onClick={() => {
                             setChangePassword(prev => !prev);
                             setChangeUsername(false);
