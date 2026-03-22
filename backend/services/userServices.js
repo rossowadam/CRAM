@@ -99,14 +99,14 @@ exports.loginUser = async (userData) => {
     const user = await userRepository.findUserByEmail(normalizedEmail);
 
     if (!user) {
-        throw new Error("Invalid email or password");
+        throw new Error("Invalid email");
     }
 
     // checks if passwords match
     const isValid = await passwordServices.verifyPassword(password, user.password_hash);
 
     if (!isValid) {
-        throw new Error("Invalid email or password");
+        throw new Error("Invalid password");
     }
 
     return user;

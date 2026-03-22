@@ -122,8 +122,8 @@ exports.loginUser = async (req, res) => {
         return res.status(200).json(req.session.user);
     }
     catch (error) {
-        if (error.message.includes('Invalid email' || 'Invalid password')) {
-            return res.status(403).json({ error: error.message });
+        if (error.message.includes('Invalid')) {
+            return res.status(403).json({ error: "Invalid email or password" });
         }
         return res.status(500).json({ error: error.message });
     }
