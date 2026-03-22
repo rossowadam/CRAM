@@ -274,7 +274,7 @@ describe("updateUser", () => {
         vi.spyOn(globalThis, "fetch").mockResolvedValue({
             ok: false,
             status: 403,
-            json: async () => ({ error: "Forbidden" })
+            json: async () => ({ error: "A user may only make changes to their account" })
         } as unknown as Response);
 
         await expect(updateUser(validId, validPayload)).rejects.toThrow("A user may only make changes to their account");
