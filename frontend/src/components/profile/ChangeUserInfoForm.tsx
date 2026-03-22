@@ -1,3 +1,4 @@
+import { updateUser } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
@@ -44,7 +45,8 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
         try {
             setLoading(true);
 
-            //await
+            // request the correct update by type
+            await updateUser(userId, { [infoType]: newInfo })
 
             setSuccessMessage(`Your ${infoType} was changed successfully!`);
             setNewInfo("");
