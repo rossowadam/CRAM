@@ -144,3 +144,35 @@ export async function getUserById(id: string) {
         profilePic: body.profile_pic,
     };
 }
+
+export async function resetPassword(id: string, data: {
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string,
+}) {
+    // build the request
+    const response = await fetch(`/api/v1/user/resetPassword/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+
+    // robustly throw errors
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 403:
+                throw new Error("A user may only make changes to their account");
+            case 404:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }    
+
+    return body;
+}
