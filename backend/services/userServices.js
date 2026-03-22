@@ -4,11 +4,13 @@ const passwordServices = require('./passwordServices');
 const emailServices = require('./emailServices');
 const crypto = require('crypto');
 
+// get all user details except the password 
 exports.getUserById = async (id) => {
     const user = await userRepository.findUserById(id);
     if (user) delete user.password_hash;
     return user;
 }
+
 exports.updateUserById = async (id, userData) => {
     const updateData = { ...userData };
 
@@ -20,6 +22,7 @@ exports.updateUserById = async (id, userData) => {
 
     return await userRepository.updateUserById(id, updateData);
 };
+
 exports.deleteUserById = async (id) => {
     return await userRepository.deleteUserById(id);
 }
