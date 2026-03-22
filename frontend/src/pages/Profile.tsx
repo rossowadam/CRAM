@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
+import ChangeUserInfoForm from "@/components/profile/ChangeUserInfoForm";
 
 interface ProfileUser {
     id: string;
@@ -27,6 +28,7 @@ export default function Profile() {
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
+    const [changeUsername, setChangeUsername] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
 
     // render profile change components if the profile belongs to the user
@@ -61,6 +63,7 @@ export default function Profile() {
         const update = async () => {
             try {
                 setServerError(null);
+                setChangeUsername(false);
                 setChangePassword(false);
                 const profileUserDetails = await getUserById(userId);
                 setProfileUser(profileUserDetails);
@@ -146,10 +149,19 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Username:</p>
 
                     <div className="flex flex-row items-center gap-1.5">
-                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        {isOwnProfile && 
+                            <Pencil className="w-4 hover:cursor-pointer hover:text-secondary" 
+                                onClick={() => setChangeUsername(prev => !prev)}
+                            />
+                        }
                         <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.username ?? "-"}</p>
                     </div>
                 </div>
+
+                {/* Change username */}
+                {isOwnProfile && changeUsername && (
+                    <ChangeUserInfoForm userId={userId} changeInfo={changeUsername} infoType="username" />
+                )}
 
                 {/* Email */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
@@ -180,11 +192,8 @@ export default function Profile() {
                 )}
 
                 {serverError && (
-                    <p className="text-destructive text-sm text-center mt-2">
-                        {serverError}
-                    </p>
+                    <p className="text-destructive text-sm text-center mt-2">{serverError}</p>
                 )}
-
             </div>  
 
             {/* Contributions and recent activity container */}
