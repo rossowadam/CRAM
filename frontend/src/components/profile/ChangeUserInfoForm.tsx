@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { resetPassword } from "@/api/userApi";
 
 interface ChangeUserInfoFormProps {
     userId?: string;
@@ -8,6 +7,8 @@ interface ChangeUserInfoFormProps {
     infoType: 'username' | 'email';
 }
 
+// The form is generalized and can display for both username and email
+// Takes in the userId, boolean for display, and info type
 export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: ChangeUserInfoFormProps) {
     const [newInfo, setNewInfo] = useState("");
     const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
         try {
             setLoading(true);
 
-            //await resetPassword(userId, {currentPassword: newInfo, newPassword, confirmPassword });
+            //await
 
             setSuccessMessage(`Your ${infoType} was changed successfully!`);
             setNewInfo("");
