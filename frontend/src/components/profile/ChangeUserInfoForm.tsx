@@ -71,9 +71,9 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
                     {/* Display proper help based on the info type */}
                     <p className={`text-xs font-funnel italic gap-0 ${
                         infoType === 'username' 
-                            ? newInfo.length === 0 ? "text-destructive" : "text-secondary"
+                            ? newInfo.length > 0 && newInfo.length === 0 ? "text-destructive" : "text-secondary"
                             // email requires domain check
-                            : (!newInfo.endsWith("@myumanitoba.ca") && !newInfo.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
+                            : (newInfo.length > 0 && !newInfo.endsWith("@myumanitoba.ca") && !newInfo.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
                     }`}>
                         {infoType === "username" ? "Name cannot be empty" : "Email must end in \"@myumanitoba.ca\" or \"@umanitoba.ca\""}
                     </p>
