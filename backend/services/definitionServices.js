@@ -31,12 +31,9 @@ exports.deleteDefinition = async (id) => {
     }
 }
 
-exports.updateDefinition = async (id, updateData, sessionData) => {
-    const definitionIsComplete = updateData.courseCode && updateData.term && updateData.definition && updateData.example;
-    if (!definitionIsComplete) {
-        throw new Error('Definition data is incomplete');
-    }
-    const updatedDefinition = await definitionRepository.updateDefinition(id, updateData, sessionData);
+exports.updateDefinition = async (id, updateData) => {
+    
+    const updatedDefinition = await definitionRepositoy.updateDefinition(id, updateData);
     if (!updatedDefinition) {
         throw new Error('Definition not found');
     }

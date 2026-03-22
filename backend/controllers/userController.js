@@ -55,6 +55,18 @@ exports.updateUserById = async (req, res) => {
 exports.deleteUserById = async (req, res) => {
     const { id } = req.params;
     try {
+        
+        //logout the user
+        if(req.session){
+            req.session.destroy((err) => {
+                if (err) {
+                    return res.status(500).json({ error: "Failed to logout" });
+                }
+
+                res.clearCookie("connect.sid");
+            });
+        }
+
         const deletedUser = await userService.deleteUserById(id);   
         if (!deletedUser) {
             return res.status(404).json({ error: 'User not found' });
@@ -106,7 +118,7 @@ exports.loginUser = async (req, res) => {
         return res.status(200).json(req.session.user);
     }
     catch (error) {
-        if (error.message.includes('Invalid email or password')) {
+        if (error.message.includes('Invalid email' || 'Invalid password')) {
             return res.status(403).json({ error: error.message });
         }
         return res.status(500).json({ error: error.message });
