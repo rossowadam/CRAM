@@ -56,9 +56,15 @@ exports.resetPasswordById = async (req, res) => {
 
         await userService.resetPasswordById(id, userData);
 
-        res.status(200).json({ message: "Done" });
+        res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        if (error.message.includes('incomplete')) {
+            res.status(422).json({ error: error.message });
+        } 
+        else if (error.message.includes('Invalid')) {
+            return res.status(403).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
     }
 }
 
