@@ -71,20 +71,38 @@ exports.clearResetToken = async (id) => {
     ).lean();
 }
 
-exports.addContribution = async (id, data) => {
-    const user = await User.findById(id);
-    if (!user) throw new Error('User not found');
+// update user's contribution
+// if contribution exists, update its date
+// if a new contribution, add it to the array
+exports.addContribution = async (userId, { refId, contributionType, courseCode }) => {
+    // first try to update the date if contribution exists
+    const existing = await User.findOneAndUpdate(
+        {_id: userId, "contributions.ref_id": refId },
+        {
+            $set: {
+                "contributions.$.date": new Date()
+            }
+        },
+        { new: true }
+    ).lean();
 
-    const existingIndex = user.contributions.findIndex(
-        c => c.refId.toString() === data.refId.toString() && c.contributionType === data.contributionType
-    );
-
-    if (existingIndex > -1) {
-        user.contributions[existingIndex].date = new Date();
-    } else {
-        user.contributions.push(data);
+    // if no match (contribution not in array yet), push a new entry
+    if (!existing) {
+        return await User.findByIdAndUpdate(
+            userId,
+            {
+                $push: {
+                    contributions: {
+                        ref_id: refId,
+                        type: contributionType,
+                        course_code: courseCode,
+                        date: new Date()
+                    }
+                }
+            },
+            { new: true }
+        ).lean();
     }
 
-    await user.save();
-    return user.toJSON();
-}
+    return existing;
+};

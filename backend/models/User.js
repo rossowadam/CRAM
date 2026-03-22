@@ -27,10 +27,10 @@ const userSchema = new mongoose.Schema({
     },
     contributions: [
         {
-            refId: { type: mongoose.Schema.Types.ObjectId, required: true },
-            contributionType: { type: String, enum: ['section', 'definition'], required: true },
-            courseCode: { type: String, required: true },
-            date: { type: Date, default: Date.now }
+            ref_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+            type: { type: String, enum: ['section', 'definition'], required: true },
+            course_code: { type: String, required: true },
+            date: { type: Date, required: true }
         }
     ]
 }
