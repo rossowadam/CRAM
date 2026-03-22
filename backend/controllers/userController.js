@@ -45,7 +45,10 @@ exports.updateUserById = async (req, res) => {
 
         res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        if (error.message.includes('already exists')) {
+            res.status(409).json({ error: error.message });
+        }
+        else res.status(500).json({ error: error.message });
     }
 }
 
@@ -62,7 +65,7 @@ exports.resetPasswordById = async (req, res) => {
             res.status(422).json({ error: error.message });
         } 
         else if (error.message.includes('Invalid')) {
-            return res.status(403).json({ error: error.message });
+            res.status(403).json({ error: error.message });
         }
         else res.status(500).json({ error: error.message });
     }
