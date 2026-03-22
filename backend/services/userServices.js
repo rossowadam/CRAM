@@ -76,14 +76,14 @@ exports.loginUser = async (userData) => {
     const user = await userRepository.findUserByEmail(normalizedEmail);
 
     if (!user) {
-        throw new Error("Invalid email");
+        throw new Error("Invalid email or password");
     }
 
     // checks if passwords match
     const isValid = await passwordServices.verifyPassword(password, user.password_hash);
 
     if (!isValid) {
-        throw new Error("Invalid password");
+        throw new Error("Invalid email or password");
     }
 
     return user;
@@ -101,7 +101,7 @@ exports.resetPasswordById = async (id, userData) => {
     const isValid = await passwordServices.verifyPassword(currentPassword, passwordHash);
 
     if (!isValid) { 
-        throw new Error('Invalid password');
+        throw new Error('Invalid current password');
     }
 
     // hash the new password and update the user
