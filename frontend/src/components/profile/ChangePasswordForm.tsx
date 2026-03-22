@@ -57,7 +57,7 @@ export default function ChangePasswordForm({ userId, changePassword }: ChangePas
     };
 
     return (
-        <form className="flex flex-col gap-4" onSubmit={onChangePassword}>
+        <form className="flex flex-col" onSubmit={onChangePassword}>
             <div className="flex flex-col sm:p-2 gap-4 w-full">
                 <input 
                     type="password"
