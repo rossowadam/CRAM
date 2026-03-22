@@ -188,6 +188,11 @@ export default function Profile() {
                     </div>
                 </div>
 
+                {/* Change email */}
+                {isOwnProfile && changeEmail && (
+                    <ChangeUserInfoForm userId={userId} changeInfo={changeEmail} infoType="email" />
+                )}
+
                 {/* Password */}
                 {isOwnProfile && 
                     <div className="flex flex-row items-center justify-center p-2 gap-5">

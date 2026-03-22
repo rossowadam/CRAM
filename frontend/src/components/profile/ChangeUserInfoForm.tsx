@@ -30,14 +30,13 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
         setServerError(null); // remove old errors
 
         // return if field is empty
-        if (!newInfo.trim()) {
-            return;
-        }
+        if (!newInfo.trim()) return;
 
+        // return if email change fails validation
         if (infoType === "email") {
             if (!newInfo.endsWith("@myumanitoba.ca") && !newInfo.endsWith("@umanitoba.ca")) {
-                errors.email = "Email domain is not valid";
-    }
+                return; // helper text turns red validation fails
+            }
         }
 
         // send the request to change the info
@@ -69,7 +68,13 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
                         className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
                         required
                     />
-                    <p className={`text-xs font-funnel italic gap-0 ${newInfo.length > 0 ? "text-destructive" : "text-secondary"}`}>
+                    {/* Display proper help based on the info type */}
+                    <p className={`text-xs font-funnel italic gap-0 ${
+                        infoType === 'username' 
+                            ? newInfo.length === 0 ? "text-destructive" : "text-secondary"
+                            // email requires domain check
+                            : (!newInfo.endsWith("@myumanitoba.ca") && !newInfo.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
+                    }`}>
                         {infoType === "username" ? "Name cannot be empty" : "Email must end in \"@myumanitoba.ca\" or \"@umanitoba.ca\""}
                     </p>
                 </div>
