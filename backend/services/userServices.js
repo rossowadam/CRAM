@@ -207,13 +207,16 @@ exports.resetPasswordById = async (id, userData) => {
         throw new Error('User data is incomplete');
     }
 
-    
-
     // check if the current password was valid
     const passwordHash = await passwordServices.getPasswordById(id);
     const isValid = await passwordServices.verifyPassword(currentPassword, passwordHash);
 
-    if (!isValid) throw new Error("Invalid password");
+    if (!isValid) { 
+        throw new Error('Invalid password');
+    }
 
+    // hash the new password and update the user
+    const newHash = await passwordServices.hashPassword(newPassword);
 
+    return await userRepository.updateUserById(id, { password_hash: newHash });
 }
