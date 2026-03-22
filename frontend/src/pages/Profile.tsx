@@ -168,7 +168,7 @@ export default function Profile() {
 
                 {/* Change username */}
                 {isOwnProfile && changeUsername && (
-                    <ChangeUserInfoForm userId={userId} changeInfo={changeUsername} infoType="username" />
+                    <ChangeUserInfoForm userId={userId} changeInfo={changeUsername} infoType="username" profileUser={profileUser!} setProfileUser={setProfileUser} />
                 )}
 
                 {/* Email */}
@@ -191,7 +191,7 @@ export default function Profile() {
 
                 {/* Change email */}
                 {isOwnProfile && changeEmail && (
-                    <ChangeUserInfoForm userId={userId} changeInfo={changeEmail} infoType="email" />
+                    <ChangeUserInfoForm userId={userId} changeInfo={changeEmail} infoType="email" profileUser={profileUser!} setProfileUser={setProfileUser} />
                 )}
 
                 {/* Password */}

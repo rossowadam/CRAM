@@ -1,16 +1,28 @@
 import { updateUser } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
+
+interface ProfileUser {
+    id: string;
+    username: string;
+    email: string;
+    role: string;
+    profilePic?: string;
+}
 
 interface ChangeUserInfoFormProps {
     userId?: string;
     changeInfo: boolean;
     infoType: 'username' | 'email';
+    profileUser: ProfileUser;
+    setProfileUser: (user: ProfileUser | null) => void;
 }
 
 // The form is generalized and can display for both username and email
 // Takes in the userId, boolean for display, and info type
-export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: ChangeUserInfoFormProps) {
+export default function ChangeUserInfoForm({ userId, changeInfo, infoType, profileUser, setProfileUser }: ChangeUserInfoFormProps) {
+    const { user, setUser } = useAuth();
     const [newInfo, setNewInfo] = useState("");
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
@@ -47,6 +59,10 @@ export default function ChangeUserInfoForm({ userId, changeInfo, infoType }: Cha
 
             // request the correct update by type
             await updateUser(userId, { [infoType]: newInfo })
+
+            // update the values on the page and in the session
+            setProfileUser({ ...profileUser, [infoType]: newInfo });
+            setUser({ ...user!, [infoType]: newInfo });
 
             setSuccessMessage(`Your ${infoType} was changed successfully!`);
             setNewInfo("");
