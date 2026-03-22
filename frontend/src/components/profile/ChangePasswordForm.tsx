@@ -33,7 +33,7 @@ export default function ChangePasswordForm({ userId, changePassword }: ChangePas
         setServerError(null); // remove old errors
 
         // return if field validation fails
-        if (newPassword.length < 8 || newPassword !== confirmPassword) {
+        if (newPassword.trim().length < 8 || newPassword !== confirmPassword) {
             return;
         }
 
