@@ -103,9 +103,9 @@ exports.loginUser = async (userData) => {
     }
 
     // checks if passwords match
-    const valid = await passwordServices.verifyPassword(password, user.password_hash);
+    const isValid = await passwordServices.verifyPassword(password, user.password_hash);
 
-    if (!valid) {
+    if (!isValid) {
         throw new Error("Invalid password");
     }
 
@@ -198,4 +198,22 @@ exports.resetPasswordWithToken = async (token, newPassword) => {
 
 exports.addContribution = async (id, data) => {
     return await userRepository.addContribution(id, data);
+}
+
+exports.resetPasswordById = async (id, userData) => {
+    const { currentPassword, newPassword, confirmPassword } = userData;
+    
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        throw new Error('User data is incomplete');
+    }
+
+    
+
+    // check if the current password was valid
+    const passwordHash = await passwordServices.getPasswordById(id);
+    const isValid = await passwordServices.verifyPassword(currentPassword, passwordHash);
+
+    if (!isValid) throw new Error("Invalid password");
+
+
 }
