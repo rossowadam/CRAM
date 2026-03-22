@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String, required: true, unique: true
     },
+    profile_pic: {
+        type: String,
+    },
     is_verified: {
         type: Boolean, default: false
     },
