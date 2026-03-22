@@ -29,6 +29,7 @@ export default function Profile() {
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const [changeUsername, setChangeUsername] = useState(false);
+    const [changeEmail, setChangeEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
 
     // render profile change components if the profile belongs to the user
@@ -62,8 +63,10 @@ export default function Profile() {
 
         const update = async () => {
             try {
+                // reset states and then update profile user
                 setServerError(null);
                 setChangeUsername(false);
+                setChangeEmail(false);
                 setChangePassword(false);
                 const profileUserDetails = await getUserById(userId);
                 setProfileUser(profileUserDetails);
@@ -151,7 +154,11 @@ export default function Profile() {
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && 
                             <Pencil className="w-4 hover:cursor-pointer hover:text-secondary" 
-                                onClick={() => setChangeUsername(prev => !prev)}
+                                onClick={() => {
+                                    setChangeUsername(prev => !prev);
+                                    setChangeEmail(false);
+                                    setChangePassword(false);
+                                }}
                             />
                         }
                         <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.username ?? "-"}</p>
@@ -167,7 +174,16 @@ export default function Profile() {
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
                     <div className="flex flex-row items-center gap-1.5">
-                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        {isOwnProfile && 
+                            <Pencil 
+                                className="w-4 hover:cursor-pointer hover:text-secondary"
+                                onClick={() => {
+                                    setChangeEmail(prev => !prev); 
+                                    setChangeUsername(false);
+                                    setChangePassword(false);
+                                }}
+                            />
+                        }
                         <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.email ?? "-"}</p>
                     </div>
                 </div>
@@ -178,8 +194,9 @@ export default function Profile() {
                         <Button variant="outline" 
                         className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer" 
                         onClick={() => {
-                            // toggle password field and reset their inputs
-                            setChangePassword(prev => !prev)
+                            setChangePassword(prev => !prev);
+                            setChangeUsername(false);
+                            setChangeEmail(false);
                         }}>
                             {changePassword ? "Cancel Change" : "Change Password"}
                         </Button>
