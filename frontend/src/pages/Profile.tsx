@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
+import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
 
 interface ProfileUser {
     id: string;
@@ -27,9 +28,6 @@ export default function Profile() {
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const [changePassword, setChangePassword] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
 
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
@@ -169,9 +167,6 @@ export default function Profile() {
                         onClick={() => {
                             // toggle password field and reset their inputs
                             setChangePassword(prev => !prev)
-                            setCurrentPassword("");
-                            setNewPassword("");
-                            setConfirmPassword("");
                         }}>
                             Change Password
                         </Button>
@@ -179,44 +174,7 @@ export default function Profile() {
                 }
 
                 {isOwnProfile && changePassword && (
-                    <div className="flex flex-col sm:p-2 gap-4 w-full">
-                        <input 
-                            type="password"
-                            placeholder="Enter current password"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
-                        />
-                        <div>
-                            <input 
-                                type="password"
-                                placeholder="Enter new password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
-                            />
-                            <p className={`text-xs font-funnel italic gap-0 ${newPassword.length > 0 && newPassword.length < 8 ? "text-destructive" : "text-secondary"}`}>
-                                Password must be at least 8 characters
-                            </p>
-                        </div>
-
-                        <div>
-                            <input 
-                                type="password"
-                                placeholder="Confirm new password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
-                            />
-                            <p className={`text-xs font-funnel italic gap-0 ${confirmPassword.length > 0 && confirmPassword !== newPassword ? "text-destructive" : "text-secondary"}`}>
-                                Passwords must match
-                            </p>
-                        </div>
-
-                        <Button className="hover:cursor-pointer hover:text-secondary w-full">
-                            Confirm
-                        </Button>
-                    </div>
+                    <ChangePasswordForm userId={userId} changePassword={changePassword} />
                 )}
 
                 {serverError && (
