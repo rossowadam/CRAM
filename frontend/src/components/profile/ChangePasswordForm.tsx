@@ -96,10 +96,10 @@ export default function ChangePasswordForm({ userId, changePassword }: ChangePas
                 </div>
 
                 <Button 
-            type="submit"
-            variant="outline"
-            disabled={loading}
-            className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer disabled:opacity-50"
+                    type="submit"
+                    variant="outline"
+                    disabled={loading}
+                    className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer disabled:opacity-50"
                 >
                     {loading ? "Confirming..." : "Confirm"}
                 </Button>
