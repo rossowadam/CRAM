@@ -168,11 +168,12 @@ export default function Profile() {
                             // toggle password field and reset their inputs
                             setChangePassword(prev => !prev)
                         }}>
-                            Change Password
+                            {changePassword ? "Cancel Change" : "Change Password"}
                         </Button>
                     </div>
                 }
 
+                {/* Change password form */}
                 {isOwnProfile && changePassword && (
                     <ChangePasswordForm userId={userId} changePassword={changePassword} />
                 )}
