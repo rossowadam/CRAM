@@ -44,6 +44,9 @@ export default function ChangePasswordForm({ userId, changePassword }: ChangePas
             await resetPassword(userId, {currentPassword, newPassword, confirmPassword });
 
             setSuccessMessage("Your password was changed successfully!");
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
