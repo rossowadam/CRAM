@@ -19,6 +19,10 @@ exports.updateUserById = async (id, userData) => {
         updateData.profile_pic = updateData.profilePic;
         delete updateData.profilePic;
     }
+    if (updateData.username) {
+        updateData.user_name = updateData.username;
+        delete updateData.username;
+    }
 
     return await userRepository.updateUserById(id, updateData);
 };
