@@ -1,4 +1,5 @@
 const argon2 = require('argon2');
+const User = require('../models/User');
 
 exports.hashPassword = async (password) => {
     try {
@@ -14,6 +15,10 @@ exports.hashPassword = async (password) => {
         err.message = 'Error hashing password';
         throw new Error(err);        
     }
+}
+
+exports.getPasswordById = async (id) => {
+    return await User.findById(id).select('password_hash').lean();
 }
 
 // verify a given password and hash
