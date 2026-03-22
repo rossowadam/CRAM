@@ -50,6 +50,18 @@ exports.updateUserById = async (req, res) => {
     }
 }
 
+exports.resetPasswordById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userData = req.body;
+
+        console.log(userData);
+
+        res.status(200).json({ message: "Done" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 // Should delete a user, should only be accessible to the user themselves, should clear out all saved data related to the user.
 exports.deleteUserById = async (req, res) => {
@@ -64,11 +76,10 @@ exports.deleteUserById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
 // Creates a new user, expects the request body contain: Username, Email and Password.
 // Currently returns the created user, but may want to return a success message or homepage URL.
 exports.createUser = async (req, res) => {
-
-
     try {
         const userData = req.body;
         const newUser = await userService.createUser(userData);
