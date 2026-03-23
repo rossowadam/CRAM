@@ -24,6 +24,14 @@ exports.updateUserById = async (id, userData) => {
         delete updateData.username;
     }
 
+    // check that new email isn't the same as what's already on record
+    if (updateData.email) {
+        const currentUser = await userRepository.findUserById(id);
+        if (currentUser.email === updateData.email) {
+            throw new Error('Email is already associated with your account');
+        }
+    }
+
     // ensure new email isn't associated with another account
     if (updateData.email) {
         // check if user already exists

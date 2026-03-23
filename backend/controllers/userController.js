@@ -48,6 +48,9 @@ exports.updateUserById = async (req, res) => {
         if (error.message.includes('already exists')) {
             res.status(409).json({ error: error.message });
         }
+        if (error.message.includes('already associated')) {
+            res.status(422).json({ error: error.message });
+        }
         else res.status(500).json({ error: error.message });
     }
 }

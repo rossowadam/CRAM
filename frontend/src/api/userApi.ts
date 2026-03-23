@@ -109,6 +109,7 @@ export async function updateUser(id: string, data: {
                 throw new Error("You must be signed-in to make changes to your account");
             case 403:
             case 404:
+            case 422:
             case 409:
                 throw new Error(body.error);
             default:
