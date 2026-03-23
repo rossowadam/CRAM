@@ -13,7 +13,6 @@ import { getUserById, updateUser } from "@/api/userApi";
 import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
 import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
-import ChangeUserInfoForm from "@/components/profile/ChangeUserInfoForm";
 
 interface ProfileUser {
     id: string;
