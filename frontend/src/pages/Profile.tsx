@@ -10,6 +10,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
+import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
+import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
 import ChangeUserInfoForm from "@/components/profile/ChangeUserInfoForm";
 
@@ -168,7 +170,7 @@ export default function Profile() {
 
                 {/* Change username */}
                 {isOwnProfile && changeUsername && (
-                    <ChangeUserInfoForm userId={userId} changeInfo={changeUsername} infoType="username" profileUser={profileUser!} setProfileUser={setProfileUser} />
+                    <ChangeUsernameForm userId={userId} changeUsername={changeUsername} profileUser={profileUser!} setProfileUser={setProfileUser} />
                 )}
 
                 {/* Email */}
@@ -191,7 +193,7 @@ export default function Profile() {
 
                 {/* Change email */}
                 {isOwnProfile && changeEmail && (
-                    <ChangeUserInfoForm userId={userId} changeInfo={changeEmail} infoType="email" profileUser={profileUser!} setProfileUser={setProfileUser} />
+                    <ChangeEmailForm userId={userId} changeEmail={changeEmail} profileUser={profileUser!} setProfileUser={setProfileUser} />
                 )}
 
                 {/* Password */}
