@@ -24,26 +24,41 @@ exports.updateUserById = async (id, userData) => {
         delete updateData.username;
     }
 
-    // check that new email isn't the same as what's already on record
-    if (updateData.email) {
-        const currentUser = await userRepository.findUserById(id);
-        if (currentUser.email === updateData.email) {
-            throw new Error('Email is already associated with your account');
-        }
-    }
-
-    // ensure new email isn't associated with another account
-    if (updateData.email) {
-        // check if user already exists
-        const doesExist = await userRepository.findUserByEmail(updateData.email);
-        console.log(doesExist);
-        if (doesExist && doesExist._id.toString() !== id) {
-            throw new Error('An account with this email already exists');
-        }
-    }
-
     return await userRepository.updateUserById(id, updateData);
 };
+
+exports.changeEmailById = async (id, email) => {
+    const allowedDomains = ['@umanitoba.ca', '@myumanitoba.ca'];
+    const allowed = allowedDomains.some(domain => email.endsWith(domain));
+    if (!allowed) throw new Error('Email domain is not allowed');
+
+    const currentUser = await userRepository.findUserById(id);
+    if (currentUser.email === email) {
+        throw new Error('Email is already associated with your account');
+    }
+
+    const doesExist = await userRepository.findUserByEmail(email);
+    if (doesExist && doesExist._id.toString() !== id) {
+        throw new Error('An account with this email already exists');
+    }
+
+    // generate and store verification code against the new email temporarily
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    await userRepository.setPendingEmail(id, email, verificationCode);
+
+    await emailServices.sendEmail({
+        to: email,
+        subject: 'CRAM - Verify Your New Email',
+        html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #4CAF50;">Verify your new email</h2>
+                <p>Your 6-digit verification code is:</p>
+                <h1 style="letter-spacing: 5px; color: #333; background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">${verificationCode}</h1>
+                <p>Enter this code in the app to confirm your email change.</p>
+            </div>
+        `
+    });
+}
 
 exports.deleteUserById = async (id) => {
     return await userRepository.deleteUserById(id);
