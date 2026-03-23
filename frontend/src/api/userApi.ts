@@ -214,6 +214,7 @@ export async function getUserById(id: string) {
         email: body.email,
         role: body.role.charAt(0).toUpperCase() + body.role.slice(1), // student --> Student
         profilePic: body.profile_pic,
+        isVerified: body.is_verified
     };
 }
 
