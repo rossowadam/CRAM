@@ -29,14 +29,18 @@ exports.updateUserById = async (id, userData) => {
 
 exports.changeEmailById = async (id, email) => {
     const allowedDomains = ['@umanitoba.ca', '@myumanitoba.ca'];
+
+    // check domain
     const allowed = allowedDomains.some(domain => email.endsWith(domain));
     if (!allowed) throw new Error('Email domain is not allowed');
 
+    // check for changing to email that's already set
     const currentUser = await userRepository.findUserById(id);
     if (currentUser.email === email) {
         throw new Error('Email is already associated with your account');
     }
 
+    // check email isn't used by another account
     const doesExist = await userRepository.findUserByEmail(email);
     if (doesExist && doesExist._id.toString() !== id) {
         throw new Error('An account with this email already exists');
@@ -58,6 +62,8 @@ exports.changeEmailById = async (id, email) => {
             </div>
         `
     });
+
+    return { message: 'Verification code sent to new email' };
 }
 
 exports.deleteUserById = async (id) => {

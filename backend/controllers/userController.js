@@ -50,15 +50,9 @@ exports.changeEmailById = async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
     try {
-        const updatedUser = await userService.changeEmailById(id, email);
-        if (!updatedUser) {
-            return res.status(404).json({ error: 'User not found' });
-        }
+        await userService.changeEmailById(id, email);
 
-        // update session to reflect email change
-        req.session.user.email = email;
-
-        res.status(200).json(updatedUser);
+        res.status(200).json({ message: 'Verification code sent to new email' });
     } catch (error) {
         if (error.message.includes('not allowed')) {
             return res.status(403).json({ error: error.message });
