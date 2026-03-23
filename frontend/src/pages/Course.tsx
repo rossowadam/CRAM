@@ -200,16 +200,20 @@ export default function Course() {
     return new Set(searchResults.map((result) => result.sectionId));
   }, [searchResults]);
 
-  const safeActiveResultIndex = searchResults.length === 0 ? 0 : Math.min(activeResultIndex, searchResults.length - 1);
-
-  const activeResult = searchResults[safeActiveResultIndex] ?? null;
+  const activeResult = searchResults[activeResultIndex] ?? null;
 
   useEffect(() => {
     const trimmed = query.trim();
-    if (!trimmed) return;
+
+    if (!trimmed) {
+      setActiveResultIndex(0);
+      setOpenSectionIds([]);
+      return;
+    }
 
     const ids = [...new Set(searchResults.map((result) => result.sectionId))];
     setOpenSectionIds(ids);
+    setActiveResultIndex(0);
   }, [query, searchResults]);
 
   const goToNextResult = () => {
@@ -427,10 +431,7 @@ export default function Course() {
 
                     <Input
                       value={query}
-                      onChange={(e) => {
-                        setQuery(e.target.value);
-                        setActiveResultIndex(0);
-                      }}
+                      onChange={(e) => setQuery(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -449,7 +450,7 @@ export default function Course() {
                       <>
                         <span className="whitespace-nowrap text-xs text-muted-foreground">
                           {searchResults.length > 0
-                            ? `${safeActiveResultIndex + 1}/${searchResults.length}`
+                            ? `${activeResultIndex + 1}/${searchResults.length}`
                             : "0"}
                         </span>
 
