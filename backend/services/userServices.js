@@ -66,6 +66,19 @@ exports.changeEmailById = async (id, email) => {
     return { message: 'Verification code sent to new email' };
 }
 
+exports.confirmEmailChange = async (id, verificationCode) => {
+    const user = await this.getUserById(id);
+    console.log(verificationCode);
+
+    if (!user) throw new Error('Invalid user');
+
+    if (user.verification_code !== verificationCode) {
+        throw new Error('Invalid verification code');
+    }
+
+    return userRepository.confirmEmailChange(id);
+}
+
 exports.deleteUserById = async (id) => {
     return await userRepository.deleteUserById(id);
 }

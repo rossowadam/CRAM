@@ -22,7 +22,7 @@ exports.getUserById = async (req, res) => {
 }
 
 // Should begin process of updating a user's data, should only be accessible to the user themselves, or to admins.
-// Request should be an object with the fields to update, for example: { name: 'New Name', email: 'newemail@example.com' }
+// Request should be an object with the fields to update, for example: { name: 'New Name', profilePic: 'New Profile Pic' }
 exports.updateUserById = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
@@ -46,9 +46,12 @@ exports.updateUserById = async (req, res) => {
     }
 }
 
+// Exclusively to change user email as it has a two-stage process
+// Valid request will send a 6-digit code to the new email and set the new email as pending
 exports.changeEmailById = async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
+
     try {
         await userService.changeEmailById(id, email);
 
@@ -62,6 +65,27 @@ exports.changeEmailById = async (req, res) => {
         }
         else if (error.message.includes('already associated')) {
             return res.status(422).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// called after verification is sent
+// user will send their code and if valid, their email is updated and verified
+exports.confirmEmailChange = async (req, res) => {
+    const { id } = req.params;
+    const { verificationCode } = req.body;
+
+    try {
+        await userService.confirmEmailChange(id, verificationCode);
+
+        res.status(200).json({ message: 'Email change successful' });
+    } catch (error) {
+        if (error.message.includes('Invalid user')) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        else if (error.message.includes('Invalid verification code')) {
+            return res.status(400).json({ error: error.message });
         }
         res.status(500).json({ error: error.message });
     }

@@ -1,4 +1,4 @@
-import { changeEmail } from "@/api/userApi";
+import { changeEmail, confirmEmailChange } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -73,14 +73,14 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
         setSuccessMessage(null);
         setServerError(null); // remove old errors
 
-        // return if code is empty
-        if (!verificationCode.trim()) return;
+        // return if code is empty or not 6 digits long
+        if (!verificationCode.trim() || verificationCode.length !== 6) return;
 
         // send the verification code to confirm the email change
         try {
             setLoading(true);
 
-            // TODO: call confirmEmailChange API once implemented
+            await confirmEmailChange(userId, verificationCode);
 
             // update the values on the page and in the session
             setProfileUser({ ...profileUser, email: newEmail });
@@ -150,9 +150,13 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
                     <div>
                         <input
                             type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            maxLength={6}
                             placeholder="Enter 6-digit verification code"
-                            value={verificationCode}
-                            onChange={(e) => setVerificationCode(e.target.value)}
+                            value={verificationCode} 
+                            // onChange will replace all non-numbers with nothing
+                            onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
                             className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
                             required
                         />

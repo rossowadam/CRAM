@@ -63,6 +63,27 @@ exports.verifyUser = async (email) => {
     ).lean();
 }
 
+// confirm email change by setting pending as email and verified to true
+// reset the pending email and verification code
+exports.confirmEmailChange = async (id) => {
+    const user = await User.findById(id).lean();
+    
+    return await User.findByIdAndUpdate(
+        id,
+        {
+            $set: { 
+                email: user.pending_email,
+                is_verified: true 
+            },
+            $unset: { 
+                pending_email: 1, 
+                verification_code: 1 
+            }
+        },
+        { new: true }
+    ).lean();
+};
+
 // --- Forgot Password ---
 
 exports.setResetToken = async (email, token, expiry) => {
