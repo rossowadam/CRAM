@@ -206,11 +206,7 @@ export default function Course() {
 
   useEffect(() => {
     const trimmed = query.trim();
-
-    if (!trimmed) {
-      setActiveResultIndex(0);
-      return;
-    }
+    if (!trimmed) return;
 
     const ids = [...new Set(searchResults.map((result) => result.sectionId))];
     setOpenSectionIds(ids);
