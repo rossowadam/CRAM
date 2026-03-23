@@ -17,39 +17,28 @@ export default function SignupForm() {
     const [codeSent, setCodeSent] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
 
-    // error messages to conditionally render hints in red if invalid
-    const [errors, setErrors] = useState<{
-            name?: string;
-            email?: string;
-            password?: string;
-            confirmPassword?: string;
-        }>({});
-
     const onSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSuccessMessage(null);
         setServerError(null); // remove old errors
         
-        // validate fields and update errors object
+        // return if any validation fails
         const validationResults = validateSignup({ name, email, password, confirmPassword });
-        setErrors(validationResults);
-
-        // return if invalid when errors isn't empty
         if (Object.keys(validationResults).length > 0) return;
 
         // valid signup, package details and send to backend
         try {
             setLoading(true);
 
-            await createUser({ 
-                name: name.trim(),
-                email: email.trim().toLowerCase(), 
-                password 
-            });
+            // await createUser({ 
+            //     name: name.trim(),
+            //     email: email.trim().toLowerCase(), 
+            //     password 
+            // });
 
             // move to verification stage
             setCodeSent(true);
-            setSuccessMessage("Account successfully created!");
+            setSuccessMessage("Verification code sent to your email!");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -101,7 +90,7 @@ export default function SignupForm() {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                         required
                     />
-                    <p className={`font-instrument text-xs pl-1 italic ${errors.name ? "text-destructive" : "text-secondary"}`}>
+                    <p className={`font-instrument text-xs pl-1 italic ${name.length > 0 && name.length === 0 ? "text-destructive" : "text-secondary"}`}>
                         Name must not be empty
                     </p>
                 </div>
@@ -115,7 +104,9 @@ export default function SignupForm() {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                         required
                     />
-                    <p className={`font-instrument text-xs pl-1 italic ${errors.email ? "text-destructive" : "text-secondary"}`}>
+                    <p className={`font-instrument text-xs pl-1 italic ${
+                            (email.length > 0 && !email.endsWith("@myumanitoba.ca") && !email.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
+                    }`}>
                         Email must end in "@myumanitoba.ca" or "@umanitoba.ca"
                     </p>
                 </div>
@@ -129,7 +120,7 @@ export default function SignupForm() {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                         required
                     />
-                    <p className={`font-instrument text-xs pl-1 italic ${errors.password ? "text-destructive" : "text-secondary"}`}>
+                    <p className={`font-instrument text-xs pl-1 italic ${password.length > 0 && password.length < 8 ? "text-destructive" : "text-secondary"}`}>
                         Password must be at least 8 characters
                     </p>
                 </div>
@@ -143,7 +134,7 @@ export default function SignupForm() {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                         required
                     />
-                    <p className={`font-instrument text-xs pl-1 italic ${errors.confirmPassword ? "text-destructive" : "text-secondary"}`}>
+                    <p className={`font-instrument text-xs pl-1 italic ${confirmPassword.length > 0 && confirmPassword !== password ? "text-destructive" : "text-secondary"}`}>
                         Passwords must match
                     </p>
                 </div>
