@@ -198,6 +198,24 @@ exports.logoutUser = (req, res) => {
     });
 };
 
+// Send a fresh verification code to the user's current email
+exports.requestVerificationCode = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await userService.requestVerificationCode(id);
+
+        return res.status(200).json({ message: 'Verification code sent to email' });
+    } catch (error) {
+        if (error.message.includes('not found')) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        else if (error.message.includes('already verified')) {
+            return res.status(409).json({ error: 'User is already verified' });
+        }
+        else return res.status(500).json({ error: 'Failed to send verification code: ' + error.message });
+    }
+};
+
 // Verifies the user's email with the 6-digit code sent during signup
 exports.verifyEmail = async (req, res) => {
     try {
