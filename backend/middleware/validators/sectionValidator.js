@@ -33,7 +33,29 @@ exports.registerSchema = checkSchema({
     },
     'body':{
         optional:true,
-        escape:true,
+        customSanitizer: {
+            options: (value) => {
+                return sanitizeHtml(value, {
+                    allowedTags: [
+                        // Text structure
+                        'p', 'br', 'blockquote', 'hr',
+                        // Headings
+                        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                        // Formatting (Marks)
+                        'strong', 'em', 's', 'u','pre', 'code', 'mark',
+                        // Lists
+                        'ul', 'ol', 'li',
+                        // Links
+                        'a'
+                    ],
+                    allowedAttributes: {
+                        'a': ['href', 'target', 'rel'],
+                        'code': ['class'], // for syntax highlighting
+                         
+                    }
+                });
+            }
+        },
         isLength: {options: {max: 1000000}},
         errorMessage: 'body text limitted to 1 million characters'
     }
