@@ -16,16 +16,19 @@ router.get('/', userController.getAllUsers);
 router.get('/search', userController.searchUsers);
 
 // Update a user's data. Should only be accessible to the user themselves, or to admins.
-router.put('/update/:id', registerSchema, validate,  requireAuth, requireSelf, userController.updateUserById);
+router.put('/update/:id', registerSchema, validate, requireAuth, requireSelf, userController.updateUserById);
+
+// Update a user's email. Should only be accessible to the user themselves, or to admins.
+router.put('/changeEmail/:id', registerSchema, validate, requireAuth, requireSelf, userController.changeEmailById);
 
 // Reset a user's password
 router.put('/resetPassword/:id', requireAuth, requireSelf, userController.resetPasswordById);
 
 // Delete a user, should be accessible to the user themselves, should clear out all saved data related to the user.
-router.delete('/delete/:id', requireAuth,requireSelf,userController.deleteUserById);
+router.delete('/delete/:id', requireAuth, requireSelf, userController.deleteUserById);
 
 // Create a user
-router.post('/create',registerSchema, validate, userController.createUser);
+router.post('/create', registerSchema, validate, userController.createUser);
 
 // Login a user
 router.post('/login', userController.loginUser);

@@ -39,19 +39,37 @@ exports.updateUserById = async (req, res) => {
         if (updateData.username) {
             req.session.user.username = updateData.username;
         }
-        if (updateData.email) {
-            req.session.user.email = updateData.email;
-        }
 
         res.status(200).json(updatedUser);
     } catch (error) {
-        if (error.message.includes('already exists')) {
-            res.status(409).json({ error: error.message });
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.changeEmailById = async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+    try {
+        const updatedUser = await userService.changeEmailById(id, email);
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
         }
-        if (error.message.includes('already associated')) {
-            res.status(422).json({ error: error.message });
+
+        // update session to reflect email change
+        req.session.user.email = email;
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        if (error.message.includes('not allowed')) {
+            return res.status(403).json({ error: error.message });
         }
-        else res.status(500).json({ error: error.message });
+        else if (error.message.includes('already exists')) {
+            return res.status(409).json({ error: error.message });
+        }
+        else if (error.message.includes('already associated')) {
+            return res.status(422).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
     }
 }
 
