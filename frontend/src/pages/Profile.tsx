@@ -10,6 +10,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
+import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
+import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
+import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
 
 interface ProfileUser {
     id: string;
@@ -26,6 +29,9 @@ export default function Profile() {
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
+    const [changeUsername, setChangeUsername] = useState(false);
+    const [changeEmail, setChangeEmail] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
 
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
@@ -58,7 +64,11 @@ export default function Profile() {
 
         const update = async () => {
             try {
+                // reset states and then update profile user
                 setServerError(null);
+                setChangeUsername(false);
+                setChangeEmail(false);
+                setChangePassword(false);
                 const profileUserDetails = await getUserById(userId);
                 setProfileUser(profileUserDetails);
             } catch (err) {
@@ -143,32 +153,71 @@ export default function Profile() {
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Username:</p>
 
                     <div className="flex flex-row items-center gap-1.5">
-                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        {isOwnProfile && 
+                            <Pencil 
+                                className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
+                                onClick={() => {
+                                    setChangeUsername(prev => !prev);
+                                    setChangeEmail(false);
+                                    setChangePassword(false);
+                                }}
+                            />
+                        }
                         <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.username ?? "-"}</p>
                     </div>
                 </div>
+
+                {/* Change username */}
+                {isOwnProfile && changeUsername && (
+                    <ChangeUsernameForm userId={userId} changeUsername={changeUsername} profileUser={profileUser!} setProfileUser={setProfileUser} />
+                )}
 
                 {/* Email */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
                     <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Email:</p>
                     <div className="flex flex-row items-center gap-1.5">
-                        {isOwnProfile && <Pencil className="w-4 hover:cursor-pointer hover:text-secondary"/>}
+                        {isOwnProfile && 
+                            <Pencil 
+                                className={`w-4 hover:cursor-pointer hover:text-secondary ${changeEmail ? "text-destructive" : ""}`} 
+                                onClick={() => {
+                                    setChangeEmail(prev => !prev); 
+                                    setChangeUsername(false);
+                                    setChangePassword(false);
+                                }}
+                            />
+                        }
                         <p className="font-funnel font-thin text-xs sm:text-sm text-foreground">{profileUser?.email ?? "-"}</p>
                     </div>
                 </div>
 
-                {/* Password */}
-                {isOwnProfile && 
-                <div className="flex flex-row items-center justify-center p-2 gap-5">
-                    <Button variant="outline" className=" font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer">Change Password</Button>
-                </div>}
-
-                {serverError && (
-                    <p className="text-destructive text-sm text-center mt-2">
-                        {serverError}
-                    </p>
+                {/* Change email */}
+                {isOwnProfile && changeEmail && (
+                    <ChangeEmailForm userId={userId} changeEmail={changeEmail} profileUser={profileUser!} setProfileUser={setProfileUser} />
                 )}
 
+                {/* Password */}
+                {isOwnProfile && 
+                    <div className="flex flex-row items-center justify-center p-2 gap-5">
+                        <Button variant="outline" 
+                        className={`font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer ${changePassword ? "text-destructive" : ""}`}
+                        onClick={() => {
+                            setChangePassword(prev => !prev);
+                            setChangeUsername(false);
+                            setChangeEmail(false);
+                        }}>
+                            {changePassword ? "Cancel Change" : "Change Password"}
+                        </Button>
+                    </div>
+                }
+
+                {/* Change password form */}
+                {isOwnProfile && changePassword && (
+                    <ChangePasswordForm userId={userId} changePassword={changePassword} />
+                )}
+
+                {serverError && (
+                    <p className="text-destructive text-sm text-center mt-2">{serverError}</p>
+                )}
             </div>  
 
             {/* Contributions and recent activity container */}

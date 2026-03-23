@@ -4,11 +4,13 @@ const passwordServices = require('./passwordServices');
 const emailServices = require('./emailServices');
 const crypto = require('crypto');
 
+// get all user details except the password 
 exports.getUserById = async (id) => {
     const user = await userRepository.findUserById(id);
     if (user) delete user.password_hash;
     return user;
 }
+
 exports.updateUserById = async (id, userData) => {
     const updateData = { ...userData };
 
@@ -17,9 +19,66 @@ exports.updateUserById = async (id, userData) => {
         updateData.profile_pic = updateData.profilePic;
         delete updateData.profilePic;
     }
+    if (updateData.username) {
+        updateData.user_name = updateData.username;
+        delete updateData.username;
+    }
 
     return await userRepository.updateUserById(id, updateData);
 };
+
+exports.changeEmailById = async (id, email) => {
+    const allowedDomains = ['@umanitoba.ca', '@myumanitoba.ca'];
+
+    // check domain
+    const allowed = allowedDomains.some(domain => email.endsWith(domain));
+    if (!allowed) throw new Error('Email domain is not allowed');
+
+    // check for changing to email that's already set
+    const currentUser = await userRepository.findUserById(id);
+    if (currentUser.email === email) {
+        throw new Error('Email is already associated with your account');
+    }
+
+    // check email isn't used by another account
+    const doesExist = await userRepository.findUserByEmail(email);
+    if (doesExist && doesExist._id.toString() !== id) {
+        throw new Error('An account with this email already exists');
+    }
+
+    // generate and store verification code against the new email temporarily
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    await userRepository.setPendingEmail(id, email, verificationCode);
+
+    await emailServices.sendEmail({
+        to: email,
+        subject: 'CRAM - Verify Your New Email',
+        html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #4CAF50;">Verify your new email</h2>
+                <p>Your 6-digit verification code is:</p>
+                <h1 style="letter-spacing: 5px; color: #333; background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">${verificationCode}</h1>
+                <p>Enter this code in the app to confirm your email change.</p>
+            </div>
+        `
+    });
+
+    return { message: 'Verification code sent to new email' };
+}
+
+exports.confirmEmailChange = async (id, verificationCode) => {
+    const user = await this.getUserById(id);
+    console.log(verificationCode);
+
+    if (!user) throw new Error('Invalid user');
+
+    if (user.verification_code !== verificationCode) {
+        throw new Error('Invalid verification code');
+    }
+
+    return userRepository.confirmEmailChange(id);
+}
+
 exports.deleteUserById = async (id) => {
     return await userRepository.deleteUserById(id);
 }
@@ -100,9 +159,9 @@ exports.loginUser = async (userData) => {
     }
 
     // checks if passwords match
-    const valid = await passwordServices.verifyPassword(password, user.password_hash);
+    const isValid = await passwordServices.verifyPassword(password, user.password_hash);
 
-    if (!valid) {
+    if (!isValid) {
         throw new Error("Invalid password");
     }
 
@@ -195,4 +254,25 @@ exports.resetPasswordWithToken = async (token, newPassword) => {
 
 exports.addContribution = async (id, data) => {
     return await userRepository.addContribution(id, data);
+}
+
+exports.resetPasswordById = async (id, userData) => {
+    const { currentPassword, newPassword, confirmPassword } = userData;
+    
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        throw new Error('User data is incomplete');
+    }
+
+    // check if the current password was valid
+    const passwordHash = await passwordServices.getPasswordById(id);
+    const isValid = await passwordServices.verifyPassword(currentPassword, passwordHash);
+
+    if (!isValid) { 
+        throw new Error('Invalid current password');
+    }
+
+    // hash the new password and update the user
+    const newHash = await passwordServices.hashPassword(newPassword);
+
+    return await userRepository.updateUserById(id, { password_hash: newHash });
 }

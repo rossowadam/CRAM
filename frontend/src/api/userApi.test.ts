@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createUser, loginUser, getCurrentUser, logoutUser, updateUser, getUserById } from "./userApi";
+import { createUser, loginUser, getCurrentUser, logoutUser, updateUser, getUserById, changeEmail, confirmEmailChange, resetPassword } from "./userApi";
 
 // mock the backend and test valid input and the possible errors received
 describe("createUser", () => {
@@ -274,7 +274,7 @@ describe("updateUser", () => {
         vi.spyOn(globalThis, "fetch").mockResolvedValue({
             ok: false,
             status: 403,
-            json: async () => ({ error: "Forbidden" })
+            json: async () => ({ error: "A user may only make changes to their account" })
         } as unknown as Response);
 
         await expect(updateUser(validId, validPayload)).rejects.toThrow("A user may only make changes to their account");
@@ -357,5 +357,233 @@ describe("getUserById", () => {
         } as unknown as Response);
 
         await expect(getUserById(validId)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test email change request and possible errors
+describe("changeEmail", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validId = "123";
+    const validEmail = "newemail@myumanitoba.ca";
+
+    // valid - verification code sent to new email
+    it("returns success message when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Verification code sent to new email" })
+        } as unknown as Response);
+
+        const result = await changeEmail(validId, validEmail);
+
+        expect(result).toEqual({ message: "Verification code sent to new email" });
+    });
+
+    // unauthenticated error
+    it("throws 401 error message", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 401,
+            json: async () => ({ error: "Unauthorized" })
+        } as unknown as Response);
+
+        await expect(changeEmail(validId, validEmail)).rejects.toThrow("You must be signed-in to make changes to your account");
+    });
+
+    // forbidden error - invalid domain
+    it("throws 403 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: "Email domain is not allowed" })
+        } as unknown as Response);
+
+        await expect(changeEmail(validId, validEmail)).rejects.toThrow("Email domain is not allowed");
+    });
+
+    // conflict error - email already in use
+    it("throws 409 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 409,
+            json: async () => ({ error: "An account with this email already exists" })
+        } as unknown as Response);
+
+        await expect(changeEmail(validId, validEmail)).rejects.toThrow("An account with this email already exists");
+    });
+
+    // unprocessable - same email as current
+    it("throws 422 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 422,
+            json: async () => ({ error: "Email is already associated with your account" })
+        } as unknown as Response);
+
+        await expect(changeEmail(validId, validEmail)).rejects.toThrow("Email is already associated with your account");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(changeEmail(validId, validEmail)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test email change confirmation with verification code
+describe("confirmEmailChange", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validId = "123";
+    const validCode = "123456";
+
+    // valid - email change confirmed
+    it("resolves without throwing when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Email change successful" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).resolves.not.toThrow();
+    });
+
+    // unauthenticated error
+    it("throws 401 error message", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 401,
+            json: async () => ({ error: "Unauthorized" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("You must be signed-in to make changes to your account");
+    });
+
+    // invalid verification code
+    it("throws 400 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 400,
+            json: async () => ({ error: "Invalid verification code" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("Invalid verification code");
+    });
+
+    // forbidden error
+    it("throws 403 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: "A user may only make changes to their account" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("A user may only make changes to their account");
+    });
+
+    // user not found error
+    it("throws 404 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 404,
+            json: async () => ({ error: "Invalid user" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("Invalid user");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test password reset with current and new password
+describe("resetPassword", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validId = "123";
+    const validPayload = {
+        currentPassword: "oldpassword123",
+        newPassword: "newpassword123",
+        confirmPassword: "newpassword123"
+    };
+
+    // valid - password changed successfully
+    it("returns body when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Password changed successfully" })
+        } as unknown as Response);
+
+        const result = await resetPassword(validId, validPayload);
+
+        expect(result).toEqual({ message: "Password changed successfully" });
+    });
+
+    // unauthenticated error
+    it("throws 401 error message", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 401,
+            json: async () => ({ error: "Unauthorized" })
+        } as unknown as Response);
+
+        await expect(resetPassword(validId, validPayload)).rejects.toThrow("You must be signed-in to make changes to your account");
+    });
+
+    // invalid current password
+    it("throws 403 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: "Invalid current password" })
+        } as unknown as Response);
+
+        await expect(resetPassword(validId, validPayload)).rejects.toThrow("Invalid current password");
+    });
+
+    // incomplete data error
+    it("throws 422 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 422,
+            json: async () => ({ error: "User data is incomplete" })
+        } as unknown as Response);
+
+        await expect(resetPassword(validId, validPayload)).rejects.toThrow("User data is incomplete");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(resetPassword(validId, validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
 });

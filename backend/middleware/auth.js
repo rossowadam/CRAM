@@ -13,7 +13,8 @@ exports.requireAuth = (req, res, next) => {
 // If authenticated, go next() to proceed further.
 exports.requireSelf = (req, res, next) => {
     if (req.session.user.id !== req.params.id) {
-        return res.status(403).json({ error: "Forbidden" });
+        // detailed message as other checks can also throw 403 error in a single path
+        return res.status(403).json({ error: "A user may only make changes to their account" });
     }
     next();
 };

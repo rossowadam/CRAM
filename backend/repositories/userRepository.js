@@ -19,6 +19,20 @@ exports.findUserByEmail = async (email) => {
 exports.updateUserById = async (id, userData) => {
     return await User.findByIdAndUpdate(id, userData, { new: true }).lean();
 }
+
+// set the pending email to user with their verification code and set verified to false
+exports.setPendingEmail = async (id, email, code) => {
+    return await User.findByIdAndUpdate(
+        id,
+        { 
+            pending_email: email, 
+            verification_code: code,
+            is_verified: false 
+        },
+        { new: true }
+    ).lean();
+};
+
 //calls the database to delete a user document with the provided id, returns the deleted user document converted to a plain JSON object if successful,
 // or null if no user with the given id was found
 exports.deleteUserById = async (id) => {
@@ -48,6 +62,27 @@ exports.verifyUser = async (email) => {
         { new: true }
     ).lean();
 }
+
+// confirm email change by setting pending as email and verified to true
+// reset the pending email and verification code
+exports.confirmEmailChange = async (id) => {
+    const user = await User.findById(id).lean();
+    
+    return await User.findByIdAndUpdate(
+        id,
+        {
+            $set: { 
+                email: user.pending_email,
+                is_verified: true 
+            },
+            $unset: { 
+                pending_email: 1, 
+                verification_code: 1 
+            }
+        },
+        { new: true }
+    ).lean();
+};
 
 // --- Forgot Password ---
 

@@ -85,14 +85,11 @@ export async function logoutUser() {
     }
 }
 
-// Update user fields. Accepts any combination of username, email, and profilePic.
+// Update user fields. Accepts any combination of username and profilePic.
 export async function updateUser(id: string, data: {
     username?: string;
-    email?: string;
     profilePic?: string;
 }) {
-
-    // build the request
     const response = await fetch(`/api/v1/user/update/${id}`, {
         method: "PUT",
         credentials: "include",
@@ -102,7 +99,6 @@ export async function updateUser(id: string, data: {
 
     const body = await response.json();
 
-    // robustly throw errors
     if (!response.ok) {
         switch (response.status) {
             case 401:
@@ -117,6 +113,57 @@ export async function updateUser(id: string, data: {
     }
 
     return body;
+}
+
+// Request an email change, sends a verification code to the new email.
+export async function changeEmail(id: string, email: string) {
+    const response = await fetch(`/api/v1/user/changeEmail/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 403:
+            case 409:
+            case 422:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
+
+    return body;
+}
+
+export async function confirmEmailChange(id: string, verificationCode: string) {
+    const response = await fetch(`/api/v1/user/confirmEmailChange/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ verificationCode }),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 400:
+            case 403:
+            case 404:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
 }
 
 // Search for a user by the id. Return their full details.
@@ -143,4 +190,35 @@ export async function getUserById(id: string) {
         role: body.role.charAt(0).toUpperCase() + body.role.slice(1), // student --> Student
         profilePic: body.profile_pic,
     };
+}
+
+export async function resetPassword(id: string, data: {
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string,
+}) {
+    // build the request
+    const response = await fetch(`/api/v1/user/resetPassword/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+
+    // robustly throw errors
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 403:
+            case 422:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }    
+
+    return body;
 }
