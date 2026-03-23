@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String, required: true, unique: true
     },
+    pending_email: {
+        type: String, required: false
+    },
     profile_pic: {
         type: String,
     },
