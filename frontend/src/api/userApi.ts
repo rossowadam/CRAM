@@ -131,9 +131,7 @@ export async function changeEmail(id: string, email: string) {
             case 401:
                 throw new Error("You must be signed-in to make changes to your account");
             case 403:
-                throw new Error(body.error);
             case 409:
-                throw new Error(body.error);
             case 422:
                 throw new Error(body.error);
             default:
@@ -142,6 +140,30 @@ export async function changeEmail(id: string, email: string) {
     }
 
     return body;
+}
+
+export async function confirmEmailChange(id: string, verificationCode: string) {
+    const response = await fetch(`/api/v1/user/confirmEmailChange/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ verificationCode }),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+                throw new Error("You must be signed-in to make changes to your account");
+            case 400:
+            case 403:
+            case 404:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
 }
 
 // Search for a user by the id. Return their full details.
