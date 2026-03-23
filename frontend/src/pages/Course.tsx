@@ -16,7 +16,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 import type { Definition, Section } from "@/api/sectionsApi";
 import {
@@ -27,7 +31,6 @@ import {
 import { getCourseCode } from "@/utils/courseHelpers";
 
 type SearchableSection = {
-  id: string;
   title: string;
   description: string;
   bodyText: string;
@@ -40,7 +43,7 @@ type SearchResult = {
   occurrenceIndexInField: number;
 };
 
-function htmlToText(html: string) {
+function htmlToText(html: string): string {
   if (!html) return "";
 
   const temp = document.createElement("div");
@@ -48,7 +51,7 @@ function htmlToText(html: string) {
   return temp.textContent || temp.innerText || "";
 }
 
-function countOccurrences(text: string, query: string) {
+function countOccurrences(text: string, query: string): number {
   const trimmed = query.trim();
   if (!trimmed) return 0;
 
@@ -75,23 +78,25 @@ export default function Course() {
   const { courseId } = useParams();
 
   // Section dialog state
-  const [openCreate,setOpenCreate] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
   const [editSection, setEditSection] = useState<Section | null>(null);
 
   // Definition dialog state
   const [definitionOpen, setDefinitionOpen] = useState(false);
-  const [editDefinition, setEditDefinition] = useState<Definition | null>(null)
+  const [editDefinition, setEditDefinition] = useState<Definition | null>(null);
 
   // Queries
   const [query, setQuery] = useState("");
-  const [openSectionIds, setOpenSectionIds] = useState<string[]>([]);
+  const [manuallyOpenSectionIds, setManuallyOpenSectionIds] = useState<string[]>(
+    []
+  );
   const [activeResultIndex, setActiveResultIndex] = useState(0);
-  
+
   if (!courseId) throw new Error("Missing course id");
   const courseCode = getCourseCode(courseId);
 
   useEffect(() => {
-    const fetchCoursePage = async () => {
+    const fetchCoursePage = async (): Promise<void> => {
       try {
         const data = await getCoursePage(courseCode);
         setSections(data.sections ?? []);
@@ -101,21 +106,21 @@ export default function Course() {
       }
     };
 
-    fetchCoursePage();
+    void fetchCoursePage();
   }, [courseCode]);
 
-  const handleDeleteSection = async (section: Section) => {
+  const handleDeleteSection = async (section: Section): Promise<void> => {
     try {
-      await deleteSection({ sectionId: section._id});
+      await deleteSection({ sectionId: section._id });
 
       setSections((prev) => prev.filter((s) => s._id !== section._id));
     } catch (err) {
       console.error(err);
-      alert(err instanceof Error ? err.message : "Failed to delete section");  
+      alert(err instanceof Error ? err.message : "Failed to delete section");
     }
   };
 
-  const handleUpdateSection = async (section: Section) => {
+  const handleUpdateSection = (section: Section): void => {
     setSections((prev) => {
       const exists = prev.some((s) => s._id === section._id);
 
@@ -127,7 +132,7 @@ export default function Course() {
     });
   };
 
-  const handleAddOrUpdateDefinition = (def: Definition) => {
+  const handleAddOrUpdateDefinition = (def: Definition): void => {
     setDefinitions((prev) => {
       const exists = prev.some((d) => d._id === def._id);
       if (exists) return prev.map((d) => (d._id === def._id ? def : d));
@@ -135,18 +140,17 @@ export default function Course() {
     });
   };
 
-  const handleDeleteDefinition = async (id: string) => {
+  const handleDeleteDefinition = async (id: string): Promise<void> => {
     try {
-      await deleteDefinition({definitionId: id});
+      await deleteDefinition({ definitionId: id });
       setDefinitions((prev) => prev.filter((d) => d._id !== id));
     } catch (err) {
       console.error("failed to delete definition:", err);
     }
-  }
+  };
 
   const searchableSections = useMemo<SearchableSection[]>(() => {
     return sections.map((section) => ({
-      id: section._id,
       title: section.title ?? "",
       description: section.description ?? "",
       bodyText: htmlToText(section.body ?? ""),
@@ -196,37 +200,41 @@ export default function Course() {
     return results;
   }, [query, searchableSections]);
 
-  const matchingSectionIds = useMemo(() => {
+  const isSearching = query.trim().length > 0;
+
+  const matchingSectionIds = useMemo<Set<string>>(() => {
     return new Set(searchResults.map((result) => result.sectionId));
   }, [searchResults]);
 
-  const activeResult = searchResults[activeResultIndex] ?? null;
-
-  useEffect(() => {
-    const trimmed = query.trim();
-
-    if (!trimmed) {
-      setActiveResultIndex(0);
-      setOpenSectionIds([]);
-      return;
+  const autoOpenSectionIds = useMemo<string[]>(() => {
+    if (!isSearching) {
+      return [];
     }
 
-    const ids = [...new Set(searchResults.map((result) => result.sectionId))];
-    setOpenSectionIds(ids);
-    setActiveResultIndex(0);
-  }, [query, searchResults]);
+    return [...new Set(searchResults.map((result) => result.sectionId))];
+  }, [isSearching, searchResults]);
 
-  const goToNextResult = () => {
-    if (!query.trim() || searchResults.length === 0) return;
+  const safeActiveResultIndex = useMemo<number>(() => {
+    if (searchResults.length === 0) {
+      return 0;
+    }
+
+    return Math.min(activeResultIndex, searchResults.length - 1);
+  }, [activeResultIndex, searchResults.length]);
+
+  const activeResult = searchResults[safeActiveResultIndex] ?? null;
+
+  const goToNextResult = (): void => {
+    if (!isSearching || searchResults.length === 0) return;
 
     setActiveResultIndex((prev) => (prev + 1) % searchResults.length);
   };
 
-  const goToPreviousResult = () => {
-    if (!query.trim() || searchResults.length === 0) return;
+  const goToPreviousResult = (): void => {
+    if (!isSearching || searchResults.length === 0) return;
 
-    setActiveResultIndex((prev) =>
-      (prev - 1 + searchResults.length) % searchResults.length
+    setActiveResultIndex(
+      (prev) => (prev - 1 + searchResults.length) % searchResults.length
     );
   };
 
@@ -241,21 +249,18 @@ export default function Course() {
         2xl:[--sidebar-width:clamp(12rem,20vw,37rem)]
       "
     >
-      
-      <CourseSidebar sections={sections} courseCode={courseCode}/>
+      <CourseSidebar sections={sections} courseCode={courseCode} />
       <div className="fixed top-20 left-4 z-50 md:hidden">
-        <SidebarTrigger className="bg-secondary text-background hover:cursor-pointer hover:bg-primary hover:text-foreground"/>
+        <SidebarTrigger className="bg-secondary text-background hover:cursor-pointer hover:bg-primary hover:text-foreground" />
       </div>
 
       <SidebarInset className="min-w-0 flex flex-col">
         <div className="flex-1 px-6 py-6 md:px-4">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_clamp(16rem,22vw,24rem)]">
-
             {/* Left column: main page content */}
             <div className="min-w-0">
-
               {/* Course page header, this stays static, do not modify with dynamic content */}
-              <div className="w-full flex flex-col sm:gap-3 sm:flex-row items-center ">
+              <div className="w-full flex flex-col items-center sm:flex-row sm:gap-3 ">
                 <h1 className="text-xl font-bold w-4/5 pb-2 text-center sm:text-3xl xl:text-4xl">
                   Welcome to the {courseId.toUpperCase()} Course Page!
                 </h1>
@@ -264,7 +269,7 @@ export default function Course() {
                   <Separator
                     orientation="horizontal"
                     className="bg-secondary sm:hidden my-2"
-                      />
+                  />
 
                   {/* Vertical on small screens and up */}
                   <Separator
@@ -275,35 +280,40 @@ export default function Course() {
 
                 <div className="flex flex-col items-center gap-2 w-full text-center sm:text-left">
                   <p className=" text-base font-thin font-instrument w-full">
-                    Here, you can collaborate with your classmates, find resources, and review definitions about all things {courseId.toUpperCase()}. 
+                    Here, you can collaborate with your classmates, find
+                    resources, and review definitions about all things{" "}
+                    {courseId.toUpperCase()}.
                   </p>
-                  
+
                   <p className=" text-base font-thin font-instrument w-full italic">
-                    Please remember to be respectful and follow the code of conduct while using this platform. Happy learning!
+                    Please remember to be respectful and follow the code of
+                    conduct while using this platform. Happy learning!
                   </p>
                 </div>
               </div>
 
-              <Separator orientation="horizontal" className="bg-secondary "/>
+              <Separator orientation="horizontal" className="bg-secondary " />
 
-              {/* Course sections heading */}        
+              {/* Course sections heading */}
               <div className="flex flex-row gap-2 w-full justify-between items-center p-2">
                 <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
                   Sections
                 </h2>
                 <HoverCard>
                   <HoverCardTrigger asChild>
-                    <CirclePlus 
+                    <CirclePlus
                       className="w-4/5 hover:text-secondary hover:cursor-pointer"
                       aria-label="Add new section"
                       onClick={() => {
                         setEditSection(null);
-                        setOpenCreate(true)}}
+                        setOpenCreate(true);
+                      }}
                     />
                   </HoverCardTrigger>
                   <HoverCardContent side="top" className="bg-background">
                     <div className="font-instrument text-xs text-center text-foreground">
-                      Add a new section to your course page to organize your content and discussions.
+                      Add a new section to your course page to organize your
+                      content and discussions.
                     </div>
                   </HoverCardContent>
                 </HoverCard>
@@ -312,9 +322,9 @@ export default function Course() {
               {/* Display section dialog */}
               <SectionDialog
                 open={openCreate}
-                onOpenChange={(open) => { 
-                  if (!open) setEditSection(null); 
-                  setOpenCreate(open); 
+                onOpenChange={(open) => {
+                  if (!open) setEditSection(null);
+                  setOpenCreate(open);
                 }}
                 mode={editSection ? "edit" : "create"}
                 courseCode={courseCode}
@@ -322,24 +332,30 @@ export default function Course() {
                 onSave={handleUpdateSection}
               />
 
-              <Separator orientation="horizontal" className="bg-foreground my-2"/>
+              <Separator
+                orientation="horizontal"
+                className="bg-foreground my-2"
+              />
 
               {/* Display sections */}
               <div className="bg-primary p-2 rounded-2xl w-full space-y-3">
                 {sections.map((section) => {
                   const isMatch = matchingSectionIds.has(section._id);
-                  const isSearching = !!query.trim();
                   const isOpen = isSearching
-                    ? isMatch
-                    : openSectionIds.includes(section._id);
+                    ? autoOpenSectionIds.includes(section._id)
+                    : manuallyOpenSectionIds.includes(section._id);
 
-                  const isActiveMatch = !!activeResult && section._id === activeResult.sectionId;
+                  const isActiveMatch =
+                    activeResult !== null &&
+                    section._id === activeResult.sectionId;
 
-                  const activeOccurrenceInSection =
-                    isActiveMatch ? activeResult.occurrenceIndexInField : null;
+                  const activeOccurrenceInSection = isActiveMatch
+                    ? activeResult.occurrenceIndexInField
+                    : null;
 
-                  const activeFieldInSection =
-                    isActiveMatch ? activeResult.field : null;
+                  const activeFieldInSection = isActiveMatch
+                    ? activeResult.field
+                    : null;
 
                   return (
                     <div
@@ -358,7 +374,7 @@ export default function Course() {
                         onOpenChange={(nextOpen) => {
                           if (isSearching) return;
 
-                          setOpenSectionIds((prev) =>
+                          setManuallyOpenSectionIds((prev) =>
                             nextOpen
                               ? [...new Set([...prev, section._id])]
                               : prev.filter((id) => id !== section._id)
@@ -375,17 +391,19 @@ export default function Course() {
               </div>
 
               {/* Definition table heading */}
-              <div className="flex flex-row gap-2 w-full justify-between items-center p-2" id="definitions">
+              <div
+                className="flex flex-row gap-2 w-full justify-between items-center p-2"
+                id="definitions"
+              >
                 <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
                   Definitions
                 </h2>
                 <HoverCard>
-
-                  <HoverCardTrigger asChild>             
-                    <CirclePlus 
+                  <HoverCardTrigger asChild>
+                    <CirclePlus
                       className="w-4/5 hover:text-secondary hover:cursor-pointer"
                       aria-label="Add new definition"
-                      onClick = {() => {
+                      onClick={() => {
                         setEditDefinition(null);
                         setDefinitionOpen(true);
                       }}
@@ -403,14 +421,14 @@ export default function Course() {
               <DefinitionDialog
                 open={definitionOpen}
                 onOpenChange={setDefinitionOpen}
-                courseCode ={courseCode}
+                courseCode={courseCode}
                 mode={editDefinition ? "edit" : "create"}
                 initialValues={editDefinition ?? undefined}
                 onSuccess={handleAddOrUpdateDefinition}
               />
 
               <Separator orientation="horizontal" />
-              
+
               <DefinitionTable
                 definitions={definitions}
                 onEdit={(definition) => {
@@ -431,7 +449,10 @@ export default function Course() {
 
                     <Input
                       value={query}
-                      onChange={(e) => setQuery(e.target.value)}
+                      onChange={(e) => {
+                        setQuery(e.target.value);
+                        setActiveResultIndex(0);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -446,11 +467,11 @@ export default function Course() {
                       className="h-8 w-full border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
 
-                    {query.trim() && (
+                    {isSearching && (
                       <>
                         <span className="whitespace-nowrap text-xs text-muted-foreground">
                           {searchResults.length > 0
-                            ? `${activeResultIndex + 1}/${searchResults.length}`
+                            ? `${safeActiveResultIndex + 1}/${searchResults.length}`
                             : "0"}
                         </span>
 
@@ -483,7 +504,6 @@ export default function Course() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </SidebarInset>
