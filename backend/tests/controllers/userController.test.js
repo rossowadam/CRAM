@@ -377,6 +377,7 @@ test('UserController - loginUser - success', async (t) => {
         id: '123',
         email: 'test@umanitoba.ca',
         username: 'testuser',
+        profilePic: undefined,
         role: 'student',
         is_verified: undefined
     });
