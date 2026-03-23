@@ -32,6 +32,31 @@ export async function createUser(data: {
     return body;
 }
 
+export async function verifyEmail(data: {email: string, code: string}) {
+    const response = await fetch(`/api/v1/user/verify-email`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+    console.log(body);
+
+    // robust throw errors
+    if (!response.ok) {
+        switch (response.status) {
+            case 400:
+            case 404:
+            case 409:
+            case 422:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
+}
+
 // Take in credentials of the user and send it to the endpoint.
 // Robustly throw errors.
 export async function loginUser(data: {

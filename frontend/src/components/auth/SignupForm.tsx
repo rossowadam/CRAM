@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 
 import { validateSignup } from "@/utils/validators";
-import { createUser } from "@/api/userApi";
+import { createUser, verifyEmail } from "@/api/userApi";
 
 export default function SignupForm() {
     const [name, setName] = useState("");
@@ -30,11 +30,11 @@ export default function SignupForm() {
         try {
             setLoading(true);
 
-            // await createUser({ 
-            //     name: name.trim(),
-            //     email: email.trim().toLowerCase(), 
-            //     password 
-            // });
+            await createUser({ 
+                name: name.trim(),
+                email: email.trim().toLowerCase(), 
+                password 
+            });
 
             // move to verification stage
             setCodeSent(true);
@@ -60,10 +60,7 @@ export default function SignupForm() {
         try {
             setLoading(true);
 
-            // await verifyEmail({ 
-            //     email: email.trim().toLowerCase(), 
-            //     code: verificationCode 
-            // });
+            await verifyEmail({email: email.trim().toLowerCase(), code: verificationCode});
 
             setSuccessMessage("Account successfully verified! You can now log in.");
             setVerificationCode("");
