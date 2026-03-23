@@ -65,6 +65,10 @@ export default function SignupForm() {
             setSuccessMessage("Account successfully verified! You can now log in.");
             setVerificationCode("");
             setCodeSent(false);
+            setName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
