@@ -32,6 +32,29 @@ export async function createUser(data: {
     return body;
 }
 
+export async function requestVerificationCode(id: string) {
+    const response = await fetch(`/api/v1/user/${id}/request-verification-code`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+    });
+
+    const body = await response.json();
+
+    // robust throw errors
+    if (!response.ok) {
+        switch (response.status) {
+            case 401:
+            case 403:
+            case 404:
+            case 409:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
+}
+
 export async function verifyEmail(data: {email: string, code: string}) {
     const response = await fetch(`/api/v1/user/verify-email`, {
         method: "PUT",
@@ -41,7 +64,6 @@ export async function verifyEmail(data: {email: string, code: string}) {
     });
 
     const body = await response.json();
-    console.log(body);
 
     // robust throw errors
     if (!response.ok) {
@@ -167,6 +189,7 @@ export async function changeEmail(id: string, email: string) {
     return body;
 }
 
+// confirm the email change
 export async function confirmEmailChange(id: string, verificationCode: string) {
     const response = await fetch(`/api/v1/user/confirmEmailChange/${id}`, {
         method: "PUT",
