@@ -21,6 +21,8 @@ router.put('/update/:id', registerSchema, validate, requireAuth, requireSelf, us
 // Update a user's email. Should only be accessible to the user themselves, or to admins.
 router.put('/changeEmail/:id', registerSchema, validate, requireAuth, requireSelf, userController.changeEmailById);
 
+router.put('/confirmEmailChange/:id', registerSchema, validate, requireAuth, requireSelf, userController.confirmEmailChange);
+
 // Reset a user's password
 router.put('/resetPassword/:id', requireAuth, requireSelf, userController.resetPasswordById);
 
