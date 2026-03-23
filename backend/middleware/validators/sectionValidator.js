@@ -1,4 +1,6 @@
 const { checkSchema, validationResult } = require('express-validator');
+const sanitizeHtml = require('sanitize-html');
+
 
 exports.registerSchema = checkSchema({
     'courseCode': {
