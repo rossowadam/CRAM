@@ -201,12 +201,9 @@ exports.logoutUser = (req, res) => {
 // Verifies the user's email with the 6-digit code sent during signup
 exports.verifyEmail = async (req, res) => {
     try {
-        const { email, code } = req.body;
-        if (!email || !code) {
-            return res.status(400).json({ error: "Email and code are required" });
-        }
+        const userData = req.body;
 
-        await userService.verifyEmailCode(email, code);
+        await userService.verifyEmailCode(userData);
 
         // If the user is currently logged in, update their session
         if (req.session && req.session.user && req.session.user.email === email) {
@@ -215,10 +212,19 @@ exports.verifyEmail = async (req, res) => {
 
         res.status(200).json({ message: "Email verified successfully" });
     } catch (error) {
-        if (error.message.includes("Invalid")) {
+        if (error.message.includes('Invalid')) {
             return res.status(400).json({ error: error.message });
         }
-        res.status(500).json({ error: "Failed to verify email: " + error.message });
+        else if (error.message.includes('not found')) {
+            return res.status(404).json({ error: 'User not found' }); 
+        }
+        else if (error.message.includes('already verified')) {
+            return res.status(409).json({ error: 'User is already verified' });
+        }
+        else if (error.message.includes('incomplete')) {
+            return res.status(422).json({ error: error.message });
+        } 
+        else res.status(500).json({ error: "Failed to verify email: " + error.message });
     }
 }
 
