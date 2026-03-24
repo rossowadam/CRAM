@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Pencil } from "lucide-react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, type ChartConfig } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import { useState, useEffect, useMemo } from "react";
 import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
@@ -91,7 +91,7 @@ export default function Profile() {
         };
 
         update();
-    }, [selectedPic]);
+    }, [selectedPic, user, setUser]);
 
     // set avatar key to be the user if they're on their own page
     // otherwise, to the key for that profile
