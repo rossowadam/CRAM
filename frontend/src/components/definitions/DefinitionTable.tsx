@@ -13,6 +13,8 @@ import type { Definition } from "@/api/sectionsApi";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from "../ui/avatar";
 import { AVATAR_MAP } from "@/constants/avatars";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 type DefinitionTableProps = {
   definitions: Definition[];       
@@ -89,20 +91,63 @@ export default function DefinitionTable({definitions, onEdit, onDelete}: Definit
                             </TableCell> 
                             <TableCell></TableCell> 
                             <TableCell className="text-right">
-                                <Button 
-                                    className="hover:text-secondary hover:cursor-pointer mr-1" 
-                                    aria-label="Edit definition"
-                                    onClick={() => onEdit(def)}
-                                >
-                                    <PencilLine />
-                                </Button>
-                                <Button 
-                                    className="hover:text-destructive hover:cursor-pointer hover:underline" 
-                                    aria-label="Delete definition"
-                                    onClick={() => onDelete(def._id)}
-                                >
-                                    <Trash2 />
-                                </Button>
+                                <HoverCard>
+                                    <HoverCardTrigger asChild>
+                                        <Button 
+                                            className="hover:text-secondary hover:cursor-pointer mr-1" 
+                                            aria-label="Edit definition"
+                                            onClick={() => onEdit(def)}
+                                        >
+                                            <PencilLine />
+                                        </Button>
+                                    </HoverCardTrigger>
+
+                                    <HoverCardContent side="top" className="bg-background">
+                                        <div className="font-instrument text-xs text-center text-foreground ">
+                                            Edit the definition title, description, and example to better reflect the term.
+                                        </div>
+                                    </HoverCardContent>
+                                </HoverCard>
+                                {/* Delete button */}
+                                {onDelete && (
+                                    <HoverCard>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                        <HoverCardTrigger asChild>
+                                            <Button
+                                            className="hover:text-destructive hover:cursor-pointer hover:underline"
+                                            aria-label="Delete section"
+                                            >
+                                            <Trash2 />
+                                            </Button>
+                                        </HoverCardTrigger>
+                                        </DialogTrigger>
+
+                                        <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Delete definition</DialogTitle>
+                                            <DialogDescription className="capitalize">
+                                                Are you sure? This action will permanently delete the definition!
+                                            </DialogDescription>
+                                        </DialogHeader>
+
+                                        <Button
+                                            className="bg-secondary text-primary hover:cursor-pointer hover:text-primary hover:bg-destructive"
+                                            onClick={() => onDelete(def._id)}
+                                        >
+                                            Yes, delete this definition
+                                        </Button>
+
+                                        </DialogContent>
+                                    </Dialog>
+
+                                    <HoverCardContent side="top" className="bg-background">
+                                        <div className="font-instrument text-xs text-center text-foreground">
+                                            Deletes this definition. This action cannot be undone.
+                                        </div>
+                                    </HoverCardContent>
+                                    </HoverCard>
+                                )}
                             </TableCell> 
                         </TableRow>
                     )})}
