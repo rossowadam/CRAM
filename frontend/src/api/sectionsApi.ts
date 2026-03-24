@@ -1,10 +1,19 @@
 /* TYPES */
+export type Contributor = {
+    userId: string;
+    date: string;
+    role: string;
+    username: string;
+    profilePic: string;
+};
+
 export type Section = {
     _id: string;
     courseCode: string;
     title: string;
     description: string;
     body: string;
+    contributors: Contributor[];
     timestamp?: string; // We can add this in the backend.
 };
 
@@ -14,6 +23,7 @@ export type Definition = {
     term: string;
     definition: string;
     example: string;
+    contributors: Contributor[];
     timestamp?: string;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CirclePlus, Search, ChevronUp, ChevronDown } from "lucide-react";
 
@@ -94,9 +94,19 @@ export default function Course() {
 
   if (!courseId) throw new Error("Missing course id");
   const courseCode = getCourseCode(courseId);
+  
+  const fetchCoursePage = useCallback(async (): Promise<void> => {
+    try {
+      const data = await getCoursePage(courseCode);
+      setSections(data.sections ?? []);
+      setDefinitions(data.definitions ?? []);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [courseCode]);
 
   useEffect(() => {
-    const fetchCoursePage = async (): Promise<void> => {
+    const fetchInitial = async () => {
       try {
         const data = await getCoursePage(courseCode);
         setSections(data.sections ?? []);
@@ -106,44 +116,32 @@ export default function Course() {
       }
     };
 
-    void fetchCoursePage();
+    fetchInitial();
   }, [courseCode]);
 
   const handleDeleteSection = async (section: Section): Promise<void> => {
     try {
       await deleteSection({ sectionId: section._id });
 
-      setSections((prev) => prev.filter((s) => s._id !== section._id));
+      await fetchCoursePage();
     } catch (err) {
       console.error(err);
       alert(err instanceof Error ? err.message : "Failed to delete section");
     }
   };
 
-  const handleUpdateSection = (section: Section): void => {
-    setSections((prev) => {
-      const exists = prev.some((s) => s._id === section._id);
-
-      if (exists) {
-        return prev.map((s) => (s._id === section._id ? section : s));
-      }
-
-      return [...prev, section];
-    });
+  const handleUpdateSection = async(): Promise<void> => {
+    await fetchCoursePage();
   };
 
-  const handleAddOrUpdateDefinition = (def: Definition): void => {
-    setDefinitions((prev) => {
-      const exists = prev.some((d) => d._id === def._id);
-      if (exists) return prev.map((d) => (d._id === def._id ? def : d));
-      return [...prev, def];
-    });
+  const handleAddOrUpdateDefinition = async (): Promise<void> => {
+    await fetchCoursePage();
   };
 
   const handleDeleteDefinition = async (id: string): Promise<void> => {
     try {
       await deleteDefinition({ definitionId: id });
-      setDefinitions((prev) => prev.filter((d) => d._id !== id));
+      await fetchCoursePage();
     } catch (err) {
       console.error("failed to delete definition:", err);
     }
