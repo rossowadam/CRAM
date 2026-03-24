@@ -324,20 +324,20 @@ export default function Profile() {
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
                     {/* Populate recent activity */}
                     <div className="flex flex-col gap-2">
-                        {recentContributions.map((c) => { 
-                            const courseId = c.course_code.toLowerCase().replace(" ","-")
+                        {recentContributions.map((contribution) => { 
+                            const courseId = contribution.course_code.toLowerCase().replace(" ","-")
                             return (
-                                <div key={c.ref_id} className="flex flex-row justify-between bg-background p-2 rounded-lg">
+                                <div key={contribution.ref_id} className="flex flex-row justify-between bg-background p-2 rounded-lg">
                                     <p className="font-instrument font-light text-sm sm:text-base">
                                         <Link
                                             to={`/course/${courseId}`}
                                             className="hover:underline hover:text-secondary"
                                         >
-                                            {c.course_code}
+                                            {contribution.course_code}
                                         </Link> 
                                     </p>
                                     <p className="font-instrument font-medium text-sm sm:text-base">
-                                        {new Date(c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                        {new Date(contribution.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                     </p>
                                 </div>
                             );
