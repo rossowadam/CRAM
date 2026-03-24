@@ -8,6 +8,7 @@ interface ProfileUser {
     username: string;
     email: string;
     role: string;
+    isVerified?: boolean;
     profilePic?: string;
 }
 
@@ -83,8 +84,8 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
             await confirmEmailChange(userId, verificationCode);
 
             // update the values on the page and in the session
-            setProfileUser({ ...profileUser, email: newEmail });
-            setUser({ ...user!, email: newEmail });
+            setProfileUser({ ...profileUser, email: newEmail, isVerified: true });
+            setUser({ ...user!, email: newEmail, isVerified: true });
 
             setSuccessMessage("Your email was changed successfully!");
             setNewEmail("");
