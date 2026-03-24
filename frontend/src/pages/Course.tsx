@@ -106,8 +106,18 @@ export default function Course() {
   }, [courseCode]);
 
   useEffect(() => {
-    void fetchCoursePage();
-  }, [fetchCoursePage]);
+    const fetchInitial = async () => {
+      try {
+        const data = await getCoursePage(courseCode);
+        setSections(data.sections ?? []);
+        setDefinitions(data.definitions ?? []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchInitial();
+  }, [courseCode]);
 
   const handleDeleteSection = async (section: Section): Promise<void> => {
     try {
