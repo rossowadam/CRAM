@@ -44,6 +44,8 @@ import {
 import { useEffect, useMemo, useRef } from "react";
 
 import type { Section } from "@/api/sectionsApi";
+import { AVATAR_MAP } from "@/constants/avatars";
+import { Link } from "react-router-dom";
 
 type SectionCardProps = {
   section: Section;
@@ -165,6 +167,24 @@ function scrollToMatchWithOffset(element: HTMLElement, offset = 104) {
 }
 
 export default function SectionCard({ section, onEdit, onDelete, open, onOpenChange, searchQuery = "", isActiveSearchResult = false, activeField = null, activeOccurrenceIndex = null,}: SectionCardProps) {
+
+    // Contributor constants
+    // Sort contributors by date
+    const sorted = [...section.contributors].sort(
+        (a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    // Stores only unique users
+    const uniqueContributors = Array.from(
+        new Map(
+            section.contributors.map((contributor) => [contributor.userId, contributor])
+        ).values()
+    )
+    // Constant controls how many profile pics are displayed on contributors
+    const MAX_VISIBLE_CONTRIBUTORS = 5;
+    const visibleContributors = uniqueContributors.slice(0,MAX_VISIBLE_CONTRIBUTORS);
+    // Calculates how many contributors remain after the MAX_VISIBLE_CONTRIBUTORS are displayed
+    const remainingContributors = uniqueContributors.length - MAX_VISIBLE_CONTRIBUTORS; 
+
     const bodyRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLHeadingElement | null>(null);
     const descriptionRef = useRef<HTMLParagraphElement | null>(null);
@@ -309,7 +329,7 @@ export default function SectionCard({ section, onEdit, onDelete, open, onOpenCha
                 </CardAction>
             </CardHeader>
 
-            <CardContent className="text-foreground break-words overflow-y-auto">
+            <CardContent className="text-foreground wrap-break-words overflow-y-auto">
                 <Collapsible open={open} onOpenChange={onOpenChange} className="data-[state=open]:bg-primary rounded-md">
                 
                     <CollapsibleTrigger asChild className="mb-2">
@@ -338,18 +358,32 @@ export default function SectionCard({ section, onEdit, onDelete, open, onOpenCha
                             ref={bodyRef}
                             dangerouslySetInnerHTML={{__html: highlightedBodyHtml}}
                         />
-                        <div className="mt-3 flex flex-row items-center gap-3 text-xs text-foreground">
+                        <div className="mt-3 flex flex-row items-center gap-3 font-bold text-base text-secondary">
                             <p>Contributors:</p>
-                            <AvatarGroup className="grayscale">
-                                <Avatar>
-                                    <AvatarImage
-                                        src="https://github.com/evilrabbit.png"
-                                        alt="@evilrabbit"
-                                    />
-                                    <AvatarFallback>ER</AvatarFallback>
-                                </Avatar>
-                                <AvatarGroupCount>+3</AvatarGroupCount>
+                            <AvatarGroup>
+                                {visibleContributors.map((contributor) => {
+                                    return (
+                                    <Link key={contributor.userId} to={`/profile/${contributor.userId}`}>  
+                                        <Avatar key={`${contributor.userId}-${contributor.date}`}>
+                                            <AvatarImage
+                                                src={AVATAR_MAP[contributor.profilePic ?? ""] ?? "https://github.com/shadcn.png"}
+                                                alt={contributor.username || "user"}
+                                            />
+                                            <AvatarFallback>
+                                                {contributor.username
+                                                    ? contributor.username.slice(0,2).toUpperCase()
+                                                    : "??"
+                                                }
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </Link>  
+                                )})}
+
+                                {remainingContributors > 0 && (
+                                    <AvatarGroupCount>+{remainingContributors}</AvatarGroupCount>
+                                )}
                             </AvatarGroup>
+
                         </div>
                     </CollapsibleContent>
                 </Collapsible>     
