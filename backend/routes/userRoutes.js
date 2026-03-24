@@ -43,6 +43,7 @@ router.post('/logout', userController.logoutUser);
 
 // --- Email Verification & Password Reset Routes ---
 
+// Send a standalone 6-digit verification code
 router.post('/:id/request-verification-code', registerSchema, validate, requireAuth, requireSelf, userController.requestVerificationCode);
 
 // Verify a user's email with a 6-digit code (Public)
