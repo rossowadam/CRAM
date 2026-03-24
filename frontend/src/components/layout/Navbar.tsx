@@ -48,9 +48,9 @@ function Navbar() {
                             </MenubarTrigger>
                             <MenubarContent className="bg-primary text-foreground hover:cursor-pointer hover:text-foreground">
                                 <MenubarGroup>
-                                    <MenubarItem className="hover:bg-background hover:cursor-pointer">
-                                        <User className="text-secondary" />
+                                    <MenubarItem asChild className="hover:bg-background hover:cursor-pointer">
                                         <Link to={`/profile/${user?.id}`}>
+                                            <User className="text-secondary" />
                                             Profile Page
                                         </Link>
                                     </MenubarItem>
