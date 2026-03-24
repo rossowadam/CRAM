@@ -203,8 +203,7 @@ exports.requestVerificationCode = async (id) => {
 };
 
 // Verifies a user's email using the 6-digit code
-exports.verifyEmailCode = async (userData) => {
-    const { email, code } = userData;
+exports.verifyEmailCode = async ({ email, code }) => {
     if (!email || !code) {
         throw new Error('User data is incomplete');
     }

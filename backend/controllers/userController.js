@@ -219,9 +219,9 @@ exports.requestVerificationCode = async (req, res) => {
 // Verifies the user's email with the 6-digit code sent during signup
 exports.verifyEmail = async (req, res) => {
     try {
-        const userData = req.body;
+        const { email, code } = req.body;
 
-        await userService.verifyEmailCode(userData);
+        await userService.verifyEmailCode({ email, code });
 
         // If the user is currently logged in, update their session
         if (req.session && req.session.user && req.session.user.email === email) {
@@ -242,9 +242,9 @@ exports.verifyEmail = async (req, res) => {
         else if (error.message.includes('incomplete')) {
             return res.status(422).json({ error: error.message });
         } 
-        else res.status(500).json({ error: "Failed to verify email: " + error.message });
+        else return res.status(500).json({ error: "Failed to verify email: " + error.message });
     }
-}
+} 
 
 // Start password reset process (generates token and sends email)
 exports.forgotPassword = async (req, res) => {
