@@ -27,7 +27,7 @@ export default function DefinitionDialog({
   onSuccess
 }: DefinitionDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} confirmOnClose>
       <DialogContent className="sm:max-w-[40vw] max-w-[40vw]">
         <DialogHeader>
           <DialogTitle>
