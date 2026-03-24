@@ -65,12 +65,12 @@ describe('User Integration Tests', () => {
         assert.strictEqual(response.body.user_name, "Updated User name");
     });
 
-    test('POST /api/v1/user/verify-email - Verify a user', async () => {
+    test('PUT /api/v1/user/verify-email - Verify a user', async () => {
         // Fetch the created user directly from the DB so we can read the randomly generated 6-digit code to test the route
         const user = await mongoose.model('User').findById(createdUserID);
 
         const response = await request(app)
-            .post('/api/v1/user/verify-email')
+            .put('/api/v1/user/verify-email')
             .send({ email: uniqueEmail, code: user.verification_code });
 
         assert.strictEqual(response.status, 200);

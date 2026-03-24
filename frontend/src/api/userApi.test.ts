@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createUser, loginUser, getCurrentUser, logoutUser, updateUser, getUserById, changeEmail, confirmEmailChange, resetPassword } from "./userApi";
+import { createUser, loginUser, getCurrentUser, logoutUser, updateUser, getUserById, changeEmail, confirmEmailChange, resetPassword, verifyEmail, requestVerificationCode } from "./userApi";
 
 // mock the backend and test valid input and the possible errors received
 describe("createUser", () => {
@@ -585,5 +585,160 @@ describe("resetPassword", () => {
         } as unknown as Response);
 
         await expect(resetPassword(validId, validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test verification code request and possible errors
+describe("requestVerificationCode", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validId = "123";
+
+    // valid - verification code sent to current email
+    it("resolves without throwing when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Verification code sent to email" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).resolves.not.toThrow();
+    });
+
+    // unauthenticated error
+    it("throws 401 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 401,
+            json: async () => ({ error: "Unauthorized" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).rejects.toThrow("Unauthorized");
+    });
+
+    // forbidden error
+    it("throws 403 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: "A user may only make changes to their account" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).rejects.toThrow("A user may only make changes to their account");
+    });
+
+    // user not found error
+    it("throws 404 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 404,
+            json: async () => ({ error: "User not found" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).rejects.toThrow("User not found");
+    });
+
+    // conflict error - user already verified
+    it("throws 409 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 409,
+            json: async () => ({ error: "User is already verified" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).rejects.toThrow("User is already verified");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(requestVerificationCode(validId)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+});
+
+// mock the backend and test email verification with 6-digit code
+describe("verifyEmail", () => {
+
+    beforeEach(() => {
+        vi.resetAllMocks();
+    });
+
+    const validPayload = {
+        email: "john@umanitoba.ca",
+        code: "123456"
+    };
+
+    // valid - email verified successfully
+    it("resolves without throwing when response is ok", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ message: "Email verified successfully" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).resolves.not.toThrow();
+    });
+
+    // invalid verification code
+    it("throws 400 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 400,
+            json: async () => ({ error: "Invalid verification code" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).rejects.toThrow("Invalid verification code");
+    });
+
+    // user not found error
+    it("throws 404 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 404,
+            json: async () => ({ error: "User not found" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).rejects.toThrow("User not found");
+    });
+
+    // conflict error - already verified
+    it("throws 409 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 409,
+            json: async () => ({ error: "User is already verified" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).rejects.toThrow("User is already verified");
+    });
+
+    // incomplete data error
+    it("throws 422 error message from backend", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 422,
+            json: async () => ({ error: "User data is incomplete" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).rejects.toThrow("User data is incomplete");
+    });
+
+    // server error
+    it("throws generic error for unexpected status (500)", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 500,
+            json: async () => ({ error: "Internal server error" })
+        } as unknown as Response);
+
+        await expect(verifyEmail(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
 });

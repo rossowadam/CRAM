@@ -168,8 +168,46 @@ exports.loginUser = async (userData) => {
     return user;
 }
 
+// request a verification code if wanting to verify through profile page
+exports.requestVerificationCode = async (id) => {
+    const user = await userRepository.findUserById(id);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    if (user.is_verified) {
+        throw new Error('User is already verified');
+    }
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await userRepository.updateUserById(id, {
+        verification_code: verificationCode
+    });
+
+    await emailServices.sendEmail({
+        to: user.email,
+        subject: 'CRAM - Verify Your Email',
+        html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #4CAF50;">Verify your account</h2>
+                <p>Your 6-digit verification code is:</p>
+                <h1 style="letter-spacing: 5px; color: #333; background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">${verificationCode}</h1>
+                <p>Enter this code in the app to verify your account.</p>
+            </div>
+        `
+    });
+
+    return { message: 'Verification code sent' };
+};
+
 // Verifies a user's email using the 6-digit code
-exports.verifyEmailCode = async (email, code) => {
+exports.verifyEmailCode = async ({ email, code }) => {
+    if (!email || !code) {
+        throw new Error('User data is incomplete');
+    }
+
     const normalizedEmail = email.toLowerCase();
     const user = await userRepository.findUserByEmail(normalizedEmail);
 

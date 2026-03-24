@@ -1,4 +1,4 @@
-import { changeEmail, confirmEmailChange } from "@/api/userApi";
+import { requestVerificationCode, verifyEmail } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,18 +12,24 @@ interface ProfileUser {
     profilePic?: string;
 }
 
-interface ChangeEmailFormProps {
+interface ChangeVerificationFormProps {
     userId?: string;
-    changeEmail: boolean;
+    changeVerification: boolean;
     profileUser: ProfileUser;
     setProfileUser: (user: ProfileUser | null) => void;
+    setChangeVerification: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-// Form for changing the email
-// Two stage: first enter new email and send verification code, then enter the code to confirm
-export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, profileUser, setProfileUser }: ChangeEmailFormProps) {
+// Form for verifying the account
+// Two stage: first request verification code, then enter the 6-digit code to confirm
+export default function ChangeVerificationForm({
+    userId,
+    changeVerification: changeVerificationOpen,
+    profileUser,
+    setProfileUser,
+    setChangeVerification,
+}: ChangeVerificationFormProps) {
     const { user, setUser } = useAuth();
-    const [newEmail, setNewEmail] = useState("");
     const [verificationCode, setVerificationCode] = useState("");
     const [codeSent, setCodeSent] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -35,10 +41,9 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
         setServerError(null);
         setSuccessMessage(null);
         setLoading(false);
-        setNewEmail("");
         setVerificationCode("");
         setCodeSent(false);
-    }, [changeEmailOpen]);
+    }, [changeVerificationOpen]);
 
     if (!userId) return;
 
@@ -47,19 +52,13 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
         setSuccessMessage(null);
         setServerError(null); // remove old errors
 
-        // return if email change fails validation
-        if (!newEmail.endsWith("@myumanitoba.ca") && !newEmail.endsWith("@umanitoba.ca")) {
-            return; // helper text turns red when validation fails
-        }
-
-        // send the request to change the email and trigger verification code
         try {
             setLoading(true);
 
-            await changeEmail(userId, newEmail);
+            await requestVerificationCode(userId);
 
             setCodeSent(true);
-            setSuccessMessage("Verification code sent to your new email!");
+            setSuccessMessage("Verification code sent to your email!");
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -72,25 +71,24 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
     const onConfirmCode = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSuccessMessage(null);
-        setServerError(null); // remove old errors
+        setServerError(null);
 
         // return if code is empty or not 6 digits long
         if (!verificationCode.trim() || verificationCode.length !== 6) return;
 
-        // send the verification code to confirm the email change
         try {
             setLoading(true);
 
-            await confirmEmailChange(userId, verificationCode);
+            await verifyEmail({ email: profileUser.email, code: verificationCode });
 
             // update the values on the page and in the session
-            setProfileUser({ ...profileUser, email: newEmail, isVerified: true });
-            setUser({ ...user!, email: newEmail, isVerified: true });
+            setProfileUser({ ...profileUser, isVerified: true });
+            setUser({ ...user!, isVerified: true });
 
-            setSuccessMessage("Your email was changed successfully!");
-            setNewEmail("");
+            setSuccessMessage("Your account was verified successfully!");
             setVerificationCode("");
             setCodeSent(false);
+            setChangeVerification(false);
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -101,24 +99,12 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
     };
 
     return (
-        // stage 1: enter new email
         !codeSent ? (
             <form className="flex flex-col" onSubmit={onRequestCode}>
                 <div className="flex flex-col sm:p-2 gap-4 w-full">
                     <div>
-                        <input
-                            type="email"
-                            placeholder="Enter new email"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                            className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
-                            required
-                        />
-                        {/* Email requires domain check */}
-                        <p className={`text-xs font-funnel italic gap-0 ${
-                            (newEmail.length > 0 && !newEmail.endsWith("@myumanitoba.ca") && !newEmail.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
-                        }`}>
-                            Email must end in "@myumanitoba.ca" or "@umanitoba.ca"
+                        <p className="text-xs font-funnel italic text-secondary">
+                            Send a verification code to {profileUser.email}
                         </p>
                     </div>
 
@@ -145,7 +131,6 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
                 </div>
             </form>
         ) : (
-            // stage 2: enter verification code
             <form className="flex flex-col" onSubmit={onConfirmCode}>
                 <div className="flex flex-col sm:p-2 gap-4 w-full">
                     <div>
@@ -155,15 +140,15 @@ export default function ChangeEmailForm({ userId, changeEmail: changeEmailOpen, 
                             pattern="[0-9]*"
                             maxLength={6}
                             placeholder="Enter 6-digit verification code"
-                            value={verificationCode} 
-                            // onChange will replace all non-numbers with nothing
-                            onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
+                            value={verificationCode}
+                            onChange={(e) =>
+                                setVerificationCode(e.target.value.replace(/\D/g, ""))
+                            }
                             className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
                             required
                         />
-                        {/* Code must not be empty */}
                         <p className="text-xs font-funnel italic text-secondary">
-                            Enter the code sent to {newEmail}
+                            Enter the code sent to {profileUser.email}
                         </p>
                     </div>
 
