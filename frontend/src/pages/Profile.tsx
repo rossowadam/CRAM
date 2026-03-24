@@ -152,7 +152,7 @@ export default function Profile() {
                     {/* Display a checkmark if verified, otherwise a pencil to verify */}
                     <div className="flex flex-row items-center gap-1.5">
                         {isOwnProfile && profileUser?.isVerified ?
-                            <span className="text-secondary text-xs sm:text-sm">✓</span>
+                            <span className="text-xs sm:text-sm text-green-600">✓</span>
                             :
                             <Pencil 
                                 className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
@@ -172,9 +172,14 @@ export default function Profile() {
 
                 {/* Change verification */}
                 {isOwnProfile && changeVerification && (
-                    <ChangeVerificationForm userId={userId} changeVerification={changeVerification} profileUser={profileUser!} setProfileUser={setProfileUser} />
+                    <ChangeVerificationForm 
+                        userId={userId} 
+                        changeVerification={changeVerification} 
+                        profileUser={profileUser!} 
+                        setProfileUser={setProfileUser} 
+                        setChangeVerification={setChangeVerification} 
+                    />
                 )}
-
 
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">

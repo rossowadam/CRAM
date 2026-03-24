@@ -1,4 +1,4 @@
-import { requestVerificationCode } from "@/api/userApi";
+import { requestVerificationCode, verifyEmail } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,6 +17,7 @@ interface ChangeVerificationFormProps {
     changeVerification: boolean;
     profileUser: ProfileUser;
     setProfileUser: (user: ProfileUser | null) => void;
+    setChangeVerification: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Form for verifying the account
@@ -26,6 +27,7 @@ export default function ChangeVerificationForm({
     changeVerification: changeVerificationOpen,
     profileUser,
     setProfileUser,
+    setChangeVerification,
 }: ChangeVerificationFormProps) {
     const { user, setUser } = useAuth();
     const [verificationCode, setVerificationCode] = useState("");
@@ -77,10 +79,7 @@ export default function ChangeVerificationForm({
         try {
             setLoading(true);
 
-            // await verifyEmailCode({
-            //     email: profileUser.email,
-            //     code: verificationCode,
-            // });
+            await verifyEmail({ email: profileUser.email, code: verificationCode });
 
             // update the values on the page and in the session
             setProfileUser({ ...profileUser, isVerified: true });
@@ -89,6 +88,7 @@ export default function ChangeVerificationForm({
             setSuccessMessage("Your account was verified successfully!");
             setVerificationCode("");
             setCodeSent(false);
+            setChangeVerification(false);
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
