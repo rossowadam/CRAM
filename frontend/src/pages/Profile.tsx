@@ -151,18 +151,22 @@ export default function Profile() {
 
                     {/* Display a checkmark if verified, otherwise a pencil to verify */}
                     <div className="flex flex-row items-center gap-1.5">
-                        {isOwnProfile && profileUser?.isVerified ?
-                            <span className="text-xs sm:text-sm text-green-600">✓</span>
-                            :
-                            <Pencil 
-                                className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
-                                onClick={() => {
-                                    setChangeVerification(prev => !prev);
-                                    setChangeUsername(false);
-                                    setChangeEmail(false);
-                                    setChangePassword(false);
-                                }}
-                            />
+                        {isOwnProfile && 
+                            (
+                                profileUser?.isVerified ? (
+                                    <span className="text-xs sm:text-sm text-green-600">✓</span>
+                                ) : (
+                                    <Pencil 
+                                        className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
+                                        onClick={() => {
+                                            setChangeVerification(prev => !prev);
+                                            setChangeUsername(false);
+                                            setChangeEmail(false);
+                                            setChangePassword(false);
+                                        }}
+                                    />
+                                )
+                            )
                         }
                         <p className={`font-funnel font-thin text-xs sm:text-sm ${profileUser?.isVerified ? "text-foreground" : "text-destructive"}`}>
                             {profileUser?.isVerified ? "Verified" : "Unverified"}
