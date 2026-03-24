@@ -169,10 +169,6 @@ function scrollToMatchWithOffset(element: HTMLElement, offset = 104) {
 export default function SectionCard({ section, onEdit, onDelete, open, onOpenChange, searchQuery = "", isActiveSearchResult = false, activeField = null, activeOccurrenceIndex = null,}: SectionCardProps) {
 
     // Contributor constants
-    // Sort contributors by date
-    const sorted = [...section.contributors].sort(
-        (a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
     // Stores only unique users
     const uniqueContributors = Array.from(
         new Map(

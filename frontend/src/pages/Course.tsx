@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CirclePlus, Search, ChevronUp, ChevronDown } from "lucide-react";
 
@@ -95,7 +95,7 @@ export default function Course() {
   if (!courseId) throw new Error("Missing course id");
   const courseCode = getCourseCode(courseId);
   
-  const fetchCoursePage = async (): Promise<void> => {
+  const fetchCoursePage = useCallback(async (): Promise<void> => {
     try {
       const data = await getCoursePage(courseCode);
       setSections(data.sections ?? []);
@@ -103,7 +103,7 @@ export default function Course() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [courseCode]);
 
   useEffect(() => {
     void fetchCoursePage();
