@@ -7,7 +7,7 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import { useState, useEffect, useMemo } from "react";
 import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
 import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
@@ -143,6 +143,15 @@ export default function Profile() {
             color: "#2563eb",
         },
     } satisfies ChartConfig;
+
+    // Get 5 most recent contributions
+    const recentContributions = useMemo(() => {
+        if (!profileUser?.contributions) return [];
+
+        return [...profileUser.contributions]
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 5);
+    }, [profileUser]);
 
     return(
         <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
@@ -314,9 +323,31 @@ export default function Profile() {
                     <h1 className="font-instrument text-base sm:text-lg font-bold">Recent Activity</h1>
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
                     {/* Populate recent activity */}
-                    <div className="flex flew-row justify-between bg-background p-2 rounded-lg">
-                        <p className="font-instrument font-light text-sm sm:text-base">Course: {}</p>
-                        <p className="font-instrument font-medium text-sm sm:text-base">Date: {}</p>
+                    <div className="flex flex-col gap-2">
+                        {recentContributions.map((c) => { 
+                            const courseId = c.course_code.toLowerCase().replace(" ","-")
+                            return (
+                                <div key={c.ref_id} className="flex flex-row justify-between bg-background p-2 rounded-lg">
+                                    <p className="font-instrument font-light text-sm sm:text-base">
+                                        <Link
+                                            to={`/course/${courseId}`}
+                                            className="hover:underline hover:text-secondary"
+                                        >
+                                            {c.course_code}
+                                        </Link> 
+                                    </p>
+                                    <p className="font-instrument font-medium text-sm sm:text-base">
+                                        {new Date(c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </p>
+                                </div>
+                            );
+                        })}
+
+                        {recentContributions.length === 0 && (
+                            <p className="font-instrument font-light text-sm sm:text-base text-muted-foreground">
+                                No recent activity.
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
