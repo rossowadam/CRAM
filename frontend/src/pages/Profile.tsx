@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Link, useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
+import ChangeVerificationForm from "@/components/profile/ChangeVerificationForm";
 import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
 import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
@@ -28,6 +29,7 @@ interface ProfileUser {
     role: string;
     profilePic?: string;
     contributions?: Contribution[];
+    isVerified?: boolean;
 }
 
 export default function Profile() {
@@ -37,6 +39,7 @@ export default function Profile() {
     const [picDialogOpen, setPicDialogOpen] = useState(false);
     const [selectedPic, setSelectedPic] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
+    const [changeVerification, setChangeVerification] = useState(false);
     const [changeUsername, setChangeUsername] = useState(false);
     const [changeEmail, setChangeEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
@@ -56,6 +59,7 @@ export default function Profile() {
                 // reset states and then update profile user
                 setServerError(null);
                 setChangeUsername(false);
+                setChangeVerification(false);
                 setChangeEmail(false);
                 setChangePassword(false);
                 const profileUserDetails = await getUserById(userId);
@@ -188,8 +192,47 @@ export default function Profile() {
                         setOpen={setPicDialogOpen}
                         onSelect={setSelectedPic}
                     />
-
                 </div>
+
+                {/* Verification */}
+                <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
+                    <p className="font-funnel font-thin text-sm sm:text-base text-foreground">Verification:</p>
+
+                    {/* Display a checkmark if verified, otherwise a pencil to verify */}
+                    <div className="flex flex-row items-center gap-1.5">
+                        {isOwnProfile && 
+                            (
+                                profileUser?.isVerified ? (
+                                    <span className="text-xs sm:text-sm text-green-600">✓</span>
+                                ) : (
+                                    <Pencil 
+                                        className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
+                                        onClick={() => {
+                                            setChangeVerification(prev => !prev);
+                                            setChangeUsername(false);
+                                            setChangeEmail(false);
+                                            setChangePassword(false);
+                                        }}
+                                    />
+                                )
+                            )
+                        }
+                        <p className={`font-funnel font-thin text-xs sm:text-sm ${profileUser?.isVerified ? "text-foreground" : "text-destructive"}`}>
+                            {profileUser?.isVerified ? "Verified" : "Unverified"}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Change verification */}
+                {isOwnProfile && changeVerification && (
+                    <ChangeVerificationForm 
+                        userId={userId} 
+                        changeVerification={changeVerification} 
+                        profileUser={profileUser!} 
+                        setProfileUser={setProfileUser} 
+                        setChangeVerification={setChangeVerification} 
+                    />
+                )}
 
                 {/* Role */}
                 <div className="flex flex-row items-center justify-between sm:p-2 gap-5">
@@ -207,6 +250,7 @@ export default function Profile() {
                                 className={`w-4 hover:cursor-pointer hover:text-secondary ${changeUsername ? "text-destructive" : ""}`} 
                                 onClick={() => {
                                     setChangeUsername(prev => !prev);
+                                    setChangeVerification(false);
                                     setChangeEmail(false);
                                     setChangePassword(false);
                                 }}
@@ -230,6 +274,7 @@ export default function Profile() {
                                 className={`w-4 hover:cursor-pointer hover:text-secondary ${changeEmail ? "text-destructive" : ""}`} 
                                 onClick={() => {
                                     setChangeEmail(prev => !prev); 
+                                    setChangeVerification(false);
                                     setChangeUsername(false);
                                     setChangePassword(false);
                                 }}
@@ -251,6 +296,7 @@ export default function Profile() {
                         className={`font-medium font-funnel hover:bg-secondary hover:text-background hover:cursor-pointer ${changePassword ? "text-destructive" : ""}`}
                         onClick={() => {
                             setChangePassword(prev => !prev);
+                            setChangeVerification(false);
                             setChangeUsername(false);
                             setChangeEmail(false);
                         }}>
