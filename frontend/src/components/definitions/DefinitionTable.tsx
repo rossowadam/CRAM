@@ -70,10 +70,10 @@ export default function DefinitionTable({definitions, onEdit, onDelete}: Definit
                                                 </Avatar>
                                             </Link>
                                     ) : (
-                                        "-"
+                                        "N/A"
                                     )}
                                     {/* Last Editor */}
-                                    {lastEditor ? (
+                                    {lastEditor && lastEditor !== creator ? (
                                         <Link to={`/profile/${lastEditor.userId}`}>
                                             <Avatar size="sm" >
                                                 <AvatarImage
@@ -83,7 +83,7 @@ export default function DefinitionTable({definitions, onEdit, onDelete}: Definit
                                             </Avatar>
                                         </Link>
                                     ) : (
-                                        "-"
+                                        ""
                                     )}
                                 </AvatarGroup>
                             </TableCell> 
