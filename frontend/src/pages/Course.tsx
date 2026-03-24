@@ -107,7 +107,7 @@ export default function Course() {
 
   useEffect(() => {
     void fetchCoursePage();
-  }, [courseCode]);
+  }, [fetchCoursePage]);
 
   const handleDeleteSection = async (section: Section): Promise<void> => {
     try {
