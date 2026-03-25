@@ -35,7 +35,11 @@ describe('Section Integration Tests', () => {
         createdUserID = response.body._id;
         console.log('======USER ID FOR DEFINITION TEST============ ' + createdUserID);
 
-
+        // verify the user directly in the database before login
+        await mongoose.model('User').findByIdAndUpdate(createdUserID, {
+            is_verified: true,
+            verification_code: null
+        });
 
         const loginRes = await request(app).post('/api/v1/user/login').send({ email: uniqueEmail, password: 'weenuk88' });
 
