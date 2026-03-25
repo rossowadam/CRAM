@@ -12,6 +12,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const { setUser } = useAuth();
     const [forgotPassword, setForgotPassword] = useState(false);
@@ -59,6 +60,10 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
         } finally {
             setLoading(false);
         }
+    }
+
+    const onForgotPassword = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+
     }
 
     return (
@@ -124,8 +129,55 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                 )}
             </form>
         ) : (
-            <form>
-                
+            <form className="flex flex-col" onSubmit={onForgotPassword}>
+                <div className="flex flex-col sm:p-2 gap-4 w-full">
+                    <div>
+                        <input
+                            type="email"
+                            placeholder="Enter new email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
+                            required
+                        />
+                        {/* Email requires domain check */}
+                        <p className={`text-xs font-funnel italic gap-0 ${
+                            (email.length > 0 && !email.endsWith("@myumanitoba.ca") && !email.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
+                        }`}>
+                            Email must end in "@myumanitoba.ca" or "@umanitoba.ca"
+                        </p>
+                    </div>
+
+                    <Button
+                        type="submit"
+                        variant="outline"
+                        disabled={loading}
+                        className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer disabled:opacity-50"
+                    >
+                        {loading ? "Sending..." : "Send Reset Link"}
+                    </Button>
+
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer disabled:opacity-50"
+                        onClick={() => setForgotPassword(false)}
+                    >
+                        Back to Login
+                    </Button>
+
+                    {serverError && (
+                        <p className="text-destructive text-sm text-center mt-2">
+                            {serverError}
+                        </p>
+                    )}
+
+                    {successMessage && (
+                        <p className="text-green-600 text-sm text-center mt-2">
+                            {successMessage}
+                        </p>
+                    )}
+                </div>
             </form>
         )
     )
