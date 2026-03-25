@@ -14,6 +14,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
     const { setUser } = useAuth();
+    const [forgotPassword, setForgotPassword] = useState(false);
 
     // error messages to conditionally render hints in red if invalid
     const [errors, setErrors] = useState<{
@@ -61,56 +62,71 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     }
 
     return (
-        <form 
-            className="flex flex-col gap-4"
-            onSubmit={onLogin}
-        >
-            <div className="flex flex-col gap-0">
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
-                    required
-                />
-                {errors.email && (
-                    <p className="font-instrument text-xs pl-1 italic text-destructive">
-                        {errors.email}
-                    </p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-0">
-            <input 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                className="font-funnel font-thin border-2 border-foreground rounded-sm p-1" 
-                required
-            />
-                {errors.password && (
-                    <p className="font-instrument text-xs pl-1 italic text-destructive">
-                        {errors.password}
-                    </p>
-                )}
-            </div>
-
-            <Button 
-                type="submit"
-                variant="outline"
-                disabled={loading}
-                className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer"
+        !forgotPassword ? (
+            <form 
+                className="flex flex-col gap-4"
+                onSubmit={onLogin}
             >
-                {loading ? "Logging in..." : "Login"}
-            </Button>
+                <div className="flex flex-col gap-0">
+                    <input 
+                        type="email" 
+                        placeholder="Email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
+                        required
+                    />
+                    {errors.email && (
+                        <p className="font-instrument text-xs pl-1 italic text-destructive">
+                            {errors.email}
+                        </p>
+                    )}
+                </div>
 
-            {serverError && (
-                <p className="text-destructive text-sm text-center mt-2">
-                    {serverError}
-                </p>
-            )}
-        </form>
-    );
-}
+                <div className="flex flex-col gap-0">
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        className="font-funnel font-thin border-2 border-foreground rounded-sm p-1" 
+                        required
+                    />
+
+                    {errors.password && (
+                        <p className="font-instrument text-xs pl-1 italic text-destructive">
+                            {errors.password}
+                        </p>
+                    )}
+
+                    <Button 
+                    type="button"
+                        className="justify-start font-bold text-foreground hover:text-secondary hover:cursor-pointer"
+                        onClick={() => setForgotPassword(true)}
+                    >
+                        Forgot password?
+                    </Button>
+                </div>
+
+                <Button 
+                    type="submit"
+                    variant="outline"
+                    disabled={loading}
+                    className="font-bold text-foreground hover:text-secondary hover:bg-accent hover:cursor-pointer"
+                >
+                    {loading ? "Logging in..." : "Login"}
+                </Button>
+
+                {serverError && (
+                    <p className="text-destructive text-sm text-center mt-2">
+                        {serverError}
+                    </p>
+                )}
+            </form>
+        ) : (
+            <form>
+                
+            </form>
+        )
+    )
+};
