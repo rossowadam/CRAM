@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { validateSignin } from "@/utils/validators";
 import { loginUser } from "@/api/userApi";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -17,32 +16,11 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     const { setUser } = useAuth();
     const [forgotPassword, setForgotPassword] = useState(false);
 
-    // error messages to conditionally render hints in red if invalid
-    const [errors, setErrors] = useState<{
-            email?: string;
-            password?: string;
-        }>({});
-
     const onLogin = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         setServerError(null); // remove old errors
 
-        console.log("Inputted Values", {email, password});
-
-        // validate fields and update errors object
-        const validationResults = validateSignin({ email, password });
-        setErrors(validationResults);
-
-        // return if invalid when errors isn't empty
-        if (Object.keys(validationResults).length > 0) {
-            console.error(validationResults);
-            return;
-        }
-
-        // valid signup, package details and send to backend
-        console.log("Valid!");
-
-        // try to login and display proper errors
+        // try to login
         try {
             setLoading(true);
 
@@ -51,6 +29,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                 password
             })
 
+            // update globally known user
             setUser(user);
             setOpen(false);
         } catch (err) {
@@ -81,11 +60,6 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1"
                         required
                     />
-                    {errors.email && (
-                        <p className="font-instrument text-xs pl-1 italic text-destructive">
-                            {errors.email}
-                        </p>
-                    )}
                 </div>
 
                 <div className="flex flex-col gap-0">
@@ -97,12 +71,6 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                         className="font-funnel font-thin border-2 border-foreground rounded-sm p-1" 
                         required
                     />
-
-                    {errors.password && (
-                        <p className="font-instrument text-xs pl-1 italic text-destructive">
-                            {errors.password}
-                        </p>
-                    )}
 
                     <Button 
                     type="button"
