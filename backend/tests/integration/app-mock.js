@@ -38,18 +38,20 @@ if (process.env.NODE_ENV === 'development') {
 
 // session middleware setup to generate session ID
 // store in Mongo and send cookies in response header
+const sessionStore = MongoStore.create({
+    mongoUrl: `mongodb://127.0.0.1:27017/test_db_${process.env.STRYKER_MUTATOR_WORKER || 0}`,
+    collectionName: "sessions"
+});
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
+    store: sessionStore, // Use the variable here
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        clientPromise: mongoose.connect(process.env.MONGO_URI).then(m => m.connection.getClient()),
-        collectionName: "sessions"
-    }),
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
+        maxAge: 1000 * 60 * 60 * 24 
     }
 }));
 
@@ -67,4 +69,4 @@ app.get('/', (req, res) => {
 // Define server port (defaults to 5000 if not specified in .env)
 const PORT = process.env.PORT || 5000;
 
-module.exports = app; 
+module.exports = {app, sessionStore}; 

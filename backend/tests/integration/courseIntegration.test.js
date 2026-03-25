@@ -3,8 +3,8 @@ const assert = require('node:assert/strict');
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { describe, it, before, after, beforeEach } = require('node:test');
-const app = require('./app-mock')
-
+const {app, sessionStore} = require('./app-mock');
+const {connect, disconnect} = require('./dbstart');
 
 
 
@@ -13,15 +13,16 @@ describe('Course Integration Tests', () => {
     
     // 1. Wait for DB to connect BEFORE any tests start
     before(async () => {
-        if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(process.env.MONGO_URI);
-        }
+        await connect();
     });
 
     // 2. Close DB connection AFTER all tests finish to let Node exit
     after(async () => {
         
-        await mongoose.connection.close();
+        await disconnect();
+        if (sessionStore) {
+            await sessionStore.close(); // Closes the session connection
+        }
     });
 
     test('Integration: GET /api/v1/courses', async () => {

@@ -3,9 +3,12 @@ const assert = require('node:assert/strict');
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { describe, it, before, after, beforeEach } = require('node:test');
-const app = require('./app-mock')
+
+const {app, sessionStore} = require('./app-mock');
 const emailServices = require('../../services/emailServices');
 const { mock } = require('node:test');
+const {connect, disconnect} = require('./dbstart');
+
 
 
 
@@ -17,9 +20,7 @@ describe('Section Integration Tests', () => {
 
 
     before(async () => {
-        if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(process.env.MONGO_URI);
-        }
+        await connect();
 
         mock.method(emailServices, 'sendEmail', async () => { });
 
@@ -47,7 +48,10 @@ describe('Section Integration Tests', () => {
     after(async () => {
         await request(app).post('/api/v1/user/logout').set('Cookie', authCookie);
         await request(app).delete(`/api/v1/user/delete/${createdUserID}`);
-        await mongoose.connection.close();
+        await disconnect();
+        if (sessionStore) {
+            await sessionStore.close(); // Closes the session connection
+        }
     });
 
 
