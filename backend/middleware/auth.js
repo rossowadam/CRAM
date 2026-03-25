@@ -1,3 +1,5 @@
+const userRepository = require('../repositories/userRepository');
+
 // Take in a request which requires authentication.
 // If authentication fails, return error 401.
 // If authenticated, go next() to process further.
@@ -12,16 +14,13 @@ exports.requireAuth = (req, res, next) => {
 // First check for authentication then verification.
 // Go next() if all succeeds
 exports.requireVerification = (req, res, next) => {
-    // technically redundant if chained with requireAuth, but defensive if used alone
-    if (!req.session || !req.session.user) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    if (!req.session.user.is_verified) {
-        return res.status(403).json({ error: "Email verification required to perform this action" });
-    }
-    next();
-}
+    exports.requireAuth(req, res, () => {
+        if (!req.session.user.is_verified) {
+            return res.status(403).json({error: "Email verification required to perform this action."});
+        }
+        next();
+    });
+};
 
 // Take in a request which requires a backend check for self verification
 // If authentication fails, return error 403.
