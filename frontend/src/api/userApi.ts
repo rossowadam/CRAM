@@ -293,3 +293,24 @@ export async function resetPassword(id: string, data: {
 
     return body;
 }
+
+export async function resetPasswordWithToken(token: string, newPassword: string) {
+    const response = await fetch("/api/v1/user/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword }),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        switch (response.status) {
+            case 400:
+                throw new Error(body.error);
+            default:
+                throw new Error("Something went wrong. Please try again.");
+        }
+    }
+
+    return body;
+}
