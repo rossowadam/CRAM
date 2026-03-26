@@ -11,17 +11,17 @@ const {connect, disconnect} = require('./dbstart');
 describe('Course Integration Tests', () => {
     let createdCourseID;
     
-    // 1. Wait for DB to connect BEFORE any tests start
+    // 1. Wait for DB to connect 
     before(async () => {
         await connect();
     });
 
-    // 2. Close DB connection AFTER all tests finish to let Node exit
+    // 2. Close DB connection
     after(async () => {
         
         await disconnect();
         if (sessionStore) {
-            await sessionStore.close(); // Closes the session connection
+            await sessionStore.close(); 
         }
     });
 
@@ -39,7 +39,7 @@ describe('Course Integration Tests', () => {
             title: "Integration Test Course",
             subject: "TEST",
             number: "6969",
-            courseCode: "TEST 6969", // Remember: this must be unique!
+            courseCode: "TEST 6969", 
             description: "a test course, should not remain in DB for more than a second... I hope... if you see this, delete it,",
             credits: 3,
             prerequisites: "None",

@@ -11,8 +11,6 @@ export async function connect() {
     
     const localUrl = `mongodb://127.0.0.1:27017/${dbName}`;
     
-    console.log(`--- 🏠 LOCAL WORKER ${workerId} CONNECTING TO: ${localUrl} ---`);
-    
     try {
         await mongoose.connect(localUrl, {
             serverSelectionTimeoutMS: 5000 

@@ -90,7 +90,8 @@ exports.deleteUserById = async (id) => {
 
 //verifies that the user can create an account, and that no duplicate accounts exist with the same email, then creates a new user document in the database
 exports.createUser = async (userData) => {
-    const { name, email, password } = userData; // extract data
+    const { name, password } = userData; // extract data
+    const email = userData.email.toLowerCase();
 
     // incomplete if any field is missing
     if (!name || !email || !password) {
@@ -135,19 +136,20 @@ exports.createUser = async (userData) => {
     const createdUser = await userRepository.createUser(newUser);
 
     // Send the verification email
-    await emailServices.sendEmail({
-        to: email,
-        subject: 'CRAM - Verify Your Email',
-        html: `
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
-                <h2 style="color: #4CAF50;">Welcome to CRAM!</h2>
-                <p>Your 6-digit verification code is:</p>
-                <h1 style="letter-spacing: 5px; color: #333; background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">${verificationCode}</h1>
-                <p>Enter this code in the app to verify your account.</p>
-            </div>
-        `
-    });
-
+    if(process.env.NODE_ENV == "development"){
+        await emailServices.sendEmail({
+            to: email,
+            subject: 'CRAM - Verify Your Email',
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #4CAF50;">Welcome to CRAM!</h2>
+                    <p>Your 6-digit verification code is:</p>
+                    <h1 style="letter-spacing: 5px; color: #333; background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">${verificationCode}</h1>
+                    <p>Enter this code in the app to verify your account.</p>
+                </div>
+            `
+        });
+    }
     return createdUser;
 }
 
