@@ -51,7 +51,7 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
 
             await sendPasswordResetLink(email);
 
-            setSuccessMessage(`Password reset link was sent to ${email}!`)
+            setSuccessMessage("If an account with that email exists, a password reset link has been sent.")
         } catch (err) {
             setServerError(
                 err instanceof Error ? err.message : "Something went wrong."
@@ -124,12 +124,6 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
                             className="font-funnel font-thin text-xs sm:text-sm bg-background text-foreground border border-foreground rounded-md p-2 w-full"
                             required
                         />
-                        {/* Email requires domain check */}
-                        <p className={`text-xs font-funnel italic gap-0 ${
-                            (email.length > 0 && !email.endsWith("@myumanitoba.ca") && !email.endsWith("@umanitoba.ca")) ? "text-destructive" : "text-secondary"
-                        }`}>
-                            Email must end in "@myumanitoba.ca" or "@umanitoba.ca"
-                        </p>
                     </div>
 
                     <Button
