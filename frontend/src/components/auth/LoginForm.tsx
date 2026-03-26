@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { loginUser } from "@/api/userApi";
+import { loginUser, sendPasswordResetLink } from "@/api/userApi";
 import { useAuth } from "@/hooks/useAuth";
 
 interface LoginFormProps {
@@ -42,7 +42,23 @@ export default function LoginForm({ setOpen }: LoginFormProps) {
     }
 
     const onForgotPassword = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setServerError(null); // remove old errors
 
+        // try to send forgot password link
+        try {
+            setLoading(true);
+
+            await sendPasswordResetLink(email);
+
+            setSuccessMessage(`Password reset link was sent to ${email}!`)
+        } catch (err) {
+            setServerError(
+                err instanceof Error ? err.message : "Something went wrong."
+            );
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
