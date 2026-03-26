@@ -55,6 +55,7 @@ export async function requestVerificationCode(id: string) {
     }
 }
 
+// Take in the email and code sent to that email to verify the account.
 export async function verifyEmail(data: {email: string, code: string}) {
     const response = await fetch(`/api/v1/user/verify-email`, {
         method: "PUT",
@@ -99,6 +100,26 @@ export async function loginUser(data: {
     // robustly throw errors
     if (!response.ok) {
         if (response.status === 403) {
+            throw new Error(body.error);
+        }
+        throw new Error("Something went wrong. Please try again.");
+    }
+
+    return body;
+}
+
+export async function sendPasswordResetLink(email: string) {
+    const response = await fetch("/api/v1/user/forgot-password", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+        if (response.status === 400) {
             throw new Error(body.error);
         }
         throw new Error("Something went wrong. Please try again.");
