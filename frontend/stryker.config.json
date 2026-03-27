@@ -1,12 +1,14 @@
 {
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
   "testRunner": "vitest",
-  "concurrency": 2,
+  "concurrency": 4,
   "mutate": [
-    "src/api/**/*.ts",
-    "src/utils/**/*.ts",
+    "src/api/*.ts",
+    "src/utils/*.ts",
+    "!src/**/*.test.ts",
     "!src/**/*.spec.ts"
   ],
+ 
   "vitest": {
     "configFile": "vite.config.ts"
   },

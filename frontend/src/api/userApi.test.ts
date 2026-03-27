@@ -81,6 +81,24 @@ describe("createUser", () => {
 
         await expect(createUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await createUser(validPayload);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/create",
+            expect.objectContaining({
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
+    });
 });
 
 // mock the backend and test valid input and the possible errors received
@@ -140,6 +158,24 @@ describe("loginUser", () => {
 
         await expect(loginUser(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
     });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await loginUser(validPayload);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/login",
+            expect.objectContaining({
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
+    });
 });
 
 // mock the backend and test valid session and unauthorized state
@@ -184,7 +220,7 @@ describe("getCurrentUser", () => {
     });
 });
 
-// mock the backend and ensure logout does not throw even on failure
+// mock the backend and ensure logout does not throw even on failure WARN MUTANT ++============================================================
 describe("logoutUser", () => {
 
     beforeEach(() => {
@@ -233,6 +269,18 @@ describe("logoutUser", () => {
 
         await expect(logoutUser()).resolves.not.toThrow();
     });
+    it("logs warning when logout request fails", async () => {
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+        vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network error"));
+
+        await logoutUser(); // or whatever function this is in
+
+        expect(warnSpy).toHaveBeenCalledWith(
+            "Logout request failed, clearing client state anyway.",
+            expect.any(Error)
+        );
+    });
 });
 
 // mock the backend and test valid input and the possible errors received
@@ -279,6 +327,15 @@ describe("updateUser", () => {
 
         await expect(updateUser(validId, validPayload)).rejects.toThrow("A user may only make changes to their account");
     });
+    it("throws 403 forbidden error message", async () => {
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({})
+        } as unknown as Response);
+
+        await expect(updateUser(validId, validPayload)).rejects.toThrow("A user may only make changes to their account");
+    });
 
     // user not found error
     it("throws 404 error message from backend", async () => {
@@ -300,6 +357,24 @@ describe("updateUser", () => {
         } as unknown as Response);
 
         await expect(updateUser(validId, validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await updateUser(validId,validPayload);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/update/123",
+            expect.objectContaining({
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
     });
 });
 
@@ -357,6 +432,26 @@ describe("getUserById", () => {
         } as unknown as Response);
 
         await expect(getUserById(validId)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ({_id: "123",
+                user_name: "johnny",
+                email: "john@umanitoba.ca",
+                role: "student",
+                profile_pic: "avatar3"}),
+            } as unknown as Response);
+
+        await getUserById(validId);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/123",
+            expect.objectContaining({
+                credentials: "include",
+            })
+        );
     });
 });
 
@@ -437,6 +532,25 @@ describe("changeEmail", () => {
 
         await expect(changeEmail(validId, validEmail)).rejects.toThrow("Something went wrong. Please try again.");
     });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await changeEmail(validId,validEmail);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/changeEmail/123",
+            expect.objectContaining({
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body:"{\"email\":\"newemail@myumanitoba.ca\"}",
+            })
+        );
+    });
 });
 
 // mock the backend and test email change confirmation with verification code
@@ -514,6 +628,25 @@ describe("confirmEmailChange", () => {
 
         await expect(confirmEmailChange(validId, validCode)).rejects.toThrow("Something went wrong. Please try again.");
     });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await confirmEmailChange(validId,validCode);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/confirmEmailChange/123",
+            expect.objectContaining({
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: "{\"verificationCode\":\"123456\"}",
+            })
+        );
+    });
 });
 
 // mock the backend and test password reset with current and new password
@@ -585,6 +718,24 @@ describe("resetPassword", () => {
         } as unknown as Response);
 
         await expect(resetPassword(validId, validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await resetPassword(validId,validPayload);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/resetPassword/123",
+            expect.objectContaining({
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
     });
 });
 
@@ -661,6 +812,24 @@ describe("requestVerificationCode", () => {
         } as unknown as Response);
 
         await expect(requestVerificationCode(validId)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await requestVerificationCode(validId);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/123/request-verification-code",
+            expect.objectContaining({
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
     });
 });
 
@@ -740,5 +909,23 @@ describe("verifyEmail", () => {
         } as unknown as Response);
 
         await expect(verifyEmail(validPayload)).rejects.toThrow("Something went wrong. Please try again.");
+    });
+    it("verify fetch call", async () =>{
+        const fetchMock = vi.spyOn(globalThis, "fetch")
+            .mockResolvedValue({
+            ok: true,
+            json: async () => ([]),
+            } as unknown as Response);
+
+        await verifyEmail(validPayload);
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            "/api/v1/user/verify-email",
+            expect.objectContaining({
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            })
+        );
     });
 });
