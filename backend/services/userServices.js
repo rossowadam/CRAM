@@ -11,6 +11,11 @@ exports.getUserById = async (id) => {
     return user;
 }
 
+// get multiple users details by ids
+exports.getUsersByIds = async (ids) =>{
+    return await User.find({ _id: { $in: ids }}).lean();
+};
+
 exports.updateUserById = async (id, userData) => {
     const updateData = { ...userData };
 

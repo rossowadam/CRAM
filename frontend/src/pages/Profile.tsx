@@ -2,12 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Pencil } from "lucide-react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent,ChartLegend, type ChartConfig } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ProfilePicDialog from "@/components/profile/ProfilePicDialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AVATAR_MAP } from "@/constants/avatars";
 import { getUserById, updateUser } from "@/api/userApi";
 import ChangeVerificationForm from "@/components/profile/ChangeVerificationForm";
@@ -15,12 +15,20 @@ import ChangeUsernameForm from "@/components/profile/ChangeUsernameForm";
 import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
 
+interface Contribution{
+    ref_id: string;
+    type: "section" | "definition";
+    course_code: string;
+    date: string;
+}
+
 interface ProfileUser {
     id: string;
     username: string;
     email: string;
     role: string;
     profilePic?: string;
+    contributions?: Contribution[];
     isVerified?: boolean;
 }
 
@@ -39,27 +47,8 @@ export default function Profile() {
     // render profile change components if the profile belongs to the user
     const isOwnProfile = user?.id === userId;
 
-    // Chart data, can be any kind of data we can decide on what we want to display
-    const chartData = [
-        { month: "January", desktop: 186, mobile: 80 },
-        { month: "February", desktop: 305, mobile: 200 },
-        { month: "March", desktop: 237, mobile: 120 },
-        { month: "April", desktop: 73, mobile: 190 },
-        { month: "May", desktop: 209, mobile: 130 },
-        { month: "June", desktop: 214, mobile: 140 },
-    ];
-
-    // Configures the chart labels and color
-    const chartConfig = {
-        desktop: {
-            label: "Desktop",
-            color: "#2563eb",
-        },
-        mobile: {
-            label: "Mobile",
-            color: "#60a5fa",
-        },
-    } satisfies ChartConfig
+    // modes supported by chart
+    const [chartMode, setChartMode] = useState<"month" | "year" | "all">("month");
 
     // update the profile user details based on the id of the page
     useEffect(() => {
@@ -102,11 +91,71 @@ export default function Profile() {
         };
 
         update();
-    }, [selectedPic]);
+    }, [selectedPic, user, setUser]);
 
     // set avatar key to be the user if they're on their own page
     // otherwise, to the key for that profile
     const avatarKey = isOwnProfile ? user?.profilePic ?? "" : profileUser?.profilePic ?? "";
+
+    // Chart data
+    const chartData = useMemo(() => {
+        if (!profileUser?.contributions) return [];
+        const now = new Date();
+
+        // Helper: formats date keys depending on chartMode
+        const formatKey = (date: Date) => {
+            if (chartMode === "month") return `${date.getDate()}`;
+            if (chartMode === "year") return new Date(0, date.getMonth()).toLocaleString("default", { month: "short" });
+            return date.getFullYear().toString();
+        };
+
+        const dataMap: Record<string, { sections: number; definitions: number }> = {};
+
+        profileUser.contributions.forEach((contribution) => {
+            const date = new Date(contribution.date);
+
+            // filter contributions depending on mode
+            if (chartMode === "month" && (date.getMonth() !== now.getMonth() || date.getFullYear() !== now.getFullYear())) return;
+            if (chartMode === "year" && date.getFullYear() !== now.getFullYear()) return;
+
+            const key = formatKey(date);
+
+            if (!dataMap[key]) dataMap[key] = { sections: 0, definitions: 0 };
+
+            if (contribution.type === "section") dataMap[key].sections += 1;
+            else if (contribution.type === "definition") dataMap[key].definitions += 1;
+        });
+
+        // Convert map to array for chart, sorted
+        const sortedKeys = Object.keys(dataMap).sort((a, b) => {
+            if (chartMode === "month") return Number(a) - Number(b);
+            if (chartMode === "year") return new Date(`1 ${a} 2000`).getMonth() - new Date(`1 ${b} 2000`).getMonth();
+            return Number(a) - Number(b);
+        });
+
+        return sortedKeys.map((key) => ({
+            label: key,
+            sections: dataMap[key].sections,
+            definitions: dataMap[key].definitions,
+        }));
+    }, [profileUser, chartMode]);
+
+    // Configures the chart labels and color
+    const chartConfig = {
+        contributions: {
+            label: "Contributions",
+            color: "#2563eb",
+        },
+    } satisfies ChartConfig;
+
+    // Get 5 most recent contributions
+    const recentContributions = useMemo(() => {
+        if (!profileUser?.contributions) return [];
+
+        return [...profileUser.contributions]
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 5);
+    }, [profileUser]);
 
     return(
         <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
@@ -274,21 +323,43 @@ export default function Profile() {
                     <h1 className="font-instrument text-base sm:text-lg font-bold">Contributions</h1>
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
 
+                    <div className="flex flex-row justify-center gap-2 p-3">
+                        <Button 
+                            size="xs" 
+                            variant={chartMode === "month" ? "secondary" : "ghost"} 
+                            onClick={() => setChartMode("month")}
+                            className="hover:cursor-pointer hover:text-foreground"
+                        >
+                            This Month
+                        </Button>
+                        <Button 
+                            size="xs" 
+                            variant={chartMode === "year" ? "secondary" : "ghost"} 
+                            onClick={() => setChartMode("year")}
+                            className="hover:cursor-pointer hover:text-foreground"
+                        >
+                            This Year
+                        </Button>
+                        <Button 
+                            size="xs" 
+                            variant={chartMode === "all" ? "secondary" : "ghost"} 
+                            onClick={() => setChartMode("all")}
+                            className="hover:cursor-pointer hover:text-foreground"
+                        >
+                            All Time
+                        </Button>
+                    </div>
+
                     {/* Chart */}
                     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                        <BarChart accessibilityLayer data={chartData}>
+                        <BarChart data={chartData} barGap={4} barCategoryGap="20%">
                             <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="month"
-                                tickLine={false}
-                                tickMargin={10}
-                                axisLine={false}
-                                tickFormatter={(value) => value.slice(0, 3)}
-                            />
-                            <ChartTooltip content={<ChartTooltipContent/>} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                            <XAxis dataKey="label" tickLine={false} tickMargin={10} axisLine={false} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+
+                            <Bar dataKey="sections" fill="#2563eb" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="definitions" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                            <ChartLegend />
                         </BarChart>
                     </ChartContainer>
                 </div>
@@ -298,9 +369,31 @@ export default function Profile() {
                     <h1 className="font-instrument text-base sm:text-lg font-bold">Recent Activity</h1>
                     <Separator orientation="horizontal" className="my-1 bg-secondary" />
                     {/* Populate recent activity */}
-                    <div className="flex flew-row justify-between bg-background p-2 rounded-lg">
-                        <p className="font-instrument font-light text-sm sm:text-base">Course: {}</p>
-                        <p className="font-instrument font-medium text-sm sm:text-base">Date: {}</p>
+                    <div className="flex flex-col gap-2">
+                        {recentContributions.map((contribution) => { 
+                            const courseId = contribution.course_code.toLowerCase().replace(" ","-")
+                            return (
+                                <div key={contribution.ref_id} className="flex flex-row justify-between bg-background p-2 rounded-lg">
+                                    <p className="font-instrument font-light text-sm sm:text-base">
+                                        <Link
+                                            to={`/course/${courseId}`}
+                                            className="hover:underline hover:text-secondary"
+                                        >
+                                            {contribution.course_code}
+                                        </Link> 
+                                    </p>
+                                    <p className="font-instrument font-medium text-sm sm:text-base">
+                                        {new Date(contribution.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </p>
+                                </div>
+                            );
+                        })}
+
+                        {recentContributions.length === 0 && (
+                            <p className="font-instrument font-light text-sm sm:text-base text-muted-foreground">
+                                No recent activity.
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

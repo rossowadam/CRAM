@@ -1,4 +1,5 @@
 const sectionRepository = require("../repositories/sectionRepository");
+const userService = require("./userServices");
 
 exports.createSection = async (sectionData, sessionData ) => {
     const { courseCode, title, description, body } = sectionData; // extract data
@@ -33,8 +34,27 @@ exports.createSection = async (sectionData, sessionData ) => {
 };
 
 exports.getSectionsByCourseCode = async (courseCode) => {
-    console.log("hit the service layer");
-    return await sectionRepository.getSectionsByCourseCode(courseCode);
+    const sections = await sectionRepository.getSectionsByCourseCode(courseCode);
+
+    // fetch all unique userIds from sections
+    const userIds = [
+        ...new Set(sections.flatMap((section) => section.contributors.map((contributor) => contributor.userId))),
+    ];
+
+    // fetch all users at once
+    const users = await userService.getUsersByIds(userIds); 
+    const userMap = Object.fromEntries(users.map((user) => [user._id.toString(), user]));
+
+    // add user specific data into section
+    const enrichedSections = sections.map((section) => ({
+        ...section,
+        contributors: section.contributors.map((contributor) => ({
+            ...contributor,
+            username: userMap[contributor.userId.toString()]?.username,
+            profilePic: userMap[contributor.userId.toString()]?.profile_pic,
+        })),
+    }));
+    return enrichedSections;
 };
 
 exports.deleteSection = async (id) => {
