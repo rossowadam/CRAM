@@ -17,8 +17,8 @@ import { useEffect, useState } from "react"
 import type { Section } from "@/api/sectionsApi"
 import { createSection, updateSection } from "@/api/sectionsApi"
 import { ApiError } from "@/lib/errors/ApiError"
-import { useAuthDialog } from "@/context/AuthDialogContext"
 import { BadgeAlert } from "lucide-react"
+import { useAuthDialog } from "@/context/useAuthDialog"
 
 type RteProps = {
     onSuccess?: (section: Section) => void;

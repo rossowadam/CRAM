@@ -30,7 +30,8 @@ import {
 } from "@/api/sectionsApi";
 import { getCourseCode } from "@/utils/courseHelpers";
 import { ApiError } from "@/lib/errors/ApiError";
-import { useAuthDialog } from "@/context/AuthDialogContext";
+import { useAuthDialog } from "@/context/useAuthDialog";
+
 
 type SearchableSection = {
   title: string;

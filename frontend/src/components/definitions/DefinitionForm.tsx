@@ -15,7 +15,8 @@ import { Button } from "../ui/button";
 import { createDefinition, updateDefinition } from "@/api/sectionsApi";
 import type { Definition } from "@/api/sectionsApi";
 import { ApiError } from "@/lib/errors/ApiError";
-import { useAuthDialog } from "@/context/AuthDialogContext";
+import { useAuthDialog } from "@/context/useAuthDialog";
+
 
 
 type FormProps = {
