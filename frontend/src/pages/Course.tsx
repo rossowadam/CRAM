@@ -483,7 +483,7 @@ export default function Course() {
                 <HoverCard>
                   <HoverCardTrigger asChild>
                     <CirclePlus
-                      className="w-4/5 hover:text-secondary hover:cursor-pointer"
+                      className="hover:text-secondary hover:cursor-pointer"
                       aria-label="Add new section"
                       onClick={() => {
                         setEditSection(null);
@@ -579,7 +579,7 @@ export default function Course() {
                 <HoverCard>
                   <HoverCardTrigger asChild>
                     <CirclePlus
-                      className="w-4/5 hover:text-secondary hover:cursor-pointer"
+                      className="hover:text-secondary hover:cursor-pointer"
                       aria-label="Add new definition"
                       onClick={() => {
                         setEditDefinition(null);

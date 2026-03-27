@@ -42,7 +42,7 @@ export default function CourseSidebar({
                     {sections?.map((section) => (
                         <SidebarMenuButton 
                             key={section._id}
-                            className="py-5 hover:cursor-pointer hover:bg-secondary hover:text-background"
+                            className="my-2 sm:h-auto hover:cursor-pointer hover:bg-secondary hover:text-background"
                             onClick={() => scrollTo(`section-${section._id}`)}
                         >
                             {section.title}
@@ -61,8 +61,8 @@ export default function CourseSidebar({
                 </SidebarGroup>
                     
             </SidebarContent>
-            <SidebarFooter>
-                Profile
+            <SidebarFooter className="font-bold text-secondary">
+                C.R.A.M
             </SidebarFooter>
         </Sidebar>
     </div>

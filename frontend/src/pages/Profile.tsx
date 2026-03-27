@@ -158,9 +158,9 @@ export default function Profile() {
     }, [profileUser]);
 
     return(
-        <div className="flex flex-col sm:flex-row my-5 gap-3 justify-center w-full">
+        <div className="flex flex-col md:flex-row my-5 gap-3 justify-center w-full">
             {/* Profile management section */}
-            <div className="flex flex-col gap-2 p-3 self-center bg-primary rounded-md sm:p-4 w-3/4 sm:w-2/5 xl:w-1/4 sm:self-start">
+            <div className="flex flex-col gap-2 p-3 self-center bg-primary rounded-md md:p-4 w-3/4 sm:w-2/4 md:w-2/5 xl:w-1/4 md:self-start">
                 <h1 className="font-instrument text-base sm:text-lg font-bold">
                     Profile Details
                 </h1>
