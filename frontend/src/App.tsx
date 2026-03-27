@@ -5,6 +5,7 @@ import MainLayout from "./components/layout/MainLayout";
 import { TooltipProvider } from "./components/ui/tooltip";
 import StickyNavLayout from "./components/layout/StickyNavLayout";
 import Profile from "./pages/Profile";
+import PasswordReset from "./pages/PasswordReset";
 
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           }
         />
       </Route>
+
+      {/* Password reset link */}
+      <Route path="/reset-password" element={<PasswordReset/>} />
 
     </Routes>
   );
