@@ -1,4 +1,4 @@
-Time: 3:30-5:00 pm
+Time: 3:30-5:01 pm
 
 ## Agenda
 
