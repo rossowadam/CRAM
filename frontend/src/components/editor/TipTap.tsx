@@ -14,22 +14,16 @@ export default function TipTap({
 }) {
 
     const CustomHeading = Heading.extend({
-        renderHTML({ node, HTMLAttributes }){
-            const level = node.attrs.level
-
+        name: "heading",
+        renderHTML({ node, HTMLAttributes }) {
+            const level = node.attrs.level;
             const classes: Record<number, string> = {
-                1: "text-3xl font-bold",
-                2: "text-2xl font-semibold",
-                3: "text-xl font-semibold",
-            }
-            return [
-                `h${level}`,
-                {
-                    ...HTMLAttributes,
-                    class: classes[level] || "",
-                },
-                0,
-            ]
+            1: "text-3xl font-bold",
+            2: "text-2xl font-semibold",
+            3: "text-xl font-semibold",
+            };
+
+            return ["h" + level, { ...HTMLAttributes, class: classes[level] || "" }, 0];
         },
     })
 
