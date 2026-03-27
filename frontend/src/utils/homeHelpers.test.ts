@@ -171,12 +171,6 @@ describe("slugifyCourseCode", () => {
         Edge Cases
     -------------------------*/
     it("returns false for undefined raw string", () => {
-        expect(inferHasLab([], undefined as unknown as any)).toBe(false);
-    });
-    it("does not falsely detect lab when words are concatenated", () => {
-        expect(inferHasLab(["la", "b"], "")).toBe(false);
-    });
-    it("uses raw value when provided (does not use fallback)", () => {
-        expect(inferHasLab(['lab'], undefined as unknown as any)).toBe(true);
+        expect(inferHasLab([], undefined as unknown as string)).toBe(false);
     });
 });

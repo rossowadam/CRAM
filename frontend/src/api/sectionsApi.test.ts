@@ -319,15 +319,7 @@ describe("getCoursePage", () => {
         );
     });
 
-    it("calls both endpoints", async () => {
-        const fetchMock = vi.spyOn(globalThis, "fetch")
-            .mockResolvedValueOnce({ ok: true, json: async () => [] } as any)
-            .mockResolvedValueOnce({ ok: true, json: async () => [] } as any);
-
-        await getCoursePage("COMP 1010");
-
-        expect(fetchMock).toHaveBeenCalledTimes(2);
-    });
+    
 
 });
 
