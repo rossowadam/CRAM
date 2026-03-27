@@ -29,6 +29,9 @@ import {
   deleteDefinition,
 } from "@/api/sectionsApi";
 import { getCourseCode } from "@/utils/courseHelpers";
+import { ApiError } from "@/lib/errors/ApiError";
+import { useAuthDialog } from "@/context/useAuthDialog";
+
 
 type SearchableSection = {
   title: string;
@@ -101,6 +104,7 @@ function countOccurrencesInLowerText(
 
 export default function Course() {
   // Core state for course content.
+  const {openAuthDialog} = useAuthDialog();
   const [definitions, setDefinitions] = useState<Definition[]>([]);
   const [sections, setSections] = useState<Section[]>([]);
   const { courseId } = useParams();
@@ -155,8 +159,12 @@ export default function Course() {
 
       await fetchCoursePage();
     } catch (err) {
-      console.error(err);
-      alert(err instanceof Error ? err.message : "Failed to delete section");
+      if (err instanceof ApiError){
+        openAuthDialog("login");
+      } else{
+          console.error(err);
+          alert(err instanceof Error ? err.message : "Failed to delete section");
+      }
     }
   };
 
@@ -176,7 +184,11 @@ export default function Course() {
       await deleteDefinition({ definitionId: id });
       await fetchCoursePage();
     } catch (err) {
-      console.error("failed to delete definition:", err);
+      if (err instanceof ApiError){
+        openAuthDialog("login");;
+      } else{
+          console.error("failed to delete definition:", err);
+      }
     }
   };
 

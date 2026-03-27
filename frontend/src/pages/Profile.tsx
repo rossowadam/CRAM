@@ -372,8 +372,16 @@ export default function Profile() {
                     <div className="flex flex-col gap-2">
                         {recentContributions.map((contribution) => { 
                             const courseId = contribution.course_code.toLowerCase().replace(" ","-")
+
+                            // Color activity backgrounds depending on the type of contribution
+                            const contributionBg = contribution.type === "section"
+                                ? "bg-blue-500"
+                                : contribution.type === "definition"
+                                ? "bg-green-500"
+                                : "bg-background";
+
                             return (
-                                <div key={contribution.ref_id} className="flex flex-row justify-between bg-background p-2 rounded-lg">
+                                <div key={contribution.ref_id} className={`flex flex-row justify-between ${contributionBg} p-2 rounded-lg`}>
                                     <p className="font-instrument font-light text-sm sm:text-base">
                                         <Link
                                             to={`/course/${courseId}`}
