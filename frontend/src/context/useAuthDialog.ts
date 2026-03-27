@@ -1,4 +1,3 @@
-"use client"
 import { useContext } from "react";
 import { AuthDialogContext } from "./AuthDialogContext";
 

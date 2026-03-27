@@ -6,7 +6,8 @@ import { TooltipProvider } from "./components/ui/tooltip";
 import StickyNavLayout from "./components/layout/StickyNavLayout";
 import Profile from "./pages/Profile";
 import PasswordReset from "./pages/PasswordReset";
-import { AuthDialogProvider } from "./context/AuthDialogContext";
+import { AuthDialogProvider } from "./context/AuthDialogProvider";
+
 
 
 function App() {
