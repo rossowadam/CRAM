@@ -130,6 +130,7 @@ exports.createUser = async (req, res) => {
     try {
         const userData = req.body;
         const newUser = await userService.createUser(userData);
+        
         res.status(201).json(newUser);
     }
     catch (error) {

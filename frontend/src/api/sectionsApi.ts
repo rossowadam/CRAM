@@ -43,7 +43,7 @@ type ErrorBody = {
 
 /* HELPERS */
 
-function isErrorBody(body: unknown): body is ErrorBody {
+export function isErrorBody(body: unknown): body is ErrorBody {
     return (
         typeof body === "object" &&
         body !== null &&
@@ -51,7 +51,7 @@ function isErrorBody(body: unknown): body is ErrorBody {
     );
 }
 
-function getBackendMessage(body: unknown): string | undefined {
+ export function getBackendMessage(body: unknown): string | undefined {
     return isErrorBody(body) ? body.error ?? body.message : undefined;
 }
 

@@ -17,7 +17,14 @@ const definitionRoutes = require('./routes/definitionRoutes');
 // Env variables already loaded above
 
 // Establishes connection to MongoDB Atlas
-connectDB();
+
+dbUrl = process.env.MONGO_URI;
+
+if(process.env.NODE_ENV == 'loadtest') {
+    dbUrl = "mongodb://127.0.0.1:27017/test_db_load";
+}
+    
+connectDB(dbUrl);
 
 const app = express();
 
@@ -37,24 +44,54 @@ app.use(cors({
 // HTTP request logger middleware for development environment
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
+
+    // session middleware setup to generate session ID
+    // store in Mongo and send cookies in response header
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI,
+            collectionName: "sessions"
+        }),
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 1000 * 60 * 60 * 24 // 1 day
+        }
+    }));
+    app.get('/', (req, res) => {
+        res.send('CRAM API is running...');
+    });
+
 }
 
-// session middleware setup to generate session ID
-// store in Mongo and send cookies in response header
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
+//UGLY quick way to get a separate server and DB up to loadtest
+else if(process.env.NODE_ENV === 'loadtest') {
+    // session middleware setup to generate session ID
+    // store in Mongo and send cookies in response header
+    const sessionStore = MongoStore.create({
+        mongoUrl: `mongodb://127.0.0.1:27017/test_db_load`,
         collectionName: "sessions"
-    }),
-    cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
-    }
-}));
+    });
+
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        store: sessionStore, // Use the variable here
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+            maxAge: 1000 * 60 * 60 * 24 
+        }
+    }));
+    app.get('/', (req, res) => {
+        res.send('CRAM LOAD TEST SERVER is running...');
+    });
+}
+
 
 //Send requests to routes, if the request is for /api/v1/courses, it will go to courseRoutes, if the request is for /api/v1/user, it will go to userRoutes
 app.use('/api/v1/courses', courseRoutes);
@@ -62,9 +99,6 @@ app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/sections', sectionRoutes);
 app.use('/api/v1/definitions', definitionRoutes);
 
-app.get('/', (req, res) => {
-    res.send('CRAM API is running...');
-});
 
 
 // Define server port (defaults to 5000 if not specified in .env)
