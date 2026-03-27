@@ -344,6 +344,9 @@ export default function SectionCard({ section, onEdit, onDelete, open, onOpenCha
                     <CollapsibleContent 
                         className="
                             flex flex-col items-start gap-2 p-2.5 pt-0 text-xs font-instrument font-thin sm:text-sm
+                            [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4
+                            [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:mb-3
+                            [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2
                             [&_ul]:list-disc [&_ul]:ml-6
                             [&_ol]:list-decimal [&_ol]:ml-6
                             [&_li]:my-1
