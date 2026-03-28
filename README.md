@@ -8,6 +8,7 @@ A collaborative wiki-style knowledge base for University of Manitoba courses.
 - [Meeting Minutes](documents/meeting-minutes/)
 - [Conventions and test plans](documents/)
 - [Architecture diagrams](diagrams/)
+- [Acceptance Tests](documents/acceptance-tests.pdf)
 
 ## Project Vision & Summary
 
