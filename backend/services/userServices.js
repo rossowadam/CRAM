@@ -255,7 +255,8 @@ exports.requestPasswordReset = async (email) => {
     await userRepository.setResetToken(normalizedEmail, token, expiry);
 
     // Send the email
-    const resetUrl = `http://localhost:5173/reset-password?token=${token}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
     await emailServices.sendEmail({
         to: normalizedEmail,
         subject: 'CRAM Password Reset',
