@@ -1,6 +1,8 @@
 const sectionService = require('../services/sectionServices');
 const userService = require('../services/userServices');
 
+
+//creates a section, adds creator as a contributer
 exports.createSection = async (req, res) => {
     try {
         const sectionData = req.body;
@@ -23,6 +25,7 @@ exports.createSection = async (req, res) => {
     }
 }
 
+//gets and returns all sections sharing a course code
 exports.getSectionsByCourseCode = async (req, res) => {
     const { courseCode } = req.params;
     try {
@@ -33,6 +36,7 @@ exports.getSectionsByCourseCode = async (req, res) => {
     }
 }
 
+//delete section
 exports.deleteSection = async (req, res) => {
     const { id } = req.params;  
     try {
@@ -46,6 +50,8 @@ exports.deleteSection = async (req, res) => {
     }
 }
 
+
+//update sectiona
 exports.updateSection = async (req, res) => {  
     const { id } = req.params;
     const updateData = req.body;

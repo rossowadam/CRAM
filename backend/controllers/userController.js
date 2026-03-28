@@ -91,6 +91,8 @@ exports.confirmEmailChange = async (req, res) => {
     }
 }
 
+//resets the password of a user with a certain id
+// more specifically, tells service layer to find user with id and reset their password
 exports.resetPasswordById = async (req, res) => {
     try {
         const { id } = req.params;

@@ -1,6 +1,8 @@
 const definitionRepository = require('../repositories/definitionRepository');
 const userService = require('./userServices');
 
+
+// gets defintions that share a course code, gets the contributers and assembles them
 exports.getDefinitionsByCourseCode = async (courseCode) => {
     const definitions = await definitionRepository.getDefinitionsByCourseCode(courseCode);
     console.log("Fetched definitions from DB:", definitions);
@@ -32,6 +34,8 @@ exports.getDefinitionsByCourseCode = async (courseCode) => {
     return enrichedDefinitions;
 };
 
+
+// creates defintion, sets user as contributer
 exports.createDefinition = async (definitionData, sessionData) => {
     const definitionIsComplete = definitionData.courseCode && definitionData.term && definitionData.definition && definitionData.example;
     if (!definitionIsComplete) {
@@ -52,6 +56,7 @@ exports.createDefinition = async (definitionData, sessionData) => {
     return await definitionRepository.createDefinition(newDefinition);
 }
 
+//delete def
 exports.deleteDefinition = async (id) => {
     const deletedDefinition = await definitionRepository.deleteDefinition(id);
     if (!deletedDefinition) {
@@ -59,6 +64,7 @@ exports.deleteDefinition = async (id) => {
     }
 }
 
+//updates defintion
 exports.updateDefinition = async (id, updateData, sessionData) => {
 
     const updatedDefinition = await definitionRepository.updateDefinition(id, updateData, sessionData);

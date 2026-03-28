@@ -4,15 +4,18 @@ exports.getDefinitionsByCourseCode = async (courseCode) => {
     return await Definition.find({ courseCode }).lean();
 }
 
+// creates defnition
 exports.createDefinition = async (definitionData) => {
     const newDefinition = new Definition(definitionData);
     await newDefinition.save();
     return newDefinition.toJSON();
 }
 
+//delete
 exports.deleteDefinition = async (id) => {
     return await Definition.findByIdAndDelete(id);
 }
+
 
 exports.updateDefinition = async (id, updateData, sessionData) => {
     // first try to update the date if contributor already exists

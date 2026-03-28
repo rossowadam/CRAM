@@ -1,5 +1,7 @@
 const { checkSchema, validationResult } = require('express-validator');
 
+
+// check the fields of objects coming in. forces certain fields and sanitizes others.
 exports.registerSchema = checkSchema({
     'email': {
         optional: true, //allows this to be used to validate updates as well.
@@ -32,8 +34,7 @@ exports.registerSchema = checkSchema({
     }
 });
 
-
-// 2. The Result Handler (MANDATORY)
+// send the error to client
 exports.validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

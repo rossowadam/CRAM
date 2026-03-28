@@ -1,6 +1,8 @@
 const definitionService = require('../services/definitionServices');
 const userService = require('../services/userServices');
 
+
+//gets and returns all definitions that share a corresponding course code
 exports.getDefinitionsByCourseCode = async (req, res) => {
     const { courseCode } = req.params;
     try {
@@ -11,6 +13,7 @@ exports.getDefinitionsByCourseCode = async (req, res) => {
     }
 }
 
+// creates a definition
 exports.createDefinition = async (req, res) => {
     try {
         const definitionData = req.body;
@@ -31,6 +34,7 @@ exports.createDefinition = async (req, res) => {
     }
 }
 
+//delete
 exports.deleteDefinition = async (req, res) => {
     const { id } = req.params;
     try {
@@ -44,6 +48,8 @@ exports.deleteDefinition = async (req, res) => {
         else res.status(500).json({ error: error.message });
     }   
 }
+
+// updates
 exports.updateDefinition = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;

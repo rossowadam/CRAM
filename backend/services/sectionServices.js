@@ -33,6 +33,8 @@ exports.createSection = async (sectionData, sessionData ) => {
     return await sectionRepository.createSection(newSection);
 };
 
+
+//gets all sections that share a course code, rounds up and attaches are contributers
 exports.getSectionsByCourseCode = async (courseCode) => {
     const sections = await sectionRepository.getSectionsByCourseCode(courseCode);
 
@@ -57,10 +59,11 @@ exports.getSectionsByCourseCode = async (courseCode) => {
     return enrichedSections;
 };
 
+// delete section
 exports.deleteSection = async (id) => {
     return await sectionRepository.deleteSection(id);
 };
-
+//update
 exports.updateSection = async (id, updateData, sessionData) => {
     return await sectionRepository.updateSection(id, updateData, sessionData);
 };

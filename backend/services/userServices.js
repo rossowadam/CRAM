@@ -71,6 +71,7 @@ exports.changeEmailById = async (id, email) => {
     return { message: 'Verification code sent to new email' };
 }
 
+//confirms user's verification code is correct
 exports.confirmEmailChange = async (id, verificationCode) => {
     const user = await this.getUserById(id);
     console.log(verificationCode);
@@ -84,6 +85,7 @@ exports.confirmEmailChange = async (id, verificationCode) => {
     return userRepository.confirmEmailChange(id);
 }
 
+//deletes user
 exports.deleteUserById = async (id) => {
     return await userRepository.deleteUserById(id);
 }
@@ -297,10 +299,12 @@ exports.resetPasswordWithToken = async (token, newPassword) => {
     return true;
 }
 
+//adds contribution to user
 exports.addContribution = async (id, data) => {
     return await userRepository.addContribution(id, data);
 }
 
+//resets the password of a user with id
 exports.resetPasswordById = async (id, userData) => {
     const { currentPassword, newPassword, confirmPassword } = userData;
     
