@@ -1,5 +1,6 @@
 services:
   backend:
+    image: ghcr.io/shivambhagat20/cram-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -10,6 +11,7 @@ services:
     restart: always
 
   frontend:
+    image: ghcr.io/shivambhagat20/cram-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
