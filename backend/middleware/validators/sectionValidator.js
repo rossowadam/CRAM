@@ -48,7 +48,7 @@ exports.registerSchema = checkSchema({
                         // Lists
                         'ul', 'ol', 'li',
                         // Links
-                        'a'
+                        'a','img'
                     ],
                     allowedAttributes: {
                         'a': ['href', 'target', 'rel'],
