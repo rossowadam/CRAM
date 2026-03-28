@@ -12,6 +12,7 @@ import { AuthDialogProvider } from "./context/AuthDialogProvider";
 
 function App() {
   return (
+    // Wrap the app with dialog provider for global access
     <AuthDialogProvider>
       <Routes>
 
