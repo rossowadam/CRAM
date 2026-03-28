@@ -49,6 +49,47 @@ Users can edit the course page and dictionary:
 - Users are assigned a role based on the email they used (student or professor)
 - Users can see their contribution history
 
+## Running with Docker
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Shivambhagat20/CRAM.git
+   cd CRAM
+   ```
+
+2. **Create environment files**
+
+   Create `backend/.env` with the required environment variables:
+   ```
+   MONGO_URI=<MongoDB connection string>
+   JWT_SECRET=<JWT secret key>
+   SESSION_SECRET=<session secret key>
+   NODE_ENV=development
+   FRONTEND_URL=http://localhost:8080
+   EMAIL_USER=<email address>
+   EMAIL_PASS=<email app password>
+   ```
+
+   Create an empty `frontend/.env`:
+   ```bash
+   touch frontend/.env
+   ```
+
+3. **Pull and run the containers**
+   ```bash
+   docker-compose pull
+   docker-compose up
+   ```
+
+4. **Open the app**
+
+   Navigate to [http://localhost:8080](http://localhost:8080) in your browser.
+
 ## Technologies
 
 - **Frontend:** React, Tailwind CSS
