@@ -26,7 +26,7 @@ exports.getDefinitionsByCourseCode = async (courseCode) => {
         contributors: (def.contributors ?? []).map(contributor => ({
             ...contributor,
             username: userMap[contributor.userId.toString()]?.username,
-            profilePic: userMap[contributor.userId.toString()]?.profile_pic,
+            profilePic: userMap[contributor.userId.toString()]?.profilePic,
         })),
     }));
 

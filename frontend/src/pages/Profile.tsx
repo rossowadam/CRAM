@@ -16,9 +16,9 @@ import ChangeEmailForm from "@/components/profile/ChangeEmailForm";
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
 
 interface Contribution{
-    ref_id: string;
+    refId: string;
     type: "section" | "definition";
-    course_code: string;
+    courseCode: string;
     date: string;
 }
 
@@ -371,7 +371,7 @@ export default function Profile() {
                     {/* Populate recent activity */}
                     <div className="flex flex-col gap-2">
                         {recentContributions.map((contribution) => { 
-                            const courseId = contribution.course_code.toLowerCase().replace(" ","-")
+                            const courseId = contribution.courseCode.toLowerCase().replace(" ","-")
 
                             // Color activity backgrounds depending on the type of contribution
                             const contributionBg = contribution.type === "section"
@@ -381,13 +381,13 @@ export default function Profile() {
                                 : "bg-background";
 
                             return (
-                                <div key={contribution.ref_id} className={`flex flex-row justify-between ${contributionBg} p-2 rounded-lg`}>
+                                <div key={contribution.refId} className={`flex flex-row justify-between ${contributionBg} p-2 rounded-lg`}>
                                     <p className="font-instrument font-light text-sm sm:text-base">
                                         <Link
                                             to={`/course/${courseId}`}
                                             className="hover:underline hover:text-secondary"
                                         >
-                                            {contribution.course_code}
+                                            {contribution.courseCode}
                                         </Link> 
                                     </p>
                                     <p className="font-instrument font-medium text-sm sm:text-base">
