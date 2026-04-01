@@ -221,7 +221,7 @@ export default function DefinitionTable({
                                 <HoverCard>
                                     <HoverCardTrigger asChild>
                                         <Button
-                                            className="hover:text-secondary hover:cursor-pointer mr-1"
+                                            className="hover:text-secondary hover:cursor-pointer mr-1 text-foreground bg-background"
                                             aria-label="Edit definition"
                                             onClick={() => onEdit(def)}
                                         >
@@ -242,7 +242,7 @@ export default function DefinitionTable({
                                         <DialogTrigger asChild>
                                         <HoverCardTrigger asChild>
                                             <Button
-                                            className="hover:text-destructive hover:cursor-pointer hover:underline"
+                                            className="hover:text-destructive hover:cursor-pointer hover:underline text-foreground bg-background"
                                             aria-label="Delete section"
                                             >
                                             <Trash2 />
@@ -250,7 +250,7 @@ export default function DefinitionTable({
                                         </HoverCardTrigger>
                                         </DialogTrigger>
 
-                                        <DialogContent>
+                                        <DialogContent className="border-none">
                                         <DialogHeader>
                                             <DialogTitle>Delete definition</DialogTitle>
                                             <DialogDescription className="capitalize">

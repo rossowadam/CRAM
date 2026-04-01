@@ -750,48 +750,43 @@ export default function Course() {
       </div>
 
       <SidebarInset className="min-w-0 flex flex-col">
-        <div className="flex-1 px-6 py-6 md:px-4">
+        <div className="flex-1 px-6 py-6 md:px-4 bg-background ">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_clamp(16rem,22vw,24rem)]">
             {/* Left column: main page content */}
-            <div className="min-w-0">
+            <div className="min-w-0 bg-backround">
               {/* Course page header, this stays static, do not modify with dynamic content */}
-              <div className="w-full flex flex-col items-center sm:flex-row sm:gap-3 ">
-                <h1 className="text-xl font-bold w-4/5 pb-2 text-center sm:text-3xl xl:text-4xl">
-                  Welcome to the {courseId.toUpperCase()} Course Page!
+              <div className="w-full flex flex-col items-center mb-2  sm:gap-3 ">
+
+                <div className="self-start bg-primary-foreground px-3 py-1 mt-10 md:mt-3 shadow-2xl shadow-secondary/20">
+                  <p className="text-secondary">Course Notes - {courseCode}</p>
+                </div>
+
+                <h1 className="text-3xl font-bold w-full pb-2 text-start sm:text-5xl xl:text-6xl">
+                  Welcome to the{' '}
+                  <span className="text-secondary italic">
+                    {courseId.toUpperCase()}
+                  </span>{' '}
+                  Course Page!
                 </h1>
-                <>
-                  {/* Horizontal on small screens */}
-                  <Separator
-                    orientation="horizontal"
-                    className="bg-secondary sm:hidden my-2"
-                  />
 
-                  {/* Vertical on small screens and up */}
-                  <Separator
-                    orientation="vertical"
-                    className="bg-secondary hidden sm:block"
-                  />
-                </>
-
-                <div className="flex flex-col items-center gap-2 w-full text-center sm:text-left">
-                  <p className=" text-base font-thin font-instrument w-full">
+                <div className="flex flex-col items-start gap-2 w-full text-start">
+                  <p className=" text-lg font-thin font-instrument w-full self-start">
                     Here, you can collaborate with your classmates, find
                     resources, and review definitions about all things{" "}
-                    {courseId.toUpperCase()}.
-                  </p>
-
-                  <p className=" text-base font-thin font-instrument w-full italic">
-                    Please remember to be respectful and follow the code of
-                    conduct while using this platform. Happy learning!
+                    {courseId.toUpperCase()}.{' '}
+                    <span className=" text-lg my-2 font-thin font-instrument text-secondary italic">
+                        <p>
+                        Please remember to be respectful and follow the code of conduct while using this platform. Happy learning!
+                        </p>
+                    </span>
+                    {' '}
                   </p>
                 </div>
               </div>
 
-              <Separator orientation="horizontal" className="bg-secondary " />
-
               {/* Course sections heading */}
-              <div className="flex flex-row gap-2 w-full justify-between items-center p-2">
-                <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
+              <div className="flex flex-row gap-2 w-full justify-between items-center p-2 my-3">
+                <h2 className="text-2xl font-bold font-funnel text-left w-full mt-4 sm:text-3xl">
                   Sections
                 </h2>
                 <HoverCard>
@@ -827,13 +822,8 @@ export default function Course() {
                 onSave={handleUpdateSection}
               />
 
-              <Separator
-                orientation="horizontal"
-                className="bg-foreground my-2"
-              />
-
               {/* Display sections */}
-              <div className="bg-primary p-2 rounded-2xl w-full space-y-3">
+              <div className="bg-background p-2 rounded-2xl w-full space-y-3">
                 {sections.map((section) => {
                   const isMatch = matchingSectionIds.has(section._id);
                   const isOpen = openSectionIds.includes(section._id);
