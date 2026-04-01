@@ -18,7 +18,7 @@ export default function AuthDialog({ open, mode, setOpen, setMode }: AuthDialogP
             onOpenChange={setOpen}
             confirmOnClose
         >
-            <DialogContent className="bg-primary">
+            <DialogContent className="bg-primary border-none">
                 {mode === "login" ? (
                     <>
                         <DialogHeader>
