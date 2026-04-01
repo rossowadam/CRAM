@@ -159,10 +159,10 @@ exports.loginUser = async (req, res) => {
         req.session.user = {
             id: user._id,
             email: user.email,
-            username: user.user_name,
-            profilePic: user.profile_pic,
+            username: user.userName,
+            profilePic: user.profilePic,
             role: user.role,
-            is_verified: user.is_verified
+            isVerified: user.isVerified
         }
 
         return res.status(200).json(req.session.user);
@@ -228,7 +228,7 @@ exports.verifyEmail = async (req, res) => {
 
         // If the user is currently logged in, update their session
         if (req.session && req.session.user && req.session.user.email === email) {
-            req.session.user.is_verified = true;
+            req.session.user.isVerified = true;
         }
 
         res.status(200).json({ message: "Email verified successfully" });

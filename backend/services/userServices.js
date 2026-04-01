@@ -7,7 +7,7 @@ const crypto = require('crypto');
 // get all user details except the password 
 exports.getUserById = async (id) => {
     const user = await userRepository.findUserById(id);
-    if (user) delete user.password_hash;
+    if (user) delete user.passwordHash;
     return user;
 }
 
@@ -19,15 +19,6 @@ exports.getUsersByIds = async (ids) =>{
 exports.updateUserById = async (id, userData) => {
     const updateData = { ...userData };
 
-    // map profilePic to profile_pic to match schema
-    if (updateData.profilePic) {
-        updateData.profile_pic = updateData.profilePic;
-        delete updateData.profilePic;
-    }
-    if (updateData.username) {
-        updateData.user_name = updateData.username;
-        delete updateData.username;
-    }
 
     return await userRepository.updateUserById(id, updateData);
 };
@@ -78,7 +69,7 @@ exports.confirmEmailChange = async (id, verificationCode) => {
 
     if (!user) throw new Error('Invalid user');
 
-    if (user.verification_code !== verificationCode) {
+    if (user.verificationCode !== verificationCode) {
         throw new Error('Invalid verification code');
     }
 
@@ -127,12 +118,12 @@ exports.createUser = async (userData) => {
 
     // create new user object
     const newUser = {
-        user_name: name,
+        userName: name,
         email,
-        password_hash: passwordHash,
+        passwordHash: passwordHash,
         role,
-        is_verified: false,
-        verification_code: verificationCode
+        isVerified: false,
+        verificationCode: verificationCode
     };
 
     const createdUser = await userRepository.createUser(newUser);
@@ -168,7 +159,7 @@ exports.loginUser = async (userData) => {
     }
 
     // checks if passwords match
-    const isValid = await passwordServices.verifyPassword(password, user.password_hash);
+    const isValid = await passwordServices.verifyPassword(password, user.passwordHash);
 
     if (!isValid) {
         throw new Error("Invalid password");
@@ -185,14 +176,14 @@ exports.requestVerificationCode = async (id) => {
         throw new Error('User not found');
     }
 
-    if (user.is_verified) {
+    if (user.isVerified) {
         throw new Error('User is already verified');
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     await userRepository.updateUserById(id, {
-        verification_code: verificationCode
+        verificationCode: verificationCode
     });
 
     await emailServices.sendEmail({
@@ -224,11 +215,11 @@ exports.verifyEmailCode = async ({ email, code }) => {
         throw new Error('User not found');
     }
 
-    if (user.is_verified) {
+    if (user.isVerified) {
         throw new Error('User is already verified');
     }
 
-    if (user.verification_code !== code) {
+    if (user.verificationCode !== code) {
         throw new Error('Invalid verification code');
     }
 
@@ -284,7 +275,7 @@ exports.resetPasswordWithToken = async (token, newPassword) => {
         throw new Error('Invalid or expired password reset token');
     }
 
-    if (user.reset_token_expiry < new Date()) {
+    if (user.resetTokenExpiry < new Date()) {
         throw new Error('Password reset token has expired');
     }
 
@@ -292,7 +283,7 @@ exports.resetPasswordWithToken = async (token, newPassword) => {
     const passwordHash = await passwordServices.hashPassword(newPassword);
 
     // Update the user
-    await userRepository.updateUserById(user._id, { password_hash: passwordHash });
+    await userRepository.updateUserById(user._id, { passwordHash: passwordHash });
 
     // Clear the token
     await userRepository.clearResetToken(user._id);
@@ -324,5 +315,5 @@ exports.resetPasswordById = async (id, userData) => {
     // hash the new password and update the user
     const newHash = await passwordServices.hashPassword(newPassword);
 
-    return await userRepository.updateUserById(id, { password_hash: newHash });
+    return await userRepository.updateUserById(id, { passwordHash: newHash });
 }

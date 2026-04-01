@@ -340,7 +340,7 @@ test('UserController - loginUser - success', async (t) => {
     const mockUser = {
         _id: '123',
         email: 'test@umanitoba.ca',
-        user_name: 'testuser',
+        userName: 'testuser',
         role: 'student'
     };
 
@@ -379,7 +379,7 @@ test('UserController - loginUser - success', async (t) => {
         username: 'testuser',
         profilePic: undefined,
         role: 'student',
-        is_verified: undefined
+        isVerified: undefined
     });
 
     // Response matches session
