@@ -12,11 +12,10 @@ router.get('/', courseController.getAllCourses);
 router.get('/sample', courseController.getSampleCourses);
 
 // vaidation middleware, prevent url injection and makes sure user is verified.
-router.use('/:id', validateAPIids(), validate, requireVerification); // applies to all routes with :id param
 
-router.get('/:id',courseController.findCourseById);
-router.put('/update/:id',courseController.updateCourse);
-router.delete('/delete/:id',  courseController.deleteCourse);
+router.get('/:id',validateAPIids(), validate, requireVerification,courseController.findCourseById);
+router.put('/update/:id',validateAPIids(), validate, requireVerification,courseController.updateCourse);
+router.delete('/delete/:id', validateAPIids(), validate, requireVerification, courseController.deleteCourse);
 
 
 module.exports = router;

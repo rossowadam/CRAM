@@ -13,10 +13,9 @@ router.use(requireVerification); // checks auth and verification
 
 router.post('/create', registerSchema, validate, definitionController.createDefinition);
 
-router.use('/:id', validateAPIids(), validate);
 
-router.delete('/delete/:id', definitionController.deleteDefinition);
+router.delete('/delete/:id', validateAPIids(), validate, definitionController.deleteDefinition);
 
-router.put('/update/:id', registerSchema, validate, definitionController.updateDefinition);
+router.put('/update/:id', registerSchema, validateAPIids(), validate, definitionController.updateDefinition);
 
 module.exports = router;
