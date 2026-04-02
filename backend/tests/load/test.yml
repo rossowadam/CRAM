@@ -25,7 +25,7 @@ scenarios:
       - get:
           url: "/api/v1/user/{{ userId }}"
           capture:
-            json: "$.verification_code" 
+            json: "$.verificationCode" 
             as: "vCode"
       - log: " "
       - log: "=================================================="  
