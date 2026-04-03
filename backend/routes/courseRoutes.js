@@ -11,11 +11,10 @@ router.post('/create', registerSchema,requireVerification,validate, courseContro
 router.get('/', courseController.getAllCourses);
 router.get('/sample', courseController.getSampleCourses);
 
-// vaidation middleware, prevent url injection and makes sure user is verified.
+// validation middleware, prevent url injection and makes sure user is verified.
 
-router.get('/:id',validateAPIids(), validate, requireVerification,courseController.findCourseById);
-router.put('/update/:id',validateAPIids(), validate, requireVerification,courseController.updateCourse);
+router.get('/:id', validateAPIids(), validate, requireVerification,courseController.findCourseById);
+router.put('/update/:id', validateAPIids(), validate, requireVerification,courseController.updateCourse);
 router.delete('/delete/:id', validateAPIids(), validate, requireVerification, courseController.deleteCourse);
-
 
 module.exports = router;

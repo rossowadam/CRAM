@@ -7,12 +7,11 @@ const { validateAPIids, validateCourseCode } = require('../middleware/validators
 const { validate } = require('../middleware/validators/validationHandler');
 
 
-router.get('/:courseCode', validateCourseCode(),validate, definitionController.getDefinitionsByCourseCode);
+router.get('/:courseCode', validateCourseCode(), validate, definitionController.getDefinitionsByCourseCode);
 
 router.use(requireVerification); // checks auth and verification
 
 router.post('/create', registerSchema, validate, definitionController.createDefinition);
-
 
 router.delete('/delete/:id', validateAPIids(), validate, definitionController.deleteDefinition);
 
