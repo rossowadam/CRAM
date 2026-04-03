@@ -208,8 +208,7 @@ exports.logoutUser = (req, res) => {
     // session exists so try and destroy it
     req.session.destroy((err) => {
         if (err) {
-            console.error("Error:",error);
-
+            console.error("Error:",err);
             return res.status(500).json({ error: "Failed to logout" });
         }
 
