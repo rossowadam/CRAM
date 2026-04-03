@@ -132,7 +132,7 @@ export default function DefinitionForm({
           )}
         />
 
-        <Button type="submit">
+        <Button type="submit" className="bg-secondary hover:cursor-pointer hover:bg-primary hover:text-secondary">
           {mode === "create" ? "Create" : "Update"}
         </Button>
       </form>

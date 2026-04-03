@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
 import type { Section } from "@/api/sectionsApi"
+import { BookA, NotebookText } from "lucide-react";
 
 type CourseSidebarProps = {
     sections: Section[],
@@ -31,20 +32,21 @@ export default function CourseSidebar({
         
         <Sidebar side="left" variant="inset">
             
-            <SidebarHeader>
+            <SidebarHeader className="text-secondary font-bold">
                 {courseCode}
             </SidebarHeader> 
             {/* Scrollable content. */}
             <SidebarContent>
                 {/* Section. */}
                 <SidebarGroup>
-                <SidebarGroupLabel>Sections</SidebarGroupLabel>
+                <SidebarGroupLabel className="text-sm font-semibold">Sections</SidebarGroupLabel>
                     {sections?.map((section) => (
                         <SidebarMenuButton 
                             key={section._id}
-                            className="my-2 sm:h-auto hover:cursor-pointer hover:bg-secondary hover:text-background"
+                            className="my-2 sm:h-auto hover:cursor-pointer hover:bg-primary-foreground hover:text-secondary rounded-none"
                             onClick={() => scrollTo(`section-${section._id}`)}
                         >
+                            <NotebookText />
                             {section.title}
                         </SidebarMenuButton>
                     ))}
@@ -53,9 +55,10 @@ export default function CourseSidebar({
                 <SidebarGroup>
                     <SidebarGroupLabel>Definitions</SidebarGroupLabel>
                     <SidebarMenuButton  
-                        className="hover:cursor-pointer hover:bg-secondary hover:text-background"
+                        className="hover:cursor-pointer hover:bg-primary-foreground hover:text-secondary rounded-none"
                         onClick={() => scrollTo("definitions")}
                     >
+                        <BookA />
                         Go To Definitions
                     </SidebarMenuButton>
                 </SidebarGroup>

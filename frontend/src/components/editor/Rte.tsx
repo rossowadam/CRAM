@@ -148,7 +148,7 @@ export default function Rte({onSuccess, courseCode, mode, sectionId, initialValu
                             </FormItem>
                         )}
                     />
-                <Button type="submit" disabled={loading} className="m-2 hover:cursor-pointer hover:text-secondary"> 
+                <Button type="submit" disabled={loading} className="m-2 bg-secondary hover:cursor-pointer hover:text-secondary"> 
                     {loading ? "Creating section..." : "Submit"}
                 </Button>
 

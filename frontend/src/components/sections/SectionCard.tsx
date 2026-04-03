@@ -38,9 +38,6 @@ import {
     CollapsibleTrigger 
 } from "../ui/collapsible";
 import { 
-    Separator 
-} from "../ui/separator";
-import { 
     Avatar,
     AvatarFallback,
     AvatarGroup,
@@ -428,7 +425,7 @@ export default function SectionCard({ section, definitions, onEdit, onDelete, op
     return(
 
         <Card
-            className={`bg-primary m-0 border-none w-full ${
+            className={`bg-background m-0 border-none w-full shadow-none ${
                 isActiveSearchResult ? "ring-2 ring-secondary" : ""
             }`}
         >
@@ -437,23 +434,27 @@ export default function SectionCard({ section, definitions, onEdit, onDelete, op
 
                 <CardTitle
                     ref={titleRef}
-                    className="text-left font-funnel font-bold text-xl text-secondary sm:text-2xl"
+                    className="text-left font-instrument font-bold text-2xl text-secondary sm:text-3xl italic"
                 >
-                    {highlightedTitle}
+                    <span className="inline-block bg-primary-foreground px-2 py-1 ">
+                        {highlightedTitle}
+                    </span>
                 </CardTitle>
 
                 <CardDescription
                     ref={descriptionRef}
-                    className="text-left font-instrument font-thin text-xs text-foreground italic sm:text-sm"
+                    className="text-left font-funnel font-thin text-md text-foreground sm:text-lg"
                 >
-                    {highlightedDescription}
+                    <span className="inline-block bg-primary-foreground px-2">
+                        {highlightedDescription}
+                    </span>
                 </CardDescription>
             
                 <CardAction >
                     <HoverCard>
                         <HoverCardTrigger asChild>
                             <Button
-                                className=" hover:text-secondary hover:cursor-pointer"
+                                className=" hover:text-secondary hover:cursor-pointer bg-background text-foreground"
                                 aria-label="Edit section"
                                 onClick={() => onEdit(section)}
                             >
@@ -476,7 +477,7 @@ export default function SectionCard({ section, definitions, onEdit, onDelete, op
                             <DialogTrigger asChild>
                             <HoverCardTrigger asChild>
                                 <Button
-                                className="hover:text-destructive hover:cursor-pointer hover:underline"
+                                className="hover:text-destructive hover:cursor-pointer hover:underline bg-background text-foreground"
                                 aria-label="Delete section"
                                 >
                                 <Trash2 />
@@ -484,7 +485,7 @@ export default function SectionCard({ section, definitions, onEdit, onDelete, op
                             </HoverCardTrigger>
                             </DialogTrigger>
 
-                            <DialogContent>
+                            <DialogContent className="border-none">
                             <DialogHeader>
                                 <DialogTitle>Delete Section</DialogTitle>
                                 <DialogDescription className="capitalize">
@@ -513,27 +514,25 @@ export default function SectionCard({ section, definitions, onEdit, onDelete, op
             </CardHeader>
 
             <CardContent className="text-foreground wrap-break-words overflow-y-auto">
-                <Collapsible open={open} onOpenChange={onOpenChange} className="data-[state=open]:bg-primary rounded-md">
+                <Collapsible open={open} onOpenChange={onOpenChange} className="data-[state=open]:bg-background rounded-md">
                 
                     <CollapsibleTrigger asChild className="mb-2">
                         <Button 
                         variant="ghost" 
-                        className="group w-full bg-primary hover:bg-secondary hover:cursor-pointer" 
+                        className="group w-full rounded-none bg-primary-foreground hover:bg-secondary hover:cursor-pointer" 
                         aria-label="Expand Section"
                         >
                             View Section
                             <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
                         </Button>
                     </CollapsibleTrigger>
-
-                    <Separator orientation="horizontal" className="bg-secondary mb-2"/>
                     
                     <CollapsibleContent 
                         className="
-                            flex flex-col items-start gap-2 p-2.5 pt-0 text-xs font-instrument font-thin sm:text-sm
-                            [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4
-                            [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:mb-3
-                            [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2
+                            flex flex-col items-start gap-2 p-2.5 pt-0 text-lg font-instrument
+                            [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:mb-4
+                            [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:mb-3
+                            [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:mb-2
                             [&_ul]:list-disc [&_ul]:ml-6
                             [&_ol]:list-decimal [&_ol]:ml-6
                             [&_li]:my-1

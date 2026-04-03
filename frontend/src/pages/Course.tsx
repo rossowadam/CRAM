@@ -31,6 +31,7 @@ import {
 import { getCourseCode } from "@/utils/courseHelpers";
 import { ApiError } from "@/lib/errors/ApiError";
 import { useAuthDialog } from "@/context/useAuthDialog";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
 /* Preprocessing Data */
 
@@ -153,7 +154,7 @@ const SectionCardRow = memo(function SectionCardRow({
   );
 
   return (
-    <div id={`section-${section._id}`} className="w-full bg-primary">
+    <div id={`section-${section._id}`} className="w-full bg-background">
       <MemoizedSectionCard
         section={section}
         definitions={definitions}
@@ -733,6 +734,9 @@ export default function Course() {
     );
   }, [isSearching, totalSearchResults]);
 
+  // Controls whether the search drawer is open on smaller screens.
+  const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false);
+
   return (
     <SidebarProvider
       defaultOpen={true}
@@ -748,50 +752,121 @@ export default function Course() {
       <div className="fixed top-20 left-4 z-50 md:hidden">
         <SidebarTrigger className="bg-secondary text-background hover:cursor-pointer hover:bg-primary hover:text-foreground" />
       </div>
+      {/* Search drawer trigger for smaller screens */}
+      <div className="fixed top-20 right-4 z-50 xl:hidden">
+        <Button
+          size="icon-sm"
+          className="bg-secondary text-background hover:bg-primary hover:text-foreground hover:cursor-pointer"
+          onClick={() => setIsSearchDrawerOpen(true)}
+        >
+          <Search className="h-5 w-5" />
+        </Button>
+      </div>
 
       <SidebarInset className="min-w-0 flex flex-col">
-        <div className="flex-1 px-6 py-6 md:px-4">
+        
+        {/* Search drawer */}
+        <Drawer
+          open={isSearchDrawerOpen}
+          onOpenChange={setIsSearchDrawerOpen}
+          direction="bottom"
+        >
+          <DrawerContent className="px-4 py-4 border-none min-h-[30vh] max-h-[50vh] rounded-t-lg">
+            <DrawerHeader>
+              <DrawerTitle>Search</DrawerTitle>
+              <DrawerDescription>Search all sections and definitions</DrawerDescription>
+            </DrawerHeader>
+
+            {/* Drawer body */}
+            <div className="flex items-center gap-2 rounded-full border px-3 py-2 shadow-sm">
+              <Search className="h-4 w-4 text-muted-foreground" />
+
+              <Input
+                ref={searchInputRef}
+                autoFocus
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setActiveResultIndex(0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (!shouldHandleRepeatedNavigation(e.repeat)) return;
+                    if (e.shiftKey) goToPreviousResult();
+                    else goToNextResult();
+                  }
+                }}
+                placeholder="Search"
+                className="h-8 w-full border-0 bg-transparent px-0 shadow-none focus-visible:ring-0"
+              />
+            </div>
+
+            {/* Search navigation */}
+            {query && (
+              <div className="flex items-center justify-end gap-2 ">
+                <span className="text-xs text-muted-foreground">
+                  {totalSearchResults > 0
+                    ? `${safeActiveResultIndex + 1}/${totalSearchResults}`
+                    : "0"}
+                </span>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => goToPreviousResult()}
+                  disabled={totalSearchResults === 0}
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => goToNextResult()}
+                  disabled={totalSearchResults === 0}
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </DrawerContent>
+        </Drawer>
+
+        <div className="flex-1 px-6 py-6 md:px-4 bg-background ">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_clamp(16rem,22vw,24rem)]">
             {/* Left column: main page content */}
-            <div className="min-w-0">
+            <div className="min-w-0 bg-backround">
               {/* Course page header, this stays static, do not modify with dynamic content */}
-              <div className="w-full flex flex-col items-center sm:flex-row sm:gap-3 ">
-                <h1 className="text-xl font-bold w-4/5 pb-2 text-center sm:text-3xl xl:text-4xl">
-                  Welcome to the {courseId.toUpperCase()} Course Page!
+              <div className="w-full flex flex-col items-center mb-2  sm:gap-3 ">
+
+                <div className="self-start bg-primary-foreground px-3 py-1 mt-10 md:mt-3 shadow-2xl shadow-secondary/20">
+                  <p className="text-secondary">Course Notes - {courseCode}</p>
+                </div>
+
+                <h1 className="text-3xl font-bold w-full pb-2 text-start sm:text-5xl xl:text-6xl">
+                  Welcome to the{' '}
+                  <span className="text-secondary italic">
+                    {courseId.toUpperCase()}
+                  </span>{' '}
+                  Course Page!
                 </h1>
-                <>
-                  {/* Horizontal on small screens */}
-                  <Separator
-                    orientation="horizontal"
-                    className="bg-secondary sm:hidden my-2"
-                  />
 
-                  {/* Vertical on small screens and up */}
-                  <Separator
-                    orientation="vertical"
-                    className="bg-secondary hidden sm:block"
-                  />
-                </>
-
-                <div className="flex flex-col items-center gap-2 w-full text-center sm:text-left">
-                  <p className=" text-base font-thin font-instrument w-full">
+                <div className="flex flex-col items-start gap-2 w-full text-start">
+                  <p className=" text-lg font-thin font-instrument w-full self-start">
                     Here, you can collaborate with your classmates, find
                     resources, and review definitions about all things{" "}
                     {courseId.toUpperCase()}.
                   </p>
-
-                  <p className=" text-base font-thin font-instrument w-full italic">
-                    Please remember to be respectful and follow the code of
-                    conduct while using this platform. Happy learning!
+                  <p className=" text-lg my-2 font-thin font-instrument text-secondary italic">
+                    Please remember to be respectful and follow the code of conduct while using this platform. Happy learning!
                   </p>
                 </div>
               </div>
 
-              <Separator orientation="horizontal" className="bg-secondary " />
-
               {/* Course sections heading */}
-              <div className="flex flex-row gap-2 w-full justify-between items-center p-2">
-                <h2 className="text-xl font-lg text-left w-full mt-4 sm:text-2xl">
+              <div className="flex flex-row gap-2 w-full justify-between items-center p-2 my-3">
+                <h2 className="text-2xl font-bold font-funnel text-left w-full mt-4 sm:text-3xl">
                   Sections
                 </h2>
                 <HoverCard>
@@ -827,13 +902,8 @@ export default function Course() {
                 onSave={handleUpdateSection}
               />
 
-              <Separator
-                orientation="horizontal"
-                className="bg-foreground my-2"
-              />
-
               {/* Display sections */}
-              <div className="bg-primary p-2 rounded-2xl w-full space-y-3">
+              <div className="bg-background p-2 rounded-2xl w-full space-y-3">
                 {sections.map((section) => {
                   const isMatch = matchingSectionIds.has(section._id);
                   const isOpen = openSectionIds.includes(section._id);
