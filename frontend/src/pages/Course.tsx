@@ -764,13 +764,14 @@ export default function Course() {
       </div>
 
       <SidebarInset className="min-w-0 flex flex-col">
+        
         {/* Search drawer */}
         <Drawer
           open={isSearchDrawerOpen}
           onOpenChange={setIsSearchDrawerOpen}
           direction="bottom"
         >
-          <DrawerContent className="px-4 py-4  min-h-[30vh] max-h-[50vh] rounded-t-lg">
+          <DrawerContent className="px-4 py-4 border-none min-h-[30vh] max-h-[50vh] rounded-t-lg">
             <DrawerHeader>
               <DrawerTitle>Search</DrawerTitle>
               <DrawerDescription>Search all sections and definitions</DrawerDescription>
