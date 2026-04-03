@@ -91,7 +91,7 @@ export default function Profile() {
         };
 
         update();
-    }, [selectedPic, user, setUser]);
+    }, [selectedPic]);
 
     // set avatar key to be the user if they're on their own page
     // otherwise, to the key for that profile
