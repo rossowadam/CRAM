@@ -65,7 +65,7 @@ export default function CourseSidebar({
                     
             </SidebarContent>
             <SidebarFooter className="font-bold text-secondary">
-                C.R.A.M
+                C.R.A.M.
             </SidebarFooter>
         </Sidebar>
     </div>
