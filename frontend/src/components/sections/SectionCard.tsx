@@ -38,9 +38,6 @@ import {
     CollapsibleTrigger 
 } from "../ui/collapsible";
 import { 
-    Separator 
-} from "../ui/separator";
-import { 
     Avatar,
     AvatarFallback,
     AvatarGroup,
