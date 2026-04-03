@@ -45,7 +45,7 @@ describe('User Integration Tests', () => {
         console.log('======USER ID FOR TEST USER ============ ' + createdUserID);
 
         assert.strictEqual(response.status, 201);
-        assert.strictEqual(response.body.userName, "test guy");
+        assert.strictEqual(response.body.username, "test guy");
     });
     test('PUT /api/v1/user/update/:id - Update a User', async () => {
         const loginRes = await request(app)
@@ -60,12 +60,12 @@ describe('User Integration Tests', () => {
         const response = await request(app)
             .put(`/api/v1/user/update/${createdUserID}`)
             .set('Cookie', authCookie)
-            .send({ userName: "Updated User name" });
+            .send({ username: "Updated User name" });
 
         await request(app).post('/api/v1/user/logout').set('Cookie', authCookie);
 
         assert.strictEqual(response.status, 200);
-        assert.strictEqual(response.body.userName, "Updated User name");
+        assert.strictEqual(response.body.username, "Updated User name");
     });
 
     test('PUT /api/v1/user/verify-email - Verify a user', async () => {

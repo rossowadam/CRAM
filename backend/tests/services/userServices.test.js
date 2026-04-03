@@ -34,7 +34,7 @@ test('UserService - createUser', async (t) => {
 
     const createdUser = await userService.createUser(userData);
 
-    assert.strictEqual(createdUser.userName, 'testuser2');
+    assert.strictEqual(createdUser.username, 'testuser2');
     assert.strictEqual(createdUser.email, 'test@myumanitoba.ca');
     assert.strictEqual(createdUser.passwordHash, 'mocked_hash');
     assert.strictEqual(createdUser.role, 'student');
@@ -123,7 +123,7 @@ test('UserService - createUser with professor email domain', async (t) => {
 
     const createdUser = await userService.createUser(userData);
 
-    assert.strictEqual(createdUser.userName, 'testuser3');
+    assert.strictEqual(createdUser.username, 'testuser3');
     assert.strictEqual(createdUser.email, 'proftest@umanitoba.ca');
     assert.strictEqual(createdUser.passwordHash, 'mocked_hash');
     assert.strictEqual(createdUser.role, 'professor');

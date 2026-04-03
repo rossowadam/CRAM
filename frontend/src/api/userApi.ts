@@ -254,7 +254,7 @@ export async function getUserById(id: string) {
 
     return {
         id: body._id,
-        username: body.userName,
+        username: body.username,
         email: body.email,
         role: body.role.charAt(0).toUpperCase() + body.role.slice(1), // student --> Student
         profilePic: body.profilePic,

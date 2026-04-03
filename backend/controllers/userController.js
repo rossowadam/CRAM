@@ -159,7 +159,7 @@ exports.loginUser = async (req, res) => {
         req.session.user = {
             id: user._id,
             email: user.email,
-            username: user.userName,
+            username: user.username,
             profilePic: user.profilePic,
             role: user.role,
             isVerified: user.isVerified
