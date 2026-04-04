@@ -78,8 +78,9 @@ if (process.env.NODE_ENV === 'development') {
 else if(process.env.NODE_ENV === 'loadtest') {
     // session middleware setup to generate session ID
     // store in Mongo and send cookies in response header
+    
     const sessionStore = MongoStore.create({
-        mongoUrl: `mongodb://127.0.0.1:27017/test_db_load`,
+        mongoUrl: dbUrl,
         collectionName: "sessions"
     });
 
