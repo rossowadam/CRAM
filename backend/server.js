@@ -23,9 +23,12 @@ const definitionRoutes = require('./routes/definitionRoutes');
 // Establishes connection to MongoDB Atlas
 
 dbUrl = process.env.MONGO_URI;
+console.log("DEBUG: MONGOTEST_URI =", process.env.MONGOTEST_URI);
 
 if(process.env.NODE_ENV == 'loadtest') {
-    dbUrl = "mongodb://127.0.0.1:27017/test_db_load";
+    if(!process.env.MONG_LT) dbUrl = "mongodb://127.0.0.1:27017/test_db_load";
+    else  dbUrl = process.env.MONGOTEST_URI;
+    console.log("Using load test database at: " + dbUrl);
 }
     
 connectDB(dbUrl);
