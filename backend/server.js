@@ -28,7 +28,7 @@ dbUrl = process.env.MONGO_URI;
 if(process.env.NODE_ENV == 'loadtest') {
     if(!process.env.MONG_LT) dbUrl = "mongodb://127.0.0.1:27017/test_db_load";
     else  dbUrl = process.env.MONGOTEST_URI;
-    console.log("Using load test database at: " + dbUrl);
+    
 }
     
 connectDB(dbUrl);
